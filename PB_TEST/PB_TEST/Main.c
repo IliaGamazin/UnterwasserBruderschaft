@@ -9,30 +9,37 @@ int main() {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
     Mix_Init(MIX_INIT_MP3);
+
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     window = SDL_CreateWindow("PB_MENU_TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     bool quit = false;
     bool quitTimeFlag = false;
+    
     int quitButtonSpeed = 1;
+    int volume = MIX_MAX_VOLUME/2;
     int scene = MENU;
+    
+    Mix_PlayMusic(Mix_LoadMUS("media/sound/nightcall.mp3"), 0);
 
     bgTexture = IMG_LoadTexture(renderer, "media/img/menu_bg.png");
     bgRect = createRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_QueryTexture(bgTexture, NULL, NULL, &bgRect.w, &bgRect.h);
+
     Button* buttonArr = fillButtonArr((WINDOW_WIDTH-BUTTON_WIDTH)-10, BUTTON_GAP * 1.5, BUTTON_WIDTH, BUTTON_HEIGHT, renderer);
     while (!quit) {
         while (SDL_PollEvent(&event)) {
             int mouseX, mouseY;
             SDL_GetMouseState(&mouseX, &mouseY);
             SDL_Point mousePoint = { mouseX, mouseY };
-            if (event.type == SDL_QUIT) {
-                quit = true;
-            }
+           
             if (!quitTimeFlag)
             {
                 handleButtonPointing(mousePoint, buttonArr, renderer);
+            }
+            if (event.type == SDL_QUIT) {
+                quit = true;
             }
             if (event.type == SDL_MOUSEBUTTONDOWN) {
                 for (int i = 0; i < BUTTON_COUNT; i++)
@@ -54,8 +61,12 @@ int main() {
                             printf("\nThird level");
                             break;
                         case EXIT_BUTTON:
-                            printf("\nExit button");
-                            quitTimeFlag = true;
+                            if (!quitTimeFlag)
+                            {
+                                printf("\nExit button");
+                                quitTimeFlag = true;
+                                Mix_PlayChannel(-1, Mix_LoadWAV("media/sound/carPass.wav"), 0);
+                            }
                             break;
                         default:
                             break;
@@ -63,10 +74,33 @@ int main() {
                     }
                 }
             }
+            else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                case SDLK_EQUALS:
+                    if (volume < MIX_MAX_VOLUME) {
+                        volume += MIX_MAX_VOLUME / 10;
+
+                    }
+                    else {
+                        volume = MIX_MAX_VOLUME;
+                    }
+                    break;
+                case SDLK_MINUS:
+                    if (volume > 0) {
+                        volume -= MIX_MAX_VOLUME / 10; 
+                    }
+                    else {
+                        volume = 0;
+                    }
+                    break;
+                }
+                Mix_Volume(-1, volume);
+                Mix_VolumeMusic(volume);
+            }
         }
         if (quitTimeFlag == true)
         {
-            buttonArr[BUTTON_COUNT - 1].buttonRect.x -= quitButtonSpeed / 2;
+            buttonArr[BUTTON_COUNT - 1].buttonRect.x -= quitButtonSpeed / 3;
             quitButtonSpeed += 1;
             if (buttonArr[BUTTON_COUNT - 1].buttonRect.x < -BUTTON_WIDTH)
             {
@@ -74,7 +108,6 @@ int main() {
             }
         }
         SDL_RenderCopy(renderer, bgTexture, NULL, &bgRect);
-
         for (int i = 0; i < BUTTON_COUNT; i++)
         {
             showButton(renderer, buttonArr[i]);
