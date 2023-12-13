@@ -27,4 +27,7 @@
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ign.gitignore" />
+  </ItemGroup>
 </Project>

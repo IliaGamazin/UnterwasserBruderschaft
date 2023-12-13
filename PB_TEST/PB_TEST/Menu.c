@@ -7,11 +7,12 @@ SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight) {
     rect.h = rectHeight;
     return rect;
 }
-Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTex) {
+Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTex, Mix_Chunk* buttonSound) {
     Button But;
     But.buttonRect = createRect(x, y, buttonWidth, buttonHeight);
     But.isPointedAt = false;
     But.buttonTexture = buttonTex;
+    But.buttonSound = buttonSound;
     return But;
 }
 Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Renderer* renderer) {
@@ -19,7 +20,8 @@ Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Rende
     int incY = y;
     for (int i = 0; i < BUTTON_COUNT; i++)
     {
-        buttons[i] = createButton(x, incY, buttonWidth, buttonHeight, NULL);
+       
+        buttons[i] = createButton(x, incY, buttonWidth, buttonHeight, NULL, NULL);
         incY += BUTTON_GAP;
     }
     return buttons;
@@ -34,17 +36,26 @@ void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer*
     {
         if (SDL_PointInRect(&mousePoint, &buttonArr[i].buttonRect) == true) {
             buttonArr[i].isPointedAt = true;
+            
             isCursorInsideButton = true;
             break;
         }
         else {
             buttonArr[i].isPointedAt = false;
+            buttonArr[i].isPlayingSound = false;
         }
     }
     for (int i = 0; i < BUTTON_COUNT - 1; i++)
     {
         if (buttonArr[i].isPointedAt) {
             sprintf_s(path, sizeof(path), "media/img/%d.jpg", i + 10);
+            buttonArr[i].buttonSound = (Mix_LoadWAV("media/sound/pointSound.wav"));
+            if (!buttonArr[i].isPlayingSound)
+            {
+                Mix_PlayChannel(-1, buttonArr[i].buttonSound, 0);
+                buttonArr[i].isPlayingSound = true;
+            }
+           
             buttonArr[i].buttonTexture = IMG_LoadTexture(renderer, path);
             buttonArr[i].buttonRect.w = BUTTON_WIDTH + 10;
             buttonArr[i].buttonRect.h = BUTTON_HEIGHT + 2;
@@ -53,6 +64,7 @@ void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer*
         }
         else {
             sprintf_s(path, sizeof(path), "media/img/%d.jpg", i);
+            buttonArr[i].isPlayingSound = false;
             buttonArr[i].buttonTexture = IMG_LoadTexture(renderer, path);
             buttonArr[i].buttonRect.w = BUTTON_WIDTH;
             buttonArr[i].buttonRect.h = BUTTON_HEIGHT;
@@ -61,7 +73,13 @@ void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer*
     }
     if (buttonArr[BUTTON_COUNT-1].isPointedAt)
     {
-        buttonArr[BUTTON_COUNT - 1].buttonTexture =  IMG_LoadTexture(renderer, "media/img/chevy_start.png");
+        buttonArr[BUTTON_COUNT - 1].buttonTexture = IMG_LoadTexture(renderer, "media/img/chevy_start.png");
+        buttonArr[BUTTON_COUNT - 1].buttonSound = (Mix_LoadWAV("media/sound/carIgnition.wav"));
+        if (!buttonArr[BUTTON_COUNT - 1].isPlayingSound)
+        {
+            Mix_PlayChannel(-1, buttonArr[BUTTON_COUNT - 1].buttonSound, 0);
+            buttonArr[BUTTON_COUNT - 1].isPlayingSound = true;
+        }
     }
     else {
         buttonArr[BUTTON_COUNT - 1].buttonTexture = IMG_LoadTexture(renderer, "media/img/chevy_idle.png");
@@ -80,8 +98,10 @@ void close(SDL_Renderer* renderer, SDL_Window* window, Button* buttonArr, SDL_Te
     for (int i = 0; i < BUTTON_COUNT; i++)
     {
         SDL_DestroyTexture(buttonArr[i].buttonTexture);
+        Mix_FreeChunk(buttonArr[i].buttonSound);
     }
     free(buttonArr);
     SDL_DestroyWindow(window);
+    Mix_Quit();
     SDL_Quit();
 }

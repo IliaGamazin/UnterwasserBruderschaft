@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <SDL_rect.h>
 #include <SDL_surface.h>
 #include <SDL_mouse.h>
@@ -38,7 +39,9 @@ enum ButtonType {
 typedef struct {
     SDL_Rect buttonRect;
     SDL_Texture* buttonTexture;
+    Mix_Chunk* buttonSound;
     bool isPointedAt;
+    bool isPlayingSound;
 } Button;
 
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);
