@@ -4,9 +4,14 @@ SDL_Renderer* renderer;
 SDL_Texture* bgTexture;
 SDL_Rect bgRect;
 SDL_Event event;
+SDL_Cursor* arrowCursor;
+SDL_Cursor* handCursor;
 
-/*int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) { */ /*ƒÀﬂ «¿œ”— ¿ Õ¿ ¬»Õƒ≈*/
-int main() {
+
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {/*ƒÀﬂ «¿œ”— ¿ Õ¿ ¬»Õƒ≈*/
+    /*int main() {*/
+    handCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+    arrowCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
     Mix_Init(MIX_INIT_MP3);
@@ -28,8 +33,9 @@ int main() {
     bgRect = createRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_QueryTexture(bgTexture, NULL, NULL, &bgRect.w, &bgRect.h);
 
-    Button* buttonArr = fillButtonArr((WINDOW_WIDTH-BUTTON_WIDTH)-10, BUTTON_GAP * 1.5, BUTTON_WIDTH, BUTTON_HEIGHT);
+    Button* buttonArr = fillButtonArr((WINDOW_WIDTH-BUTTON_WIDTH)-10, BUTTON_GAP * 1.5, BUTTON_WIDTH, BUTTON_HEIGHT, renderer);
     SoundBar* Bar = createSoundBar(0,0,volume*2, 30, renderer);
+
     while (!quit) {
         while (SDL_PollEvent(&event)) {
             int mouseX, mouseY;
@@ -40,7 +46,7 @@ int main() {
             }
             if (!quitTimeFlag)
             {
-                handleButtonPointing(mousePoint, buttonArr, renderer);
+                handleButtonPointing(mousePoint, buttonArr, renderer, arrowCursor, handCursor);
             }
             if (event.type == SDL_MOUSEBUTTONDOWN) {
                 for (int i = 0; i < BUTTON_COUNT; i++)
@@ -120,7 +126,7 @@ int main() {
         SDL_RenderPresent(renderer);
         SDL_Delay(1000 / 120);
     }
-    destroyMenu(renderer, window, buttonArr, bgTexture, Bar);
+    destroyMenu(renderer, window, buttonArr, bgTexture, Bar, arrowCursor,handCursor);
 
     return 0;
 }

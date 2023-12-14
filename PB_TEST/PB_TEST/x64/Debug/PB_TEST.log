@@ -1,6 +1,4 @@
 ﻿  Main.c
-C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\PB_TEST\Main.c(9,12): warning C4026: функция объявлена со списком формальных параметров
-C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\PB_TEST\Main.c(31,82): warning C4244: функция: преобразование "double" в "int", возможна потеря данных
-  Menu.c
-  Создание кода...
+C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\PB_TEST\Main.c(12,12): warning C4026: функция объявлена со списком формальных параметров
+C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\PB_TEST\Main.c(36,82): warning C4244: функция: преобразование "double" в "int", возможна потеря данных
   PB_TEST.vcxproj -> C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\x64\Debug\PB_TEST.exe

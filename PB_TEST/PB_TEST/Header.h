@@ -44,7 +44,8 @@ enum ButtonType {
 
 typedef struct {
     SDL_Rect buttonRect;
-    SDL_Texture* buttonTexture;
+    SDL_Texture* buttonTexIdle;
+    SDL_Texture* buttonTexHover;
     Mix_Chunk* buttonSound;
     bool isPointedAt;
     bool isPlayingSound;
@@ -56,12 +57,14 @@ typedef struct {
 }SoundBar;
 
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);
-Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTex);
-Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight);
+Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTexIdle, SDL_Texture* buttonTexHover, Mix_Chunk* buttonSound);
+Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Renderer* r);
 SoundBar* createSoundBar(int x, int y, int barWidth, int barHeight, SDL_Renderer* r);
 void updateSoundBar(SoundBar* soundBar, int volume);
 void showButton(SDL_Renderer* r, Button button);
-void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer* renderer);
-void destroyMenu(SDL_Renderer* renderer, SDL_Window* window, Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar);
+void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer* r, SDL_Cursor* arrowCursor, SDL_Cursor* handCursor);
+void destroyButton(Button b);
+void destroyBar(SoundBar* b);
+void destroyMenu(SDL_Renderer* r, SDL_Window* window, Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, SDL_Cursor* arrow, SDL_Cursor* hand);
 
 #endif
