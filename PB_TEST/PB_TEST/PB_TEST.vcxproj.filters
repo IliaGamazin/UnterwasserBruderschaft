@@ -21,6 +21,9 @@
     <ClCompile Include="Menu.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Menu_func.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">

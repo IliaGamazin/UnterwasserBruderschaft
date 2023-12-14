@@ -22,10 +22,16 @@
 
 enum Scene {
     MENU,
+    INTRO,
+    LEVEL1_INTRO,
     LEVEL1,
+    LEVEL2_INTRO,
     LEVEL2,
+    LEVEL3_INTRO,
     LEVEL3,
-    LEVEL_SECRET
+    LEVEL_SECRET_INTRO,
+    LEVEL_SECRET,
+    OUTRO
 };
 
 enum ButtonType {
@@ -44,10 +50,18 @@ typedef struct {
     bool isPlayingSound;
 } Button;
 
+typedef struct {
+    SDL_Rect barRect;
+    SDL_Texture* barTexture;
+}SoundBar;
+
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);
 Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTex);
-Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Renderer* renderer);
-void showButton(SDL_Renderer* r, Button myButton);
+Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight);
+SoundBar* createSoundBar(int x, int y, int barWidth, int barHeight, SDL_Renderer* r);
+void updateSoundBar(SoundBar* soundBar, int volume);
+void showButton(SDL_Renderer* r, Button button);
 void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer* renderer);
-void close(SDL_Renderer* renderer, SDL_Window* window, Button* buttonArr, SDL_Texture* bgTexture);
+void destroyMenu(SDL_Renderer* renderer, SDL_Window* window, Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar);
+
 #endif
