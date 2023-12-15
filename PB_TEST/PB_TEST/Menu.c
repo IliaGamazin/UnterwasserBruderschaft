@@ -1,126 +1,115 @@
 #include "header.h"
-SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight) {
-    SDL_Rect rect;
-    rect.x = x;
-    rect.y = y;
-    rect.w = rectWidth;
-    rect.h = rectHeight;
-    return rect;
-}
-Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTexIdle, SDL_Texture* buttonTexHover, Mix_Chunk* buttonSound) {
-    Button But;
-    But.buttonRect = createRect(x, y, buttonWidth, buttonHeight);
-    But.buttonTexIdle = buttonTexIdle;
-    But.buttonTexHover = buttonTexHover;
-    But.buttonSound = buttonSound;
-    But.isPointedAt = false;
-    return But;
-}
-Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Renderer* r) {
-    Button* buttonArr = (Button*)malloc(BUTTON_COUNT * sizeof(Button));
-    int incY = y;
-    char pathIdle[20];
-    char pathHover[20];
-    for (int i = 0; i < BUTTON_COUNT-1; i++)
-    {
-        sprintf_s(pathIdle , sizeof(pathIdle), "media/img/%d.jpg", i);
-        sprintf_s(pathHover, sizeof(pathHover), "media/img/%d.jpg", i+10);
-        buttonArr[i] = createButton(x, incY, buttonWidth, buttonHeight, IMG_LoadTexture(r,pathIdle), IMG_LoadTexture(r, pathHover), Mix_LoadWAV("media/sound/pointSound.wav"));
-        incY += BUTTON_GAP;
-    }
-    buttonArr[BUTTON_COUNT - 1] = createButton(x, incY, buttonWidth, buttonHeight, IMG_LoadTexture(r, "media/img/chevy_idle.png"), IMG_LoadTexture(r, "media/img/chevy_start.png"), Mix_LoadWAV("media/sound/carIgnition.wav"));
-    return buttonArr;
-}
-void showButton(SDL_Renderer* r, Button button) {
-    if (button.isPointedAt){
-        SDL_RenderCopy(r, button.buttonTexHover, NULL, &button.buttonRect);
-    }
-    else {
-        SDL_RenderCopy(r, button.buttonTexIdle, NULL, &button.buttonRect);
-    }
-}
-void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer* r, SDL_Cursor* arrowCursor, SDL_Cursor* handCursor) {
-    bool isCursorInsideButton = false;
-    for (int i = 0; i < BUTTON_COUNT; i++)
-    {
-        if (SDL_PointInRect(&mousePoint, &buttonArr[i].buttonRect) == true) {
-            buttonArr[i].isPointedAt = true;
-            isCursorInsideButton = true;
-            break;
-        }
-        else {
-            buttonArr[i].isPointedAt = false;
-            buttonArr[i].isPlayingSound = false;
-        }
-    }
-    for (int i = 0; i < BUTTON_COUNT - 1; i++)
-    {
-        if (buttonArr[i].isPointedAt) {
-            if (!buttonArr[i].isPlayingSound)
+SDL_Texture* bgTexture;
+SDL_Rect bgRect;
+Mix_Chunk* exitSound;
+int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_Cursor* handCursor, Mix_Music* bgMusic){
+    bool quitTimeFlag = false;
+    int quitButtonSpeed = 1;
+    int run = 0;
+    
+    bgTexture = IMG_LoadTexture(renderer, "media/img/menu_bg.png");
+    bgRect = createRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    SDL_QueryTexture(bgTexture, NULL, NULL, &bgRect.w, &bgRect.h);
+
+    int volume = MAX_VOLUME / 2;
+    bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+    Mix_PlayMusic(bgMusic, 0);
+
+    Button* buttonArr = fillButtonArr((WINDOW_WIDTH - BUTTON_WIDTH) - 17, BUTTON_GAP * 1.5, BUTTON_WIDTH, BUTTON_HEIGHT, renderer);
+    SoundBar* Bar = createSoundBar(185, 690, volume * 3, 30, renderer);
+    while (run == 0) {
+        while (SDL_PollEvent(&event)) {
+            int mouseX, mouseY;
+            SDL_GetMouseState(&mouseX, &mouseY);
+            SDL_Point mousePoint = { mouseX, mouseY };
+            if (!quitTimeFlag)
             {
-                Mix_PlayChannel(-1, buttonArr[i].buttonSound, 0);
-                buttonArr[i].isPlayingSound = true;
+                handleButtonPointing(mousePoint, buttonArr, renderer, arrowCursor, handCursor);
             }
-            buttonArr[i].buttonRect.x = WINDOW_WIDTH - BUTTON_WIDTH - 15;
-            buttonArr[i].buttonRect.w = BUTTON_WIDTH + 10;
-            buttonArr[i].buttonRect.h = BUTTON_HEIGHT + 2;
-            break;
+            if (event.type == SDL_QUIT) {
+                run = -1;
+            }
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                for (int i = 0; i < BUTTON_COUNT; i++)
+                {
+                    if (SDL_PointInRect(&mousePoint, &buttonArr[i].buttonRect) == true) {
+                        switch (i)
+                        {
+                        case START_BUTTON:
+                            run = LEVEL1_INTRO;
+                            printf("\nStart button");
+                            break;
+                        case FIRST_LEVEL_BUTTON:
+                            printf("\nFirst level");
+                            run = LEVEL1;
+                            break;
+                        case SECOND_LEVEL_BUTTON:
+                            printf("\nSecond level");
+                            run = LEVEL2;
+                            break;
+                        case THIRD_LEVEL_BUTTON:
+                            printf("\nThird level");
+                            run = LEVEL3;
+                            break;
+                        case EXIT_BUTTON:
+                            if (!quitTimeFlag)
+                            {
+                                printf("\nExit button");
+                                exitSound = Mix_LoadWAV("media/sound/carPass.wav");
+                                quitTimeFlag = true;
+                                Mix_PlayChannel(-1, exitSound, 0);
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                case SDLK_EQUALS:
+                    if (volume < MAX_VOLUME) {
+                        volume += MAX_VOLUME / 10;
+                    }
+                    else {
+                        volume = MAX_VOLUME;
+                    }
+                    break;
+                case SDLK_MINUS:
+                    if (volume > 0) {
+                        volume -= MAX_VOLUME/10;
+                    }
+                    else {
+                        volume = 0;
+                    }
+                    break;
+                }
+                printf("\n Volume: %d", volume);
+                Mix_Volume(-1, volume);
+                Mix_VolumeMusic(volume);
+            }
         }
-        else {
-            buttonArr[i].buttonRect.x = WINDOW_WIDTH - BUTTON_WIDTH - 10;
-            buttonArr[i].buttonRect.w = BUTTON_WIDTH;
-            buttonArr[i].buttonRect.h = BUTTON_HEIGHT;
-            buttonArr[i].isPlayingSound = false;
-        }
-    }
-    if (buttonArr[BUTTON_COUNT-1].isPointedAt)
-    {
-        if (!buttonArr[BUTTON_COUNT - 1].isPlayingSound)
+        if (quitTimeFlag == true)
         {
-            Mix_PlayChannel(-1, buttonArr[BUTTON_COUNT - 1].buttonSound, 0);
-            buttonArr[BUTTON_COUNT - 1].isPlayingSound = true;
+            buttonArr[BUTTON_COUNT - 1].buttonRect.x -= quitButtonSpeed;
+            quitButtonSpeed += 1;
+            if (buttonArr[BUTTON_COUNT - 1].buttonRect.x < -BUTTON_WIDTH)
+            {
+                run = -1;
+            }
         }
+        updateSoundBar(Bar, volume);
+        SDL_RenderCopy(renderer, bgTexture, NULL, &bgRect);
+        SDL_RenderCopy(renderer, Bar->barTexture, NULL, &Bar->barRect);
+        for (int i = 0; i < BUTTON_COUNT; i++)
+        {
+            showButton(renderer, buttonArr[i]);
+        }
+        SDL_RenderPresent(renderer);
+        SDL_Delay(1000 / 60);
     }
-
-    if (isCursorInsideButton) {
-        SDL_SetCursor(handCursor);
-    }
-    else {
-        SDL_SetCursor(arrowCursor);
-    }
+    SDL_RenderClear(renderer);
+    destroyMenu(buttonArr, bgTexture, Bar, bgMusic, exitSound);
+    return run;
 }
-SoundBar* createSoundBar(int x, int y, int barWidth, int barHeight, SDL_Renderer* r) {
-    SoundBar* Bar = (SoundBar*)malloc(sizeof(SoundBar));
-    Bar->barRect = createRect(x, y, barWidth, barHeight);
-    Bar->barTexture = IMG_LoadTexture(r, "media/img/0.jpg");
-    return Bar;
-}
-void updateSoundBar(SoundBar* soundBar, int volume) {
-    soundBar->barRect.w = volume*2;
-}
-void destroyButton(Button b) {
-    SDL_DestroyTexture(b.buttonTexIdle);
-    SDL_DestroyTexture(b.buttonTexHover);
-    Mix_FreeChunk(b.buttonSound);
-}
-void destroyBar(SoundBar* b) {
-    SDL_DestroyTexture(b->barTexture);
-    free(b);
-}
-void destroyMenu(SDL_Renderer* r, SDL_Window* window, Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, SDL_Cursor* arrow, SDL_Cursor* hand) {
-    SDL_DestroyRenderer(r);
-    SDL_DestroyTexture(bgTexture);
-    for (int i = 0; i < BUTTON_COUNT; i++)
-    {
-        destroyButton(buttonArr[i]);
-    }
-    destroyBar(Bar);
-    SDL_FreeCursor(arrow);
-    SDL_FreeCursor(hand);
-    SDL_DestroyWindow(window);
-    free(buttonArr);
-    Mix_Quit();
-    SDL_Quit();
-}
-
-

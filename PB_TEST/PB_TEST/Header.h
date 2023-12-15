@@ -14,11 +14,13 @@
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
+
 #define BUTTON_COUNT 5
 #define BUTTON_HEIGHT 60
 #define BUTTON_WIDTH 150
 #define BUTTON_GAP 100
 
+#define MAX_VOLUME 120
 
 enum Scene {
     MENU,
@@ -60,11 +62,13 @@ SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);
 Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTexIdle, SDL_Texture* buttonTexHover, Mix_Chunk* buttonSound);
 Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Renderer* r);
 SoundBar* createSoundBar(int x, int y, int barWidth, int barHeight, SDL_Renderer* r);
+int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_Cursor* handCursorm, Mix_Music* bgMusic);
 void updateSoundBar(SoundBar* soundBar, int volume);
 void showButton(SDL_Renderer* r, Button button);
 void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer* r, SDL_Cursor* arrowCursor, SDL_Cursor* handCursor);
 void destroyButton(Button b);
 void destroyBar(SoundBar* b);
-void destroyMenu(SDL_Renderer* r, SDL_Window* window, Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, SDL_Cursor* arrow, SDL_Cursor* hand);
+void destroyMenu(Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, Mix_Music* bgMusic, Mix_Chunk* exitSound);
+void destroyWindow(SDL_Renderer* r, SDL_Window* window, SDL_Cursor* arrow, SDL_Cursor* hand);
 
 #endif
