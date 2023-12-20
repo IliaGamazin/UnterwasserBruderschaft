@@ -36,7 +36,7 @@ int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_C
                         switch (i)
                         {
                         case START_BUTTON:
-                            run = LEVEL1_INTRO;
+                            run = INTRO;
                             printf("\nStart button");
                             break;
                         case FIRST_LEVEL_BUTTON:
@@ -69,6 +69,7 @@ int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_C
             else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                 case SDLK_EQUALS:
+                    printf("\n Volume: %d", volume);
                     if (volume < MAX_VOLUME) {
                         volume += MAX_VOLUME / 10;
                     }
@@ -77,6 +78,7 @@ int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_C
                     }
                     break;
                 case SDLK_MINUS:
+                    printf("\n Volume: %d", volume);
                     if (volume > 0) {
                         volume -= MAX_VOLUME/10;
                     }
@@ -85,7 +87,7 @@ int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_C
                     }
                     break;
                 }
-                printf("\n Volume: %d", volume);
+                
                 Mix_Volume(-1, volume);
                 Mix_VolumeMusic(volume);
             }

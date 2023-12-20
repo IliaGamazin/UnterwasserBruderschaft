@@ -22,27 +22,49 @@
 
 #define MAX_VOLUME 120
 
-enum Scene {
+enum SCENE {
     MENU,
     INTRO,
-    LEVEL1_INTRO,
     LEVEL1,
-    LEVEL2_INTRO,
     LEVEL2,
-    LEVEL3_INTRO,
     LEVEL3,
-    LEVEL_SECRET_INTRO,
     LEVEL_SECRET,
     OUTRO
 };
 
-enum ButtonType {
+enum BUTTON_TYPE {
     START_BUTTON,
     FIRST_LEVEL_BUTTON,
     SECOND_LEVEL_BUTTON,
     THIRD_LEVEL_BUTTON,
     EXIT_BUTTON
 };
+
+enum WEAPON_TYPE {
+    RIFLE,
+    SHOTGUN,
+    REVOLVER
+};
+typedef struct {
+    int velocity;
+
+}bullet;
+
+typedef struct {
+    int damage;
+    int magSize;
+    int ammoInMag;
+}Weapon;
+
+typedef struct{
+    /*int hp;
+    int speed;
+    int ammoCount;
+    Weapon entityWeapon;*/
+    double angle;
+    SDL_Rect entityRect;
+    SDL_Texture* entityTex;
+}Entity;
 
 typedef struct {
     SDL_Rect buttonRect;
@@ -51,7 +73,7 @@ typedef struct {
     Mix_Chunk* buttonSound;
     bool isPointedAt;
     bool isPlayingSound;
-} Button;
+}Button;
 
 typedef struct {
     SDL_Rect barRect;
@@ -63,12 +85,15 @@ Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture
 Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Renderer* r);
 SoundBar* createSoundBar(int x, int y, int barWidth, int barHeight, SDL_Renderer* r);
 int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_Cursor* handCursorm, Mix_Music* bgMusic);
+int level1(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_Cursor* handCursor, Mix_Music* bgMusic);
 void updateSoundBar(SoundBar* soundBar, int volume);
 void showButton(SDL_Renderer* r, Button button);
+void showEntity(SDL_Renderer* r, Entity* entity);
 void handleButtonPointing(SDL_Point mousePoint, Button* buttonArr, SDL_Renderer* r, SDL_Cursor* arrowCursor, SDL_Cursor* handCursor);
 void destroyButton(Button b);
 void destroyBar(SoundBar* b);
 void destroyMenu(Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, Mix_Music* bgMusic, Mix_Chunk* exitSound);
+void destroyEntity(Entity* ent);
 void destroyWindow(SDL_Renderer* r, SDL_Window* window, SDL_Cursor* arrow, SDL_Cursor* hand);
 
 #endif

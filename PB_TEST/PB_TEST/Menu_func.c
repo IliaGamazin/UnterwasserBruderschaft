@@ -23,8 +23,8 @@ Button* fillButtonArr(int x, int y, int buttonWidth, int buttonHeight, SDL_Rende
     char pathHover[20];
     for (int i = 0; i < BUTTON_COUNT - 1; i++)
     {
-        sprintf_s(pathIdle, sizeof(pathIdle), "media/img/%d.jpg", i);
-        sprintf_s(pathHover, sizeof(pathHover), "media/img/%d.jpg", i + 10);
+        sprintf_s(pathIdle, sizeof(pathIdle), "media/img/%d.png", i);
+        sprintf_s(pathHover, sizeof(pathHover), "media/img/%d.png", i + 10);
         buttonArr[i] = createButton(x, incY, buttonWidth, buttonHeight, IMG_LoadTexture(r, pathIdle), IMG_LoadTexture(r, pathHover), Mix_LoadWAV("media/sound/pointSound.wav"));
         incY += BUTTON_GAP;
     }
@@ -119,4 +119,3 @@ void destroyWindow(SDL_Renderer* r, SDL_Window* window, SDL_Cursor* arrow, SDL_C
     Mix_Quit();
     SDL_Quit();
 }
-
