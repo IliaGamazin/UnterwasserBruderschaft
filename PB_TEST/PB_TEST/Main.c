@@ -1,11 +1,11 @@
-#include "header.h"
+#include "Header.h"
 SDL_Window* window;
 SDL_Renderer* renderer;
 Mix_Music* bgMusic;
 SDL_Event event;
 
-/*int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) { /* дкъ гюосяйю мю бхмде*/
-int main() { 
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) { /* дкъ гюосяйю мю бхмде*/
+
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
     Mix_Init(MIX_INIT_MP3);

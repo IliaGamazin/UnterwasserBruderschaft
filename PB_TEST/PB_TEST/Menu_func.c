@@ -1,4 +1,4 @@
-#include "header.h"
+#include "Header.h"
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight) {
     SDL_Rect rect;
     rect.x = x;

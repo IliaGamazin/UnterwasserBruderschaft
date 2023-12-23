@@ -1,8 +1,9 @@
-#include "header.h"
-SDL_Texture* bgTexture;
-SDL_Rect bgRect;
+#include "Header.h"
+
 Mix_Chunk* exitSound;
 int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_Cursor* handCursor, Mix_Music* bgMusic){
+    SDL_Texture* bgTexture;
+    SDL_Rect bgRect;
     bool quitTimeFlag = false;
     int quitButtonSpeed = 1;
     int run = 0;
@@ -87,7 +88,6 @@ int menu(SDL_Renderer* renderer, SDL_Event event, SDL_Cursor* arrowCursor, SDL_C
                     }
                     break;
                 }
-                
                 Mix_Volume(-1, volume);
                 Mix_VolumeMusic(volume);
             }

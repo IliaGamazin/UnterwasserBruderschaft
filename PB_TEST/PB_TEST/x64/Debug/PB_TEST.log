@@ -1,2 +1,7 @@
 ﻿  Level1.c
+C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\PB_TEST\Level1.c(196,60): warning C4020: shoot: слишком много фактических параметров
+C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\PB_TEST\Level1.c(172,14): warning C4101: bgRect: неиспользованная локальная переменная
+C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\PB_TEST\Level1.c(171,18): warning C4101: bgTexture: неиспользованная локальная переменная
+  Menu_func.c
+  Создание кода...
   PB_TEST.vcxproj -> C:\Users\57869\Desktop\PB_PROJECT_SDL\PB_TEST\x64\Debug\PB_TEST.exe
