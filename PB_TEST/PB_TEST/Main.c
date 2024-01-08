@@ -1,58 +1,57 @@
-#include "Header.h"
+#include "Header_main.h"
 SDL_Window* window;
-SDL_Renderer* renderer;
-Mix_Music* bgMusic;
-SDL_Event event;
-
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) { /* ÄËß ÇÀÏÓÑÊÀ ÍÀ ÂÈÍÄÅ*/
-
+GameState* PBState;
+/*int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){   ÄËß ÇÀÏÓÑÊÀ ÍÀ ÂÈÍÄÅ*/
+int main(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
     Mix_Init(MIX_INIT_MP3);
-    SDL_Cursor* handCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
-    SDL_Cursor* arrowCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     window = SDL_CreateWindow("PB_MENU_TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_TARGETTEXTURE);
-
-    int run = 0; /*Çíà÷åíèå, êîòîðîå âîçâðàùàåò ôóíêöèÿ óðîâíÿ*/
-
-    while (run!=-1) {
-        switch (run)
+    
+    PBState = (GameState*)malloc(sizeof(GameState));
+    PBState->run = MENU;
+    PBState->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_TARGETTEXTURE);
+    PBState->handCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+    PBState->arrowCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+    PBState->bgMusic = NULL;
+    PBState->volume = MAX_VOLUME / 2;
+    while (PBState->run !=-1) {
+        switch (PBState->run)
         {
         case MENU:
-            run = menu(renderer, event, arrowCursor, handCursor, bgMusic);
+            menu(PBState);
             break;
         case INTRO:
-            while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    run = -1;
+            while (SDL_PollEvent(&PBState->event)) {
+                if (PBState->event.type == SDL_QUIT) {
+                    PBState->run = -1;
                 }
             }
             break;
         case LEVEL1:
-            run = level1(renderer, event, arrowCursor, handCursor, bgMusic);
+            level1(PBState);
             break;
         case LEVEL2:
-            while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    run = -1;
+            while (SDL_PollEvent(&PBState->event)) {
+                if (PBState->event.type == SDL_QUIT) {
+                    PBState->run = -1;
                 }
             }
             break;
         case LEVEL3:
-            while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    run = -1;
+            while (SDL_PollEvent(&PBState->event)) {
+                if (PBState->event.type == SDL_QUIT) {
+                    PBState->run = -1;
                 }
             }
             break;
         default:
             break;
         }  
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(PBState->renderer);
         SDL_Delay(1000 / 60);
     }
-    destroyWindow(renderer, window, arrowCursor,handCursor);
+    destroyWindow(PBState, window);
     return 0;
 }
