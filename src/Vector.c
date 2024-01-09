@@ -42,3 +42,8 @@ void Vector2_normalize(Vector2 *vector) {
     Vector2_scale(vector, 1 / Vector2_magnitude(*vector));
 }
 
+void Vector2_set_magnitude(Vector2 *vector, double magnitude) {
+    Vector2_normalize(vector);
+    Vector2_scale(vector, magnitude);
+}
+

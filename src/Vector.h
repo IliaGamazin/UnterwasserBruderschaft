@@ -16,6 +16,7 @@ Vector2 Vector2_from_points(Vector2 point1, Vector2 point2);
 double Vector2_magnitude(Vector2 vector);
 void Vector2_scale(Vector2 *vector, double scale_factor);
 void Vector2_normalize(Vector2 *vector);
+void Vector2_set_magnitude(Vector2 *vector, double magnitude);
 
 #endif
 
