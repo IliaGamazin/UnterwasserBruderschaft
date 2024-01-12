@@ -9,6 +9,7 @@
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_mouse.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <math.h>
 
