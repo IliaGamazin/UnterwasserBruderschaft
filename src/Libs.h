@@ -28,14 +28,30 @@
 #define CURRENT_LEVEL_INTRO level-2 
 #define CURRENT_LEVEL_CHOOSE level-1
 
+#define TILE_SIZE 40
+#define TILES_COUNT ((WINDOW_WIDTH*WINDOW_HEIGHT)/(TILE_SIZE*TILE_SIZE))
+#define TILES_TEXTURE_COUNT 4
+
+enum TILE_TYPE{
+    WALL_HORIZONTAL,
+    WALL_VERTICAL,
+    FLOOR_WOOD,
+    FLOOR_MARBLE
+};
+
 typedef enum {
     MENU,
     INTRO,
     LEVEL1_INTRO,
     LEVEL1_CHOOSE,
     LEVEL1,
+    LEVEL2_INTRO,
+    LEVEL2_CHOOSE,
     LEVEL2,
+    LEVEL3_INTRO,
+    LEVEL3_CHOOSE,
     LEVEL3,
+    LEVEL_SECRET_INTRO,
     LEVEL_SECRET,
     OUTRO
 }SCENE;
@@ -50,14 +66,14 @@ enum BUTTON_TYPE_MENU {
 
 typedef enum{
     SHAYLUSHAY,
-    DAWAWUE,
     YALTPILS,
+    DAWAWUE
 }CHARACTER_TYPE;
 
 typedef enum {
     RIFLE,
-    SHOTGUN,
-    PISTOL
+    PISTOL,
+    SHOTGUN
 }WEAPON_TYPE;
 
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);

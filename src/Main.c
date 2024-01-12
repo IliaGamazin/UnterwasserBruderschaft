@@ -1,7 +1,7 @@
 #include "Header_main.h"
 SDL_Window* window;
 GameState* PBState;
-/*int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){   ÄËß ÇÀÏÓÑÊÀ ÍÀ ÂÈÍÄÅ*/
+/*int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){   ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½*/
 int main(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
@@ -11,11 +11,12 @@ int main(){
     
     PBState = (GameState*)malloc(sizeof(GameState));
     PBState->run = MENU;
-    PBState->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_TARGETTEXTURE);
+    PBState->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     PBState->handCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
     PBState->arrowCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
     PBState->bgMusic = NULL;
     PBState->volume = MAX_VOLUME / 2;
+    
     while (PBState->run !=-1) {
         switch (PBState->run)
         {
@@ -26,7 +27,7 @@ int main(){
             while (SDL_PollEvent(&PBState->event)) {
                 if (PBState->event.type == SDL_QUIT) {
                     PBState->run = -1;
-                }
+                }  
             }
             break;
         case LEVEL1:

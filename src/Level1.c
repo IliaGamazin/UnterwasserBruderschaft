@@ -12,8 +12,11 @@
     }
 }*/
 
-void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity* Player) {
+void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity* Player, Tilemap Map, SDL_Texture* ammoTex, SDL_Texture* ammoTexFired) {
+    SDL_DestroyTexture(ammoTex);
+    SDL_DestroyTexture(ammoTexFired);
     Mix_FreeMusic(bgMusic);
+    destroyMap(Map);
     destroyBulletManager(bulletManager);
     destroyEntity(Player);
 }
@@ -36,26 +39,63 @@ void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity*
         Shooter->reloadingTimer--;
     }
 }*/
+void showHood(SDL_Renderer* r, Entity* Player, SDL_Texture* ammoTex, SDL_Texture* ammoTexFired){
+    SDL_Rect ammoTypeRect = createRect(40, 0, 12, 33);
+    for (int i = 0; i < Player->entityWeapon.maxAmmo; i++)
+    {
+        if (i % Player->entityWeapon.magSize == 0)
+        {
+            ammoTypeRect.x = 40;
+            ammoTypeRect.y += 35;
+        }
+        ammoTypeRect.x += 15;
 
+        if (i < Player->entityWeapon.totalAmmoCount)
+        {
+            SDL_RenderCopy(r, ammoTex, NULL, &ammoTypeRect);
+        }
+        else{
+            SDL_RenderCopy(r, ammoTexFired, NULL, &ammoTypeRect);
+        }
+                
+    }
+}
 void level1(GameState* PBState) {
     levelIntro(PBState, LEVEL1);
     if (PBState->run == LEVEL1_CHOOSE)
     {
-        Entity** targets;
-        targets = (Entity**)malloc(2 * sizeof(Entity*));
-        targets[0] = createEntity(0, 0, 100, 100, PBState->renderer, SHAYLUSHAY);
-        targets[1] = createEntity(0, 300, 100, 100, PBState->renderer, SHAYLUSHAY);
-        Entity* Player = createEntity(640, 460, 70, 70, PBState->renderer, chooseCharacter(PBState, LEVEL1));
+        Entity* Player = createEntity(640, 460, 70, 50, PBState->renderer, chooseCharacter(PBState, LEVEL1));
+        Tilemap Map = createMap(PBState->renderer);
+        BulletManager* bulletManager = createBulletManager(100);
+
+        SDL_Texture* ammoTex;
+        SDL_Texture* ammoTexFired;
+
+        switch (Player->entityWeapon.type)
+        {
+        case RIFLE:
+            ammoTex = IMG_LoadTexture(PBState->renderer, "media/img/rifleAmmo.png");
+            ammoTexFired = IMG_LoadTexture(PBState->renderer, "media/img/rifleNoAmmo.png");
+            break;
+        case PISTOL:
+            ammoTex = IMG_LoadTexture(PBState->renderer, "media/img/pistolAmmo.png");
+            ammoTexFired = IMG_LoadTexture(PBState->renderer, "media/img/pistolNoAmmo.png");
+            break;
+        case SHOTGUN:
+            ammoTex = IMG_LoadTexture(PBState->renderer, "media/img/shotgunAmmo.png");
+            ammoTexFired = IMG_LoadTexture(PBState->renderer, "media/img/shotgunNoAmmo.png");
+            break;
+        }
+         
         bool keyW = false, keyA = false, keyS = false, keyD = false;
         int volume = MAX_VOLUME / 2;
+
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
         Mix_PlayMusic(PBState->bgMusic, 0);
-
-        BulletManager* bulletManager = createBulletManager(100);
+     
         while (PBState->run == LEVEL1) {
             int mouseX, mouseY;
             SDL_GetMouseState(&mouseX, &mouseY);
-            SDL_Point mousePoint = { mouseX, mouseY };
             double deltaX = mouseX - Player->entityRect.x - (Player->entityRect.w / 2);
             double deltaY = mouseY - Player->entityRect.y - (Player->entityRect.h / 2);
             Player->angle = atan2(deltaY, deltaX) * (180.0 / M_PI);
@@ -75,7 +115,7 @@ void level1(GameState* PBState) {
                         reload(Player);
                     }
                 }
-                else if (PBState->event.type == SDL_KEYDOWN) {
+                if (PBState->event.type == SDL_KEYDOWN) {
                     switch (PBState->event.key.keysym.sym) {
                     case SDLK_w:
                         keyW = true;
@@ -88,8 +128,6 @@ void level1(GameState* PBState) {
                         break;
                     case SDLK_d:
                         keyD = true;
-                        break;
-                    case SDLK_r:
                         break;
                     case SDLK_ESCAPE:
                         PBState->run = MENU;
@@ -116,7 +154,7 @@ void level1(GameState* PBState) {
                     Mix_Volume(-1, volume);
                     Mix_VolumeMusic(volume);
                 }
-                else if (PBState->event.type == SDL_KEYUP) {
+                if (PBState->event.type == SDL_KEYUP) {
                     switch (PBState->event.key.keysym.sym) {
                     case SDLK_w:
                         keyW = false;
@@ -133,36 +171,42 @@ void level1(GameState* PBState) {
                     }
                 }
             }
-            if (keyW) {
-                Player->entityRect.y -= Player->speed;
-            }
-            if (keyA) {
-                Player->entityRect.x -= Player->speed;
-            }
-            if (keyS) {
-                Player->entityRect.y += Player->speed;
-            }
-            if (keyD) {
-                Player->entityRect.x += Player->speed;
+
+            if (keyW || keyA || keyS || keyD)
+            {
+                if (keyW) {
+                    Player->entityRect.y -= Player->speed;
+                }
+                if (keyA) {
+                    Player->entityRect.x -= Player->speed;
+                }
+                if (keyS) {
+                    Player->entityRect.y += Player->speed; 
+                }  
+                if (keyD) {
+                    Player->entityRect.x += Player->speed;
+                   
+                }
+                updateAnim(Player);
             }
 
             if (Player->reloadingTimer > 0)
             {
                 Player->reloadingTimer--;
             }
-           // collider(bulletManager, targets[0]);
-         //   collider(bulletManager, targets[1]);
+
             SDL_RenderClear(PBState->renderer);
+            updateBulletManager(bulletManager);
+            showMap(Map, PBState->renderer);
             showAllBullets(PBState->renderer, bulletManager);
             showEntity(PBState->renderer, Player);
-            showEntity(PBState->renderer, targets[0]);
-            showEntity(PBState->renderer, targets[1]);
-            SDL_RenderPresent(PBState->renderer);
-            updateBulletManager(bulletManager);
+
+            showHood(PBState->renderer, Player, ammoTex, ammoTexFired);
             
+            SDL_RenderPresent(PBState->renderer);
             SDL_Delay(1000 / 60);
         }
-        destroyFirstLevel(PBState->bgMusic, bulletManager, Player);
+        destroyFirstLevel(PBState->bgMusic, bulletManager, Player, Map, ammoTex, ammoTexFired);
         SDL_RenderClear(PBState->renderer);
     }
 }

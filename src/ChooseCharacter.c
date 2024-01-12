@@ -31,12 +31,13 @@ void handleButtonPointingChoose(SDL_Point mousePoint, Button* buttonArr, Mask** 
             buttonArr[i].isPointedAt = false;
             buttonArr[i].isPlayingSound = false;
         }
-    }
+    }   
+    
 }
 
 CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
 	PBState->run = CURRENT_LEVEL_CHOOSE;
-    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_chooseHero.png");
+    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroBg.png");
     PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
 
     Mix_PlayMusic(PBState->bgMusic, 0);
@@ -44,6 +45,10 @@ CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
 
     Button* buttonArr = fillButtonArrChoose(PBState->renderer);
 	CHARACTER_TYPE charType = 0;
+    
+    SDL_Texture* shaBorder = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroSha.png");
+    SDL_Texture* yalBorder = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroYal.png");
+    SDL_Texture* dawBorder = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroDaw.png");
 	while (PBState->run == CURRENT_LEVEL_CHOOSE) {
 		while (SDL_PollEvent(&PBState->event)) {
             int mouseX, mouseY;
@@ -54,18 +59,18 @@ CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
                 PBState->run = -1;
             }
             if (PBState->event.type == SDL_MOUSEBUTTONDOWN) {
-                    if (SDL_PointInRect(&mousePoint, &buttonArr[0].buttonRect) || SDL_PointInRect(&mousePoint, &buttonArr[1].buttonRect)||SDL_PointInRect(&mousePoint, &buttonArr[2].buttonRect)) {
-                        if(SDL_PointInRect(&mousePoint, &buttonArr[0].buttonRect)){
-                            charType = SHAYLUSHAY;
-                        }
-                        if(SDL_PointInRect(&mousePoint, &buttonArr[1].buttonRect)){
-                            charType = YALTPILS;
-                        }
-                        if(SDL_PointInRect(&mousePoint, &buttonArr[2].buttonRect)){
-                            charType = DAWAWUE;
-                        }
-                        PBState->run++;
-                    }                      
+                if (SDL_PointInRect(&mousePoint, &buttonArr[0].buttonRect) || SDL_PointInRect(&mousePoint, &buttonArr[1].buttonRect)||SDL_PointInRect(&mousePoint, &buttonArr[2].buttonRect)) {
+                    if(SDL_PointInRect(&mousePoint, &buttonArr[SHAYLUSHAY].buttonRect)){
+                        charType = SHAYLUSHAY;    
+                    }
+                    if(SDL_PointInRect(&mousePoint, &buttonArr[YALTPILS].buttonRect)){
+                        charType = YALTPILS;   
+                    }
+                    if(SDL_PointInRect(&mousePoint, &buttonArr[DAWAWUE].buttonRect)){
+                        charType = DAWAWUE;                        
+                    }
+                    PBState->run++;
+                }                    
             }
             else if (PBState->event.type == SDL_KEYDOWN) {
                 switch (PBState->event.key.keysym.sym) {
@@ -95,7 +100,20 @@ CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
                 Mix_VolumeMusic(PBState->volume);
             }
 		}
+        SDL_RenderClear(PBState->renderer);
         SDL_RenderCopy(PBState->renderer, PBState->bgTexture, NULL, &PBState->bgRect);
+        if (buttonArr[SHAYLUSHAY].isPointedAt)
+        {
+            SDL_RenderCopy(PBState->renderer, shaBorder, NULL, &PBState->bgRect);
+        }
+        else if (buttonArr[YALTPILS].isPointedAt)
+        {
+            SDL_RenderCopy(PBState->renderer, yalBorder, NULL, &PBState->bgRect);
+        }
+        else if (buttonArr[DAWAWUE].isPointedAt)
+        {
+            SDL_RenderCopy(PBState->renderer, dawBorder, NULL, &PBState->bgRect);
+        }
         
         for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++)
         {
@@ -105,6 +123,9 @@ CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
         SDL_RenderPresent(PBState->renderer);
         SDL_Delay(1000 / 60);
 	}
+    SDL_DestroyTexture(shaBorder);
+    SDL_DestroyTexture(yalBorder);
+    SDL_DestroyTexture(dawBorder);
     SDL_SetCursor(PBState->arrowCursor);
     destroyChooseChar(buttonArr, PBState->bgTexture, PBState->bgMusic, maskArr);
     return charType;

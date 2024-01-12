@@ -52,4 +52,5 @@ void shoot(BulletManager* bulletManager, Entity* Shooter, SDL_Renderer* r) {
         spawnBullet(bulletManager, Shooter, r);
     }
     Shooter->entityWeapon.ammoInMag--;
+    Shooter->entityWeapon.totalAmmoCount--;
 }

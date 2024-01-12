@@ -6,7 +6,7 @@ void menu(GameState* PBState){
     int quitButtonSpeed = 1;
     PBState->run = MENU;
     
-    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/menu_bg.png");
+    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/menu/menu_bg.png");
     PBState->bgRect = createRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
 

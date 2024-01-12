@@ -1,6 +1,8 @@
 CC := gcc
-CFLAGS := -std=gnu17 -lm -l SDL2 -l SDL2_image -l SDL2_mixer
+CFLAGS := -std=gnu17 -Wall 
+LIBS := -lSDL2 -lSDL2_image -lSDL2_mixer -lm
+SRC := $(wildcard ./src/*.c)
 
-executable:
-	$(CC) $(CFLAGS) -o $@ ./src/*.c
+executable: $(SRC)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 

@@ -4,12 +4,12 @@
 #define WEAPON_H
 
 typedef struct {
-    int damage;
     int magSize;
     int ammoInMag;
     int reloadRoundTime;
     int reloadMagTime;
     int totalAmmoCount;
+    int maxAmmo;
     int type;
     int bulletsNum;
     Mix_Chunk* shotSound;

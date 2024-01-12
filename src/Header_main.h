@@ -8,7 +8,7 @@
 #include "Button.h"
 #include "Entity.h"
 #include "BulletManager.h"
-
+#include "Tilemap.h"
 typedef struct {
     int run;
     int volume;
@@ -24,7 +24,7 @@ typedef struct {
 void destroyMenu(Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, Mix_Music* bgMusic, Mix_Chunk* exitSound);
 void destroyIntro(SoundBar* Bar, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask* m);
 void destroyChooseChar(Button* buttonArr, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask** maskArr);
-void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity* Player);
+void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity* Player, Tilemap Map, SDL_Texture* ammoTex, SDL_Texture* ammoTexFired);
 void destroyWindow(GameState* PBState, SDL_Window* window);
 
 void levelIntro(GameState* PBState, SCENE level);
@@ -34,5 +34,6 @@ void level1(GameState* PBState);
 
 void handleButtonPointingMenu(SDL_Point mousePoint, Button* buttonArr, GameState* PBState);
 void handleButtonPointingChoose(SDL_Point mousePoint, Button* buttonArr, Mask** maskArr, GameState* PBState);
+
 
 #endif

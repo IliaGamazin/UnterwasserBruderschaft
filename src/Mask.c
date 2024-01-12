@@ -1,7 +1,6 @@
 #include "Mask.h"
 void animMask(SDL_Renderer* r, Mask* m) {
     static double incrementAngle = 1.2;
-    static double incrementSize = 1;
     if (m->isAnimated == true)
     {
         if (m->angle > 25.0 || m->angle < -25.0)
@@ -9,10 +8,16 @@ void animMask(SDL_Renderer* r, Mask* m) {
             incrementAngle *= -1;
         }
         m->angle += incrementAngle;
+        m->maskRect.w = 200;
+        m->maskRect.h = 200;
+        m->maskRect.y = 70;
         SDL_RenderCopyEx(r, m->maskTextureActive, NULL, &m->maskRect, m->angle, NULL, SDL_FLIP_NONE);
     }
     else {
         m->angle = 0;
+        m->maskRect.w = 170;
+        m->maskRect.h = 170;
+        m->maskRect.y = 100;
         SDL_RenderCopyEx(r, m->maskTextureIdle, NULL, &m->maskRect, m->angle, NULL, SDL_FLIP_NONE);
     }
 }
@@ -42,9 +47,9 @@ Mask* createMask(SDL_Renderer* r, CHARACTER_TYPE type, int x, int y, int w, int 
 }
 Mask** fillMaskArr(SDL_Renderer* r) {
     Mask** maskArr = (Mask**)malloc(3 * sizeof(Mask*));
-    maskArr[0] = createMask(r, SHAYLUSHAY, 125, 60, 170, 170);
-    maskArr[1] = createMask(r, YALTPILS, 555, 60, 170, 170);
-    maskArr[2] = createMask(r, DAWAWUE, 985, 60, 170, 170);
+    maskArr[SHAYLUSHAY] = createMask(r, SHAYLUSHAY, 292, 100, 170, 170);
+    maskArr[YALTPILS] = createMask(r, YALTPILS, 552, 100, 170, 170);
+    maskArr[DAWAWUE] = createMask(r, DAWAWUE, 818, 100, 170, 170);
     return maskArr;
 }
 void destroyMask(Mask* m) {

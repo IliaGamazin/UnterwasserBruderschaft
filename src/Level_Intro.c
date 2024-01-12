@@ -15,31 +15,28 @@ void levelIntro(GameState* PBState, SCENE level) {
     case LEVEL1:
         PBState->run = LEVEL1_INTRO;
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
-        SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
         break;
     case LEVEL2:
-        PBState->run = LEVEL1_INTRO;
+        PBState->run = LEVEL2_INTRO;
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl2_intro_bg.png");
-        SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
         break;
     case LEVEL3:
-        PBState->run = LEVEL1_INTRO;
+        PBState->run = LEVEL3_INTRO;
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl3_intro_bg.png");
-        SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
         break;
     case LEVEL_SECRET:
-        PBState->run = LEVEL1_INTRO;
+        PBState->run = LEVEL_SECRET_INTRO;
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
-        SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
         break;
     default:
         break;
     }
-    
+    SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
+
     Mask* textMask = createMask(PBState->renderer, SHAYLUSHAY, 10, 10, 170, 170);
     textMask->isAnimated = true;
     SDL_DestroyTexture(textMask->maskTextureActive);
@@ -48,9 +45,6 @@ void levelIntro(GameState* PBState, SCENE level) {
     SoundBar* Bar = createSoundBar(600, 20, PBState->volume * 3, 30, PBState->renderer);
     while (PBState->run == CURRENT_LEVEL_INTRO) {
         while (SDL_PollEvent(&PBState->event)) {
-            int mouseX, mouseY;
-            SDL_GetMouseState(&mouseX, &mouseY);
-            SDL_Point mousePoint = { mouseX, mouseY };
             if (PBState->event.type == SDL_QUIT) {
                 PBState->run = -1;
             }
