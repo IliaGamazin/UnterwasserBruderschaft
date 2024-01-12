@@ -33,6 +33,10 @@ double Vector2_magnitude(Vector2 vector) {
     return sqrt((vector.x * vector.x) + (vector.y * vector.y));
 }
 
+double Vector2_dot(Vector2 vector1, Vector2 vector2) {
+    return (vector1.x * vector2.x) + (vector1.y * vector2.y);
+}
+
 void Vector2_scale(Vector2 *vector, double scale_factor) {
     vector -> x *= scale_factor;
     vector -> y *= scale_factor;
@@ -45,5 +49,24 @@ void Vector2_normalize(Vector2 *vector) {
 void Vector2_set_magnitude(Vector2 *vector, double magnitude) {
     Vector2_normalize(vector);
     Vector2_scale(vector, magnitude);
+}
+
+void Vector2_rotate(Vector2 *vector, double radians) {
+    *vector = Vector2_new(
+        Vector2_dot(
+            Vector2_new(cos(radians), -sin(radians)),
+            *vector
+        ),
+        Vector2_dot(
+            Vector2_new(sin(radians), cos(radians)),
+            *vector
+        )
+    );
+}
+
+Vector2 Vector2_rotated(Vector2 vector, double radians) {
+    Vector2_rotate(&vector, radians);
+
+    return vector;
 }
 
