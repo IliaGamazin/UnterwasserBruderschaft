@@ -71,12 +71,6 @@ typedef enum{
     DAWAWUE
 }CHARACTER_TYPE;
 
-typedef enum {
-    RIFLE,
-    PISTOL,
-    SHOTGUN
-}WEAPON_TYPE;
-
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);
 
 #endif

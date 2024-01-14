@@ -1,21 +1,22 @@
 #pragma once
-#include "Bullet.h"
-#include "Entity.h"
 #ifndef BULLETMANAGER_H
 #define BULLETMANAGER_H
 
-typedef struct {
-    Bullet** bullets;
-    int capacity;
-    int count;
-}BulletManager;
+#include "./Bullet.h"
 
-BulletManager* createBulletManager(int capacity);
-void destroyBulletManager(BulletManager* bulletManager);
-void destroyCollidedBullet(BulletManager* bulletManager, int index);
-void showAllBullets(SDL_Renderer* r, BulletManager* bulletManager);
-void shoot(BulletManager* bulletManager, Entity* Shooter, SDL_Renderer* r);
-void spawnBullet(BulletManager* bulletManager, Entity* Shooter, SDL_Renderer* r);
-void updateBulletManager(BulletManager* bulletManager);
+typedef struct BulletManager BulletManager;
+struct BulletManager {
+    Bullet *bullets;
+    size_t capacity;
+    size_t count;
+};
+
+BulletManager *BulletManager_new(size_t capacity);
+void BulletManager_destroy(BulletManager *manager);
+void BulletManager_remove(BulletManager *manager, size_t index);
+void BulletManager_add(BulletManager *manager, Bullet bullet);
+void BulletManager_update(BulletManager *manager);
+void BulletManager_render(SDL_Renderer *renderer, BulletManager *manager);
 
 #endif
+

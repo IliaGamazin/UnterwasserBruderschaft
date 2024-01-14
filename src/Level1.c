@@ -17,7 +17,7 @@ void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity*
     SDL_DestroyTexture(ammoTexFired);
     Mix_FreeMusic(bgMusic);
     destroyMap(Map);
-    destroyBulletManager(bulletManager);
+    BulletManager_destroy(bulletManager);
     destroyEntity(Player);
 }
 /*void handleShooting(SDL_Renderer* r, SDL_Event e, BulletManager* bulletManager, Entity* Shooter) {
@@ -41,16 +41,16 @@ void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity*
 }*/
 void showHood(SDL_Renderer* r, Entity* Player, SDL_Texture* ammoTex, SDL_Texture* ammoTexFired){
     SDL_Rect ammoTypeRect = createRect(40, 0, 12, 33);
-    for (int i = 0; i < Player->entityWeapon.maxAmmo; i++)
+    for (int i = 0; i < Player->entityWeapon -> ammo_max; i++)
     {
-        if (i % Player->entityWeapon.magSize == 0)
+        if (i % 10 == 0)
         {
             ammoTypeRect.x = 40;
             ammoTypeRect.y += 35;
         }
         ammoTypeRect.x += 15;
 
-        if (i < Player->entityWeapon.totalAmmoCount)
+        if (i < Player->entityWeapon -> ammo)
         {
             SDL_RenderCopy(r, ammoTex, NULL, &ammoTypeRect);
         }
@@ -66,12 +66,12 @@ void level1(GameState* PBState) {
     {
         Entity* Player = createEntity(640, 460, 70, 50, PBState->renderer, chooseCharacter(PBState, LEVEL1));
         Tilemap Map = createMap(PBState->renderer);
-        BulletManager* bulletManager = createBulletManager(100);
+        BulletManager* bulletManager = BulletManager_new(100);
 
         SDL_Texture* ammoTex;
         SDL_Texture* ammoTexFired;
 
-        switch (Player->entityWeapon.type)
+        switch (Player->entityWeapon -> type)
         {
         case RIFLE:
             ammoTex = IMG_LoadTexture(PBState->renderer, "media/img/rifleAmmo.png");
@@ -104,16 +104,15 @@ void level1(GameState* PBState) {
                     PBState->run = -1;
                 }
                 else if (PBState->event.type == SDL_MOUSEBUTTONDOWN && PBState->event.button.button == SDL_BUTTON_LEFT) {
-                    if (Player->entityWeapon.ammoInMag > 0 && Player->reloadingTimer == 0)
-                    {
-                        shoot(bulletManager, Player, PBState->renderer);
-                        Player->reloadingTimer = Player->entityWeapon.reloadRoundTime;
-                    }
-                    if (Player->entityWeapon.ammoInMag == 0 && Player->entityWeapon.totalAmmoCount != 0)
-                    {
-                        Player->reloadingTimer = Player->entityWeapon.reloadMagTime;
-                        reload(Player);
-                    }
+                    Vector2 origin = Vector2_new(
+                        Player -> entityRect.x,
+                        Player -> entityRect.y
+                    );
+                    Vector2 direction = Vector2_from_points(
+                        origin,
+                        Vector2_new(mouseX, mouseY)
+                    );
+                    Weapon_shoot(Player -> entityWeapon, bulletManager, origin, direction);
                 }
                 if (PBState->event.type == SDL_KEYDOWN) {
                     switch (PBState->event.key.keysym.sym) {
@@ -196,9 +195,9 @@ void level1(GameState* PBState) {
             }
 
             SDL_RenderClear(PBState->renderer);
-            updateBulletManager(bulletManager);
+            BulletManager_update(bulletManager);
             showMap(Map, PBState->renderer);
-            showAllBullets(PBState->renderer, bulletManager);
+            BulletManager_render(PBState->renderer, bulletManager);
             showEntity(PBState->renderer, Player);
 
             showHood(PBState->renderer, Player, ammoTex, ammoTexFired);

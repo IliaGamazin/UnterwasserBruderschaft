@@ -1,18 +1,20 @@
 #pragma once
-#include "Libs.h"
 #ifndef BULLET_H
 #define BULLET_H
 
-typedef struct {
-    int velocity;
-    double angle;
-    SDL_Rect bulletRect;
-    SDL_Texture* bulletTex;
-}Bullet;
+#include "./Libs.h"
+#include "./Vector.h"
+#include "./Rgba.h"
 
-Bullet* createBullet(int x, int y, double angle, SDL_Renderer* r);
-void showBullet(SDL_Renderer* r, Bullet* bullet);
-void updateBullet(Bullet* bullet);
-void destroyBullet(Bullet* b);
+typedef struct Bullet Bullet;
+struct Bullet {
+    Vector2 position;
+    Vector2 direction;
+    Rgba color;
+};
+
+Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba color);
+void Bullet_update(Bullet *bullet);
+void Bullet_render(SDL_Renderer *renderer, Bullet bullet);
 
 #endif

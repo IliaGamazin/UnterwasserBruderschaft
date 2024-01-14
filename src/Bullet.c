@@ -1,21 +1,37 @@
-#include "Bullet.h"
-Bullet* createBullet(int x, int y, double angle, SDL_Renderer* r) {
-    double angleError = (rand() % (2 * BULLET_MISS_MODIFIER + 1) - BULLET_MISS_MODIFIER);
-    Bullet* Bul = (Bullet*)malloc(sizeof(Bullet));
-    Bul->bulletRect = createRect(x, y, BULLET_SIZE, BULLET_SIZE);
-    Bul->velocity = BULLET_SPEED + rand() % 11;
-    Bul->angle = angle + angleError;
-    Bul->bulletTex = IMG_LoadTexture(r, "media/img/bullet.png");
-    return Bul;
+#include "./Bullet.h"
+
+// Bullet
+
+Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba color) {
+    Vector2_set_magnitude(&direction, velocity);
+
+    return (Bullet) {
+        position,
+        direction,
+        color,
+    };
 }
-void updateBullet(Bullet* bullet) {
-    bullet->bulletRect.x += (int)(bullet->velocity * cos(bullet->angle * (M_PI / 180.0)));
-    bullet->bulletRect.y += (int)(bullet->velocity * sin(bullet->angle * (M_PI / 180.0)));
+
+void Bullet_update(Bullet *bullet) {
+    bullet -> position = Vector2_add(bullet -> position, bullet -> direction);
 }
-void showBullet(SDL_Renderer* r, Bullet* bullet) {
-    SDL_RenderCopyEx(r, bullet->bulletTex, NULL, &bullet->bulletRect, bullet->angle, NULL, SDL_FLIP_NONE);
+
+void Bullet_render(SDL_Renderer *renderer, Bullet bullet) {
+    Vector2 start = Vector2_sub(bullet.position, bullet.direction);
+
+    SDL_SetRenderDrawColor(
+        renderer,
+        bullet.color.r,
+        bullet.color.g,
+        bullet.color.b,
+        bullet.color.a
+    );
+    SDL_RenderDrawLine(
+        renderer,
+        start.x,
+        start.y,
+        bullet.position.x,
+        bullet.position.y
+    );
 }
-void destroyBullet(Bullet* bullet) {
-    SDL_DestroyTexture(bullet->bulletTex);
-    free(bullet);
-}
+

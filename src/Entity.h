@@ -10,7 +10,7 @@ typedef struct {
     double angle;
     SDL_Rect entityRect;
     SDL_Rect currentClip;
-    Weapon entityWeapon;
+    Weapon *entityWeapon;
     SDL_Texture* entityTex;
 }Entity;
 
