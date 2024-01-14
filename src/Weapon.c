@@ -4,12 +4,13 @@
 
 Weapon *Weapon_new(WEAPON_TYPE type) {
     Weapon *weapon = malloc(sizeof(Weapon));
+
+    weapon -> type = type;
     weapon -> last_shoot = 0;
     weapon -> no_ammo_sound = Mix_LoadWAV("media/sound/no_ammo.wav");
 
     switch (type) {
         case RIFLE:
-            weapon -> type = RIFLE;
             weapon -> ammo_max = 60;
             weapon -> ammo = weapon -> ammo_max;
             weapon -> bullets_num = 1;
@@ -17,7 +18,6 @@ Weapon *Weapon_new(WEAPON_TYPE type) {
             weapon -> shot_sound = Mix_LoadWAV("media/sound/rifleShot.wav");
             break;
         case SHOTGUN:
-            weapon -> type = RIFLE;
             weapon -> ammo_max = 18;
             weapon -> ammo = weapon -> ammo_max;
             weapon -> bullets_num = 4;
@@ -25,7 +25,6 @@ Weapon *Weapon_new(WEAPON_TYPE type) {
             weapon -> shot_sound = Mix_LoadWAV("media/sound/shotgunShot.wav");
             break;
         case PISTOL:
-            weapon -> type = RIFLE;
             weapon -> ammo_max = 24;
             weapon -> ammo = weapon -> ammo_max;
             weapon -> bullets_num = 1;
