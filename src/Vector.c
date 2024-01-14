@@ -70,3 +70,13 @@ Vector2 Vector2_rotated(Vector2 vector, double radians) {
     return vector;
 }
 
+// Trigonometry
+
+double radians_to_degrees(double radians) {
+    return radians * 180 / M_PI;
+}
+
+double degrees_to_radians(double degrees) {
+    return degrees * M_PI / 180;
+}
+

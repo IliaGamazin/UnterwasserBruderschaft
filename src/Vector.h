@@ -21,5 +21,10 @@ void Vector2_set_magnitude(Vector2 *vector, double magnitude);
 void Vector2_rotate(Vector2 *vector, double radians);
 Vector2 Vector2_rotated(Vector2 vector, double radians);
 
+// Trigonometry
+
+double radians_to_degrees(double radians);
+double degrees_to_radians(double degrees);
+
 #endif
 
