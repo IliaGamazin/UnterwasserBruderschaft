@@ -39,7 +39,7 @@ void menu(GameState* PBState){
                             break;
                         case FIRST_LEVEL_BUTTON:
                             printf("\nFirst level");
-                            PBState->run = LEVEL1;
+                            PBState->run = LEVEL1_INTRO;
                             break;
                         case SECOND_LEVEL_BUTTON:
                             printf("\nSecond level");

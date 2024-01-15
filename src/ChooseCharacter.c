@@ -36,7 +36,6 @@ void handleButtonPointingChoose(SDL_Point mousePoint, Button* buttonArr, Mask** 
 }
 
 CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
-	PBState->run = CURRENT_LEVEL_CHOOSE;
     PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroBg.png");
     PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
 

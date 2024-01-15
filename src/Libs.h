@@ -26,7 +26,6 @@
 #define BULLET_SPEED  20
 #define BULLET_MISS_MODIFIER 10
 #define MAX_VOLUME 120
-#define CURRENT_LEVEL_INTRO level-2 
 #define CURRENT_LEVEL_CHOOSE level-1
 
 #define TILE_SIZE 40

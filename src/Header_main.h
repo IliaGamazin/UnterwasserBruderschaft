@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "BulletManager.h"
 #include "Tilemap.h"
+#include "ExitCar.h"
 typedef struct {
     int run;
     int volume;
@@ -30,7 +31,7 @@ void destroyWindow(GameState* PBState, SDL_Window* window);
 void levelIntro(GameState* PBState, SCENE level);
 CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level);
 void menu(GameState* PBState);
-void level1(GameState* PBState);
+void level1(GameState* PBState, CHARACTER_TYPE CharType);
 
 void handleButtonPointingMenu(SDL_Point mousePoint, Button* buttonArr, GameState* PBState);
 void handleButtonPointingChoose(SDL_Point mousePoint, Button* buttonArr, Mask** maskArr, GameState* PBState);

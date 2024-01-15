@@ -1,7 +1,6 @@
 #include "Header_main.h"
 SDL_Window* window;
 GameState* PBState;
-/*int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){   ��� ������� �� �����*/
 int main(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
@@ -17,6 +16,8 @@ int main(){
     PBState->bgMusic = NULL;
     PBState->volume = MAX_VOLUME / 2;
     
+    CHARACTER_TYPE CurrentChar = -1;
+
     while (PBState->run !=-1) {
         switch (PBState->run)
         {
@@ -30,8 +31,18 @@ int main(){
                 }  
             }
             break;
+        
+        case LEVEL1_INTRO:
+            levelIntro(PBState, LEVEL1_INTRO);
+            break;
+        case LEVEL1_CHOOSE:
+            CurrentChar = chooseCharacter(PBState, LEVEL1);
+            break;
         case LEVEL1:
-            level1(PBState);
+            level1(PBState, CurrentChar);
+            break;
+        case LEVEL2_INTRO:
+            levelIntro(PBState, LEVEL2_INTRO);
             break;
         case LEVEL2:
             while (SDL_PollEvent(&PBState->event)) {

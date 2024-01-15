@@ -18,5 +18,4 @@ Entity* createEntity(int x, int y, int entityWidth, int entityHeight, SDL_Render
 void updateAnim(Entity* entity);
 void showEntity(SDL_Renderer* r, Entity* entity);
 void destroyEntity(Entity* ent);
-void reload(Entity* Shooter);
 #endif
