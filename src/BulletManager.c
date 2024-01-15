@@ -18,11 +18,9 @@ void BulletManager_destroy(BulletManager *manager) {
 }
 
 void BulletManager_remove(BulletManager *manager, size_t index) {
-    if (index < manager -> count - 1) {
-        manager -> bullets[index] = manager -> bullets[manager -> count - 1];
+    if (index < --manager -> count) {
+        manager -> bullets[index] = manager -> bullets[manager -> count];
     }
-
-    manager -> count--;
 }
 
 void BulletManager_add(BulletManager *manager, Bullet bullet) {
@@ -31,13 +29,13 @@ void BulletManager_add(BulletManager *manager, Bullet bullet) {
 
 void BulletManager_update(BulletManager *manager) {
     for (size_t i = 0; i < manager -> count; i++) {
-        Bullet_update(&manager -> bullets[i]);
-
         if (manager -> bullets[i].position.x < 0 || manager -> bullets[i].position.x >= 1280 ||
             manager -> bullets[i].position.y < 0 || manager -> bullets[i].position.y >= 720) {
-            BulletManager_remove(manager, i);
-            i--;
+            BulletManager_remove(manager, i--);
+            continue;
         }
+
+        Bullet_update(&manager -> bullets[i]);
     }
 }
 
