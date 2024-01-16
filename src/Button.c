@@ -21,7 +21,7 @@ Button* fillButtonArrMenu(int x, int y, int buttonWidth, int buttonHeight, SDL_R
         buttonArr[i] = createButton(x, incY, buttonWidth, buttonHeight, IMG_LoadTexture(r, pathIdle), IMG_LoadTexture(r, pathHover), Mix_LoadWAV("media/sound/pointSound.wav"));
         incY += BUTTON_GAP;
     }
-    buttonArr[BUTTON_COUNT_MENU - 1] = createButton(x, incY, buttonWidth, buttonHeight, IMG_LoadTexture(r, "media/img/chevy_idle.png"), IMG_LoadTexture(r, "media/img/chevy_start.png"), Mix_LoadWAV("media/sound/carIgnition.wav"));
+    buttonArr[BUTTON_COUNT_MENU - 1] = createButton(x, incY, buttonWidth, buttonHeight, IMG_LoadTexture(r, "media/img/menu/chevy_idle.png"), IMG_LoadTexture(r, "media/img/menu/chevy_start.png"), Mix_LoadWAV("media/sound/carIgnition.wav"));
     return buttonArr;
 }
 Button* fillButtonArrChoose(SDL_Renderer* r) {

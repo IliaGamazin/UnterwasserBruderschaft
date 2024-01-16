@@ -1,48 +1,66 @@
 #include "Tilemap.h"
 
-Tilemap createMap(SDL_Renderer* r){
+// Tilemap
+
+Tilemap Map_new(SDL_Renderer* r){
     Tilemap Map;
-    Map.tileArr = (Tile*)malloc(TILES_COUNT* sizeof(Tile));
-    Map.texArr = (SDL_Texture**)malloc(TILES_TEXTURE_COUNT * sizeof(SDL_Texture*));
-    Map.texArr[WALL_HORIZONTAL] = IMG_LoadTexture(r, "media/img/tiles/wall_horizontal.png");
-    Map.texArr[WALL_VERTICAL] = IMG_LoadTexture(r, "media/img/tiles/wall_vertical.png");
-    Map.texArr[FLOOR_WOOD] = IMG_LoadTexture(r, "media/img/tiles/floor_wood.png");
-    Map.texArr[FLOOR_MARBLE] = IMG_LoadTexture(r, "media/img/tiles/floor_wood.png");
-    int tileX = 0;
-    int tileY = 0;
-    for (int i = 0; i < TILES_COUNT; i++)
+    Map.tile_arr = (Tile**)malloc(48 * sizeof(Tile*));
+    for (int i = 0; i < 48; i++) {
+        Map.tile_arr[i] = (Tile*)malloc(27 * sizeof(Tile));
+    }
+    Map.tex_arr = (SDL_Texture**)malloc(TILES_TEXTURE_COUNT * sizeof(SDL_Texture*));
+    Map.tex_arr[WALL_HORIZONTAL] = IMG_LoadTexture(r, "media/img/tiles/wall_horizontal.png");
+    Map.tex_arr[WALL_VERTICAL] = IMG_LoadTexture(r, "media/img/tiles/wall_vertical.png");
+    Map.tex_arr[FLOOR_WOOD] = IMG_LoadTexture(r, "media/img/tiles/floor_wood.png");
+    Map.tex_arr[FLOOR_MARBLE] = IMG_LoadTexture(r, "media/img/tiles/floor_marble.png");
+    for (int i = 0; i < 48; i++)
     {
-        Map.tileArr[i].tileRect = createRect(tileX, tileY, TILE_SIZE, TILE_SIZE);
-        if (tileY == 0 || tileY == WINDOW_HEIGHT-TILE_SIZE)
-        {
-            Map.tileArr[i].tileType = WALL_HORIZONTAL;
-        }
-        else if(tileX == 0 || tileX == WINDOW_WIDTH-TILE_SIZE){
-            Map.tileArr[i].tileType = WALL_VERTICAL;
-        }
-        else{
-            Map.tileArr[i].tileType = FLOOR_WOOD;
-        }
-        tileX += TILE_SIZE;
-        if (tileX == WINDOW_WIDTH)
-        {
-            tileX = 0;
-            tileY += TILE_SIZE;
-        } 
+       for (int j = 0; j < 27; j++)
+       {
+            Map.tile_arr[i][j].tile_rect = createRect(i*40, j*40, 40,40);
+            if (i == 0 || i == 47)
+            {
+                Map.tile_arr[i][j].tile_type = WALL_VERTICAL;
+            }
+            else if (i == 4 && (j >= 4 && j< 18))
+            {
+                Map.tile_arr[i][j].tile_type = WALL_VERTICAL;
+            }
+
+            else if (i == 15 && (j >= 4 && j< 12))
+            {
+                Map.tile_arr[i][j].tile_type = WALL_VERTICAL;
+            }
+            
+            else if(j == 3 && (i >= 4 && i<=15)){
+                Map.tile_arr[i][j].tile_type = WALL_HORIZONTAL;
+            }
+            else{
+                Map.tile_arr[i][j].tile_type = FLOOR_WOOD;
+            }
+       }
     }
     return Map;
 }
-void showMap(Tilemap t, SDL_Renderer* r){
-    for (int i = 0; i < TILES_COUNT; i++)
+void Map_render(Tilemap t, SDL_Renderer* r){
+    for (int i = 0; i < 48; i++)
     {
-        SDL_RenderCopy(r, t.texArr[t.tileArr[i].tileType], NULL, &t.tileArr[i].tileRect);
+        for (int j = 0; j < 27; j++)
+        {
+            SDL_RenderCopy(r, t.tex_arr[t.tile_arr[i][j].tile_type], NULL, &t.tile_arr[i][j].tile_rect);
+        }
     }
 }
-void destroyMap(Tilemap t){
+void Map_destroy(Tilemap t){
     for (int i = 0; i < TILES_TEXTURE_COUNT; i++)
     {
-        SDL_DestroyTexture(t.texArr[i]);
+        SDL_DestroyTexture(t.tex_arr[i]);
     } 
-    free(t.tileArr);
-    free(t.texArr);
+    for (int i = 0; i < 48; i++)
+    {
+        free(t.tile_arr[i]);
+    }
+    
+    free(t.tile_arr);
+    free(t.tex_arr);
 }

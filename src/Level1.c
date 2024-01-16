@@ -16,7 +16,7 @@ void destroyFirstLevel(Mix_Music* bgMusic, BulletManager* bulletManager, Entity*
     SDL_DestroyTexture(ammoTex);
     SDL_DestroyTexture(ammoTexFired);
     Mix_FreeMusic(bgMusic);
-    destroyMap(Map);
+    Map_destroy(Map);
     BulletManager_destroy(bulletManager);
     destroyEntity(Player);
 }
@@ -62,7 +62,7 @@ void showHood(SDL_Renderer* r, Entity* Player, SDL_Texture* ammoTex, SDL_Texture
 }
 void level1(GameState* PBState, CHARACTER_TYPE CharType) {
     Entity* Player = createEntity(640, 460, 70, 50, PBState->renderer, CharType);
-    Tilemap Map = createMap(PBState->renderer);
+    Tilemap Map = Map_new(PBState->renderer);
     BulletManager* bulletManager = BulletManager_new(100);
     ExitCar* Exit = ExitCar_new(PBState->renderer);
 
@@ -205,7 +205,7 @@ void level1(GameState* PBState, CHARACTER_TYPE CharType) {
         }
         
         BulletManager_update(bulletManager);
-        showMap(Map, PBState->renderer);
+        Map_render(Map, PBState->renderer);
         BulletManager_render(PBState->renderer, bulletManager);
         showEntity(PBState->renderer, Player);
         ExitCar_render(PBState->renderer, Exit);
