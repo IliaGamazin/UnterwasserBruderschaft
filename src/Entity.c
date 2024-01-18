@@ -1,57 +1,125 @@
-#include "Entity.h"
-Entity* createEntity(int x, int y, int entityWidth, int entityHeight, SDL_Renderer* r, CHARACTER_TYPE c) {
-    Entity* Ent = malloc(sizeof(Entity));
-    WEAPON_TYPE w;
-    switch (c)
-    {
-    case SHAYLUSHAY:
-        w = RIFLE;
-        Ent->entityTex = IMG_LoadTexture(r, "media/img/shailushit.png");
-        break;
-    case DAWAWUE:
-        w = SHOTGUN;
-        Ent->entityTex = IMG_LoadTexture(r, "media/img/shailushit.png");
-        break;
-    case YALTPILS:
-        w = PISTOL;
-        Ent->entityTex = IMG_LoadTexture(r, "media/img/shailushit.png");
-        break;
-    default:
-        break;
+#include <math.h>
+
+#include "./Entity.h"
+
+// Entity
+
+void Entity_destroy(Entity *entity) {
+    Weapon_destroy(entity -> weapon);
+    SDL_DestroyTexture(entity -> texture);
+    free(entity);
+}
+
+void Entity_render(SDL_Renderer *renderer, Entity *entity) {
+    SDL_Rect src_rect = (SDL_Rect) {
+        (entity -> current_frame * entity -> rect.w) + entity -> current_frame,
+        0,
+        entity -> rect.w,
+        entity -> rect.h,
+    };
+
+    double angle = (entity -> direction.x < 0 ? 180 : 0) + radians_to_degrees(atan(entity -> direction.y / entity -> direction.x));
+
+    SDL_RenderCopyEx(
+        renderer,
+        entity -> texture,
+        &src_rect,
+        &entity -> rect,
+        angle,
+        NULL,
+        SDL_FLIP_NONE
+    );
+}
+
+// Entity player
+
+Entity *Player_new(
+    SDL_Renderer *renderer,
+    CHARACTER_TYPE type,
+    SDL_Rect rect,
+    Vector2 direction,
+    double speed,
+    uint32_t animation_speed
+) {
+    Entity *entity = malloc(sizeof(Entity));
+
+    entity -> rect = rect;
+    entity -> direction = direction;
+    entity -> speed = speed;
+    entity -> last_animated = 0;
+    entity -> animation_speed = animation_speed;
+    entity -> current_frame = 0;
+
+    switch (type) {
+        case SHAYLUSHAY:
+            entity -> texture = IMG_LoadTexture(renderer, "./media/img/shaylushay.png");
+            entity -> weapon = Weapon_new(RIFLE);
+            break;
+        case YALTPILS:
+            entity -> texture = IMG_LoadTexture(renderer, "./media/img/yaltpils.png");
+            entity -> weapon = Weapon_new(PISTOL);
+            break;
+        case DAWAWUE:
+            entity -> texture = IMG_LoadTexture(renderer, "./media/img/dawawue.png");
+            entity -> weapon = Weapon_new(SHOTGUN);
+            break;
     }
 
-    Ent->reloadingTimer = 0;
-    Ent->entityWeapon = Weapon_new(w);
-    Ent->entityRect = createRect(x, y, entityWidth, entityHeight);
-    Ent->currentClip = createRect(Ent->entityWeapon -> type * 85, Ent->currentClipFrame * 66, entityWidth, entityHeight);
-    Ent->angle = 0.0;
-    Ent->speed = 4;
-    return Ent;
+    return entity;
 }
 
-void destroyEntity(Entity* ent) {
-    SDL_DestroyTexture(ent->entityTex);
-    Weapon_destroy(ent -> entityWeapon);
-    free(ent);
-}
+void Player_update(Entity *entity) {
+    Vector2 direction = Vector2_new(0, 0);
 
-void updateAnim(Entity* entity){
-    static Uint32 lastUpdateTime = 0;
-    Uint32 currentTime = SDL_GetTicks();
-    if (currentTime-lastUpdateTime>=180)
-    {
-        entity->currentClip.x = entity->entityWeapon -> type * 85;
-        entity->currentClip.y = entity->currentClipFrame * 66;
-        entity->currentClipFrame++;
-        if (entity->currentClipFrame > 2)
-        {
-            entity->currentClipFrame  = 0;
-        }
-        lastUpdateTime = currentTime;
+    const uint8_t *keys = SDL_GetKeyboardState(NULL);
+
+    if (keys[SDL_SCANCODE_W]) {
+        direction = Vector2_add(
+            direction,
+            Vector2_new(0, -1)
+        );
     }
+
+    if (keys[SDL_SCANCODE_S]) {
+        direction = Vector2_add(
+            direction,
+            Vector2_new(0, 1)
+        );
+    }
+
+    if (keys[SDL_SCANCODE_A]) {
+        direction = Vector2_add(
+            direction,
+            Vector2_new(-1, 0)
+        );
+    }
+
+    if (keys[SDL_SCANCODE_D]) {
+        direction = Vector2_add(
+            direction,
+            Vector2_new(1, 0)
+        );
+    }
+
+    Vector2_set_magnitude(&direction, entity -> speed);
+
+    entity -> rect.x += direction.x;
+    entity -> rect.y += direction.y;
+
+    if (Vector2_is_null(direction)) {
+        return;
+    }
+
+    // Handle animation
+
+    if (SDL_GetTicks() > entity -> last_animated + entity -> animation_speed) {
+        entity -> current_frame = (entity -> current_frame + 1) % 3;
+        entity -> last_animated = SDL_GetTicks();
+    }
+
+    // Handle collision
 }
 
-void showEntity(SDL_Renderer* r, Entity* entity) {
-    SDL_RenderCopyEx(r, entity->entityTex, &entity->currentClip, &entity->entityRect, entity->angle, NULL, SDL_FLIP_NONE);
-}
+// Entity enemy
+
 

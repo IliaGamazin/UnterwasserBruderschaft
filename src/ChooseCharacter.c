@@ -73,30 +73,20 @@ CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
             }
             else if (PBState->event.type == SDL_KEYDOWN) {
                 switch (PBState->event.key.keysym.sym) {
-                case SDLK_EQUALS:
-                    printf("\n Volume: %d", PBState->volume);
-                    if (PBState->volume < MAX_VOLUME) {
-                        PBState->volume += MAX_VOLUME / 10;
-                    }
-                    else {
-                        PBState->volume = MAX_VOLUME;
-                    }
-                    break;
-                case SDLK_MINUS:
-                    printf("\n Volume: %d", PBState->volume);
-                    if (PBState->volume > 0) {
-                        PBState->volume -= MAX_VOLUME / 10;
-                    }
-                    else {
-                        PBState->volume = 0;
-                    }
-                    break;
-                case SDLK_ESCAPE:
-                    PBState->run = MENU;
-                    break;
+                    case SDLK_ESCAPE:
+                        PBState -> run = MENU;
+                        break;
+                    case SDLK_EQUALS:
+                    case SDLK_KP_PLUS:
+                        Mix_MasterVolume(Mix_MasterVolume(-1) + (MIX_MAX_VOLUME / 8));
+                        Mix_VolumeMusic(Mix_VolumeMusic(-1) + (MIX_MAX_VOLUME / 8));
+                        break;
+                    case SDLK_MINUS:
+                    case SDLK_KP_MINUS:
+                        Mix_MasterVolume(Mix_MasterVolume(-1) - (MIX_MAX_VOLUME / 8));
+                        Mix_VolumeMusic(Mix_VolumeMusic(-1) - (MIX_MAX_VOLUME / 8));
+                        break;
                 }
-                Mix_Volume(-1, PBState->volume);
-                Mix_VolumeMusic(PBState->volume);
             }
 		}
         SDL_RenderClear(PBState->renderer);

@@ -28,7 +28,6 @@
 #define BULLET_SIZE 15
 #define BULLET_SPEED  20
 #define BULLET_MISS_MODIFIER 10
-#define MAX_VOLUME 120
 #define CURRENT_LEVEL_CHOOSE level-1
 
 #define TILE_SIZE 40
@@ -66,12 +65,6 @@ enum BUTTON_TYPE_MENU {
     THIRD_LEVEL_BUTTON,
     EXIT_BUTTON
 };
-
-typedef enum{
-    SHAYLUSHAY,
-    YALTPILS,
-    DAWAWUE
-}CHARACTER_TYPE;
 
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);
 

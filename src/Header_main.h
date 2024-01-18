@@ -12,7 +12,6 @@
 #include "ExitCar.h"
 typedef struct {
     int run;
-    int volume;
     SDL_Renderer* renderer;
     SDL_Event event;
     SDL_Cursor* arrowCursor;

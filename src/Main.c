@@ -14,7 +14,6 @@ int main(){
     PBState->handCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
     PBState->arrowCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
     PBState->bgMusic = NULL;
-    PBState->volume = MAX_VOLUME / 2;
     
     CHARACTER_TYPE CurrentChar = -1;
 

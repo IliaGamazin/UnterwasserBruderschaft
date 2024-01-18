@@ -37,18 +37,36 @@ double Vector2_dot(Vector2 vector1, Vector2 vector2) {
     return (vector1.x * vector2.x) + (vector1.y * vector2.y);
 }
 
+bool Vector2_is_null(Vector2 vector) {
+    return !vector.x && !vector.y;
+}
+
 void Vector2_scale(Vector2 *vector, double scale_factor) {
     vector -> x *= scale_factor;
     vector -> y *= scale_factor;
 }
 
 void Vector2_normalize(Vector2 *vector) {
-    Vector2_scale(vector, 1 / Vector2_magnitude(*vector));
+    if (!Vector2_is_null(*vector)) {
+        Vector2_scale(vector, 1 / Vector2_magnitude(*vector));
+    }
+}
+
+Vector2 Vector2_normalized(Vector2 vector) {
+    Vector2_normalize(&vector);
+
+    return vector;
 }
 
 void Vector2_set_magnitude(Vector2 *vector, double magnitude) {
     Vector2_normalize(vector);
     Vector2_scale(vector, magnitude);
+}
+
+Vector2 Vector2_with_magnitude(Vector2 vector, double magnitude) {
+    Vector2_set_magnitude(&vector, magnitude);
+
+    return vector;
 }
 
 void Vector2_rotate(Vector2 *vector, double radians) {
