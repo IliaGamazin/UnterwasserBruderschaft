@@ -9,34 +9,29 @@ Tilemap Map_new(SDL_Renderer* r){
         Map.tile_arr[i] = (Tile*)malloc(27 * sizeof(Tile));
     }
     Map.tex_arr = (SDL_Texture**)malloc(TILES_TEXTURE_COUNT * sizeof(SDL_Texture*));
-    Map.tex_arr[WALL_HORIZONTAL] = IMG_LoadTexture(r, "media/img/tiles/wall_horizontal.png");
-    Map.tex_arr[WALL_VERTICAL] = IMG_LoadTexture(r, "media/img/tiles/wall_vertical.png");
-    Map.tex_arr[FLOOR_WOOD] = IMG_LoadTexture(r, "media/img/tiles/floor_wood.png");
-    Map.tex_arr[FLOOR_MARBLE] = IMG_LoadTexture(r, "media/img/tiles/floor_marble.png");
+    Map.tex_arr[WALL] = IMG_LoadTexture(r, "media/img/tiles/wall_horizontal.png");
+    Map.tex_arr[OBSTACLE] = IMG_LoadTexture(r, "media/img/tiles/floor_marble.png");
+    Map.tex_arr[FLOOR] = IMG_LoadTexture(r, "media/img/tiles/floor_wood.png");
     for (int i = 0; i < 48; i++)
     {
        for (int j = 0; j < 27; j++)
        {
             Map.tile_arr[i][j].tile_rect = createRect(i*40, j*40, 40,40);
-            if (i == 0 || i == 47)
+            if (((i == 0 || i == 47) && j < 48)||(i == 22 && (j >= 1 && j <=6)))
             {
-                Map.tile_arr[i][j].tile_type = WALL_VERTICAL;
+                Map.tile_arr[i][j].tile_type = WALL;
             }
-            else if (i == 4 && (j >= 4 && j< 18))
-            {
-                Map.tile_arr[i][j].tile_type = WALL_VERTICAL;
-            }
-
             else if (i == 15 && (j >= 4 && j< 12))
             {
-                Map.tile_arr[i][j].tile_type = WALL_VERTICAL;
+                Map.tile_arr[i][j].tile_type = WALL;
             }
             
-            else if(j == 3 && (i >= 4 && i<=15)){
-                Map.tile_arr[i][j].tile_type = WALL_HORIZONTAL;
+            else if((j == 3 && (i >= 4 && i <= 21))||(j == 0 &&(i >= 22 && i <= 34)) 
+            | (j == 7 &&(( i >= 16 && i <= 18) || (i >= 21 && i <=26)))){
+                Map.tile_arr[i][j].tile_type = WALL;
             }
             else{
-                Map.tile_arr[i][j].tile_type = FLOOR_WOOD;
+                Map.tile_arr[i][j].tile_type = FLOOR;
             }
        }
     }

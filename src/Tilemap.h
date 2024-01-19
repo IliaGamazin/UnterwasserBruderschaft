@@ -1,5 +1,9 @@
 #include "Libs.h"
-
+enum TILE_TYPE{
+    WALL,
+    OBSTACLE,
+    FLOOR
+};
 // Tilemap
 
 typedef struct{

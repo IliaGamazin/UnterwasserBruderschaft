@@ -34,7 +34,7 @@ void menu(GameState* PBState){
                         switch (i)
                         {
                         case START_BUTTON:
-                            PBState->run = INTRO;
+                            PBState->run = INTRO_1;
                             printf("\nStart button");
                             break;
                         case FIRST_LEVEL_BUTTON:

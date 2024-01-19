@@ -1,38 +1,52 @@
 #include "Header_main.h"
 
-void destroyIntro(SoundBar* Bar, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask* m) {
+void Intro_Destroy(SoundBar* Bar, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask* m) {
     destroyMask(m);
     destroyBar(Bar);
     Mix_FreeMusic(bgMusic);
     SDL_DestroyTexture(bgTexture);
 }
 
-void levelIntro(GameState* PBState, SCENE introNum) {
+void Level_Intro(GameState* PBState, SCENE introNum) {
     PBState->bgRect = createRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    Mask* textMask = NULL;
+
     switch (introNum)
     {
+    case INTRO_1:
+        PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
+        PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+        textMask = createMask(PBState->renderer, YALTPILS, 10, 10, 170, 170);
+        break;
+    case INTRO_2:
+        PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
+        PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+        textMask = createMask(PBState->renderer, SHAYLUSHAY, 10, 10, 170, 170);
+        break;
     case LEVEL1_INTRO:
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+        textMask = createMask(PBState->renderer, DAWAWUE, 10, 10, 170, 170);
         break;
-    case LEVEL2:
+    case LEVEL2_INTRO:
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl2_intro_bg.png");
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+        textMask = createMask(PBState->renderer, DAWAWUE, 10, 10, 170, 170);
         break;
-    case LEVEL3:
+    case LEVEL3_INTRO:
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl3_intro_bg.png");
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+        textMask = createMask(PBState->renderer, DAWAWUE, 10, 10, 170, 170);
         break;
-    case LEVEL_SECRET:
+    case LEVEL_SECRET_INTRO:
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+        textMask = createMask(PBState->renderer, DAWAWUE, 10, 10, 170, 170);
         break;
     default:
         break;
     }
     SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
-
-    Mask* textMask = createMask(PBState->renderer, SHAYLUSHAY, 10, 10, 170, 170);
     textMask->isAnimated = true;
     SDL_DestroyTexture(textMask->maskTextureActive);
     textMask->maskTextureActive = textMask->maskTextureIdle;
@@ -75,5 +89,5 @@ void levelIntro(GameState* PBState, SCENE introNum) {
         SDL_Delay(1000 / 60);
     }
     SDL_RenderClear(PBState->renderer);
-    destroyIntro(Bar,PBState->bgTexture, PBState->bgMusic, textMask);
+    Intro_Destroy(Bar,PBState->bgTexture, PBState->bgMusic, textMask);
 }

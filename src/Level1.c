@@ -1,10 +1,11 @@
 #include "./Header_main.h"
 
-void Level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture) {
+void Level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
     SDL_DestroyTexture(ammo_texture);
     SDL_DestroyTexture(ammo_fired_texture);
     Mix_FreeMusic(bgMusic);
     Map_destroy(map);
+    AmmoBox_destroy(box);
     BulletManager_destroy(bullet_manager);
     Entity_destroy(player);
 }
@@ -47,6 +48,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         7,
         500
     );
+    AmmoBox box = AmmoBox_new(PBState->renderer, 800, 160);
     BulletManager *bullet_manager = BulletManager_new(100);
     ExitCar *exit = ExitCar_new(PBState -> renderer);
     PBState -> bgMusic = Mix_LoadMUS("./media/sound/nightcall.mp3");
@@ -151,6 +153,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         }
         
         Map_render(map, PBState -> renderer);
+        AmmoBox_render(PBState->renderer, box);
         BulletManager_render(PBState -> renderer, bullet_manager);
         Entity_render(PBState -> renderer, player);
         ExitCar_render(PBState -> renderer, exit);
@@ -160,6 +163,6 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         SDL_Delay(1000 / 60);
     }
 
-    Level1_destroy(PBState -> bgMusic, bullet_manager, player, map, ammo_texture, ammo_fired_texture);
+    Level1_destroy(PBState -> bgMusic, bullet_manager, player, map, ammo_texture, ammo_fired_texture, box);
 }
 

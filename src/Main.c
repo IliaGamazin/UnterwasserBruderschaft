@@ -23,25 +23,23 @@ int main(){
         case MENU:
             menu(PBState);
             break;
-        case INTRO:
-            while (SDL_PollEvent(&PBState->event)) {
-                if (PBState->event.type == SDL_QUIT) {
-                    PBState->run = -1;
-                }  
-            }
+        case INTRO_1:
+            Level_Intro(PBState, INTRO_1);
             break;
-        
+        case INTRO_2:
+            Level_Intro(PBState, INTRO_2);
+            break;
         case LEVEL1_INTRO:
-            levelIntro(PBState, LEVEL1_INTRO);
+            Level_Intro(PBState, LEVEL1_INTRO);
             break;
         case LEVEL1_CHOOSE:
-            CurrentChar = chooseCharacter(PBState, LEVEL1);
+            CurrentChar = ChooseCharacter(PBState, LEVEL1);
             break;
         case LEVEL1:
             level1(PBState, CurrentChar);
             break;
         case LEVEL2_INTRO:
-            levelIntro(PBState, LEVEL2_INTRO);
+            Level_Intro(PBState, LEVEL2_INTRO);
             break;
         case LEVEL2:
             while (SDL_PollEvent(&PBState->event)) {

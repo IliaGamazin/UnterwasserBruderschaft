@@ -1,6 +1,6 @@
 #include "Header_main.h"
 
-void destroyChooseChar(Button* buttonArr, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask** maskArr) {
+void ChooseCharacter_destroy(Button* buttonArr, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask** maskArr) {
     for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++)
     {
         destroyButton(buttonArr[i]);
@@ -35,7 +35,7 @@ void handleButtonPointingChoose(SDL_Point mousePoint, Button* buttonArr, Mask** 
     
 }
 
-CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
+CHARACTER_TYPE ChooseCharacter(GameState* PBState, SCENE level) {
     PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroBg.png");
     PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
 
@@ -116,6 +116,6 @@ CHARACTER_TYPE chooseCharacter(GameState* PBState, SCENE level) {
     SDL_DestroyTexture(yalBorder);
     SDL_DestroyTexture(dawBorder);
     SDL_SetCursor(PBState->arrowCursor);
-    destroyChooseChar(buttonArr, PBState->bgTexture, PBState->bgMusic, maskArr);
+    ChooseCharacter_destroy(buttonArr, PBState->bgTexture, PBState->bgMusic, maskArr);
     return charType;
 }
