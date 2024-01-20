@@ -31,8 +31,7 @@ void handleButtonPointingChoose(SDL_Point mousePoint, Button* buttonArr, Mask** 
             buttonArr[i].isPointedAt = false;
             buttonArr[i].isPlayingSound = false;
         }
-    }   
-    
+    }    
 }
 
 CHARACTER_TYPE ChooseCharacter(GameState* PBState, SCENE level) {

@@ -11,7 +11,9 @@ typedef struct{
     int tile_type;
 }Tile;
 
-typedef struct{
+typedef struct{ 
+    size_t map_width; 
+    size_t map_height; 
     Tile **tile_arr;
     SDL_Texture **tex_arr;
     SDL_Texture *bg_texture;

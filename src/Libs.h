@@ -31,8 +31,6 @@
 #define CURRENT_LEVEL_CHOOSE level-1
 
 #define TILE_SIZE 40
-#define TILES_COUNT ((LEVEL_WIDTH*LEVEL_HEIGHT)/(TILE_SIZE*TILE_SIZE))
-#define TILES_TEXTURE_COUNT 4
 
 typedef enum {
     MENU,

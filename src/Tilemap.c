@@ -4,20 +4,22 @@
 
 Tilemap Map_new(SDL_Renderer *r){
     Tilemap Map;
-    Map.bg_rect = createRect(0, 0, 1920, 1080);
+    Map.map_width = 48;
+    Map.map_height = 27;
+    Map.bg_rect = createRect(0, 0, LEVEL_WIDTH, LEVEL_HEIGHT);
     Map.tile_arr = (Tile**)malloc(48 * sizeof(Tile*));
     for (int i = 0; i < 48; i++) {
         Map.tile_arr[i] = (Tile*)malloc(27 * sizeof(Tile));
     }
 
     Map.bg_texture = IMG_LoadTexture(r, "media/img/tiles/bg.png");
-    Map.tex_arr = (SDL_Texture**)malloc(TILES_TEXTURE_COUNT * sizeof(SDL_Texture*));
+    Map.tex_arr = (SDL_Texture**)malloc(3 * sizeof(SDL_Texture*));
     Map.tex_arr[WALL] = IMG_LoadTexture(r, "media/img/tiles/wall.png");
     Map.tex_arr[OBSTACLE] = IMG_LoadTexture(r, "media/img/tiles/obstacle.png");
     Map.tex_arr[FLOOR] = IMG_LoadTexture(r, "media/img/tiles/floor.png");
-    for (int i = 0; i < 48; i++)
+    for (int i = 0; i < Map.map_width; i++)
     {
-       for (int j = 0; j < 27; j++)
+       for (int j = 0; j < Map.map_height; j++)
        {
             Map.tile_arr[i][j].tile_rect = createRect(i*40, j*40, 40,40);
             if (((i == 0 || i == 47) && j < 48)||(i == 22 && (j >= 1 && j <=6)))
@@ -51,20 +53,20 @@ Tilemap Map_new(SDL_Renderer *r){
 }
 void Map_render(Tilemap t, SDL_Renderer* r){
     SDL_RenderCopy(r, t.bg_texture, NULL, &t.bg_rect);
-    for (int i = 0; i < 48; i++)
+    for (int i = 0; i < t.map_width; i++)
     {
-        for (int j = 0; j < 27; j++)
+        for (int j = 0; j < t.map_height; j++)
         {
             SDL_RenderCopy(r, t.tex_arr[t.tile_arr[i][j].tile_type], NULL, &t.tile_arr[i][j].tile_rect);
         }
     }
 }
 void Map_destroy(Tilemap t){
-    for (int i = 0; i < TILES_TEXTURE_COUNT; i++)
+    for (int i = 0; i < 3; i++)
     {
         SDL_DestroyTexture(t.tex_arr[i]);
     } 
-    for (int i = 0; i < 48; i++)
+    for (int i = 0; i < t.map_width; i++)
     {
         free(t.tile_arr[i]);
     }
