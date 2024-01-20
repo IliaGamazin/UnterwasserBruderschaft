@@ -12,10 +12,12 @@ typedef struct{
 }Tile;
 
 typedef struct{
-    Tile** tile_arr;
-    SDL_Texture** tex_arr;
+    Tile **tile_arr;
+    SDL_Texture **tex_arr;
+    SDL_Texture *bg_texture;
+    SDL_Rect bg_rect;
 }Tilemap;
 
-Tilemap Map_new(SDL_Renderer* r);
-void Map_render(Tilemap t, SDL_Renderer* r);
+Tilemap Map_new(SDL_Renderer *r);
+void Map_render(Tilemap t, SDL_Renderer *r);
 void Map_destroy(Tilemap t);

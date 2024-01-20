@@ -59,7 +59,6 @@ int main(){
             break;
         }  
         SDL_RenderPresent(PBState->renderer);
-        SDL_Delay(1000 / 60);
     }
     destroyWindow(PBState, window);
     return 0;

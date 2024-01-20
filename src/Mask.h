@@ -10,6 +10,7 @@ struct Mask {
     SDL_Rect maskRect;
     SDL_Texture* maskTextureIdle;
     SDL_Texture* maskTextureActive;
+    int initialY;
     bool isAnimated;
     double angle;
 };

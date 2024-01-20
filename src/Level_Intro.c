@@ -14,14 +14,14 @@ void Level_Intro(GameState* PBState, SCENE introNum) {
     switch (introNum)
     {
     case INTRO_1:
-        PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
+        PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/intros/main_intro1.png");
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
-        textMask = createMask(PBState->renderer, YALTPILS, 10, 10, 170, 170);
+        textMask = createMask(PBState->renderer, YALTPILS, 10, 550, 170, 170);
         break;
     case INTRO_2:
-        PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");
+        PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/intros/main_intro2.png");
         PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
-        textMask = createMask(PBState->renderer, SHAYLUSHAY, 10, 10, 170, 170);
+        textMask = createMask(PBState->renderer, SHAYLUSHAY, 10, 550, 170, 170);
         break;
     case LEVEL1_INTRO:
         PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/lvl1_intro_bg.png");

@@ -51,7 +51,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     AmmoBox box = AmmoBox_new(PBState->renderer, 800, 160);
     BulletManager *bullet_manager = BulletManager_new(100);
     ExitCar *exit = ExitCar_new(PBState -> renderer);
-    PBState -> bgMusic = Mix_LoadMUS("./media/sound/nightcall.mp3");
+    PBState -> bgMusic = Mix_LoadMUS("./media/sound/MiamiDisco.mp3");
     Mix_PlayMusic(PBState -> bgMusic, 0);
     SDL_Texture *ammo_texture;
     SDL_Texture *ammo_fired_texture;
@@ -148,7 +148,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         
         SDL_RenderClear(PBState -> renderer);
         
-        if (exit -> isOpened && SDL_PointInRect(&PlayerCenter, &exit -> seatCollider)) {
+        if (exit -> is_opened && SDL_PointInRect(&PlayerCenter, &exit -> seat_collider)) {
             PBState -> run = MENU;
         }
         

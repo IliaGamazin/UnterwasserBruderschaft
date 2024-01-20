@@ -11,21 +11,21 @@ Weapon *Weapon_new(WEAPON_TYPE type) {
 
     switch (type) {
         case RIFLE:
-            weapon -> ammo_max = 60;
+            weapon -> ammo_max = 20;
             weapon -> ammo = weapon -> ammo_max;
             weapon -> bullets_num = 1;
             weapon -> round_delay = 170;
             weapon -> shot_sound = Mix_LoadWAV("media/sound/RifleShot.wav");
             break;
         case SHOTGUN:
-            weapon -> ammo_max = 18;
+            weapon -> ammo_max = 8;
             weapon -> ammo = weapon -> ammo_max;
             weapon -> bullets_num = 4;
             weapon -> round_delay = 1000;
             weapon -> shot_sound = Mix_LoadWAV("media/sound/ShotgunShot.wav");
             break;
         case PISTOL:
-            weapon -> ammo_max = 24;
+            weapon -> ammo_max = 18;
             weapon -> ammo = weapon -> ammo_max;
             weapon -> bullets_num = 1;
             weapon -> round_delay = 600;

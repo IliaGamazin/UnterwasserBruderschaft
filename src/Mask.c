@@ -10,14 +10,14 @@ void animMask(SDL_Renderer* r, Mask* m) {
         m->angle += incrementAngle;
         m->maskRect.w = 200;
         m->maskRect.h = 200;
-        m->maskRect.y = 70;
+        m->maskRect.y = m->initialY-30;
         SDL_RenderCopyEx(r, m->maskTextureActive, NULL, &m->maskRect, m->angle, NULL, SDL_FLIP_NONE);
     }
     else {
         m->angle = 0;
         m->maskRect.w = 170;
         m->maskRect.h = 170;
-        m->maskRect.y = 100;
+        m->maskRect.y = m->initialY;
         SDL_RenderCopyEx(r, m->maskTextureIdle, NULL, &m->maskRect, m->angle, NULL, SDL_FLIP_NONE);
     }
 }
@@ -26,6 +26,7 @@ Mask* createMask(SDL_Renderer* r, CHARACTER_TYPE type, int x, int y, int w, int 
     heroMask->angle = 0;
     heroMask->isAnimated = false;
     heroMask->maskRect = createRect(x, y, w, h);
+    heroMask->initialY = y;
     switch (type)
     {
     case SHAYLUSHAY:
