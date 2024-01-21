@@ -69,6 +69,30 @@ Vector2 Vector2_with_magnitude(Vector2 vector, double magnitude) {
     return vector;
 }
 
+void Vector2_scale_to_x(Vector2 *vector, double x) {
+    if (vector -> x) {
+        Vector2_scale(vector, x / vector -> x);
+    }
+}
+
+Vector2 Vector2_scaled_to_x(Vector2 vector, double x) {
+    Vector2_scale_to_x(&vector, x);
+
+    return vector;
+}
+
+void Vector2_scale_to_y(Vector2 *vector, double y) {
+    if (vector -> y) {
+        Vector2_scale(vector, y / vector -> y);
+    }
+}
+
+Vector2 Vector2_scaled_to_y(Vector2 vector, double y) {
+    Vector2_scale_to_y(&vector, y);
+
+    return vector;
+}
+
 void Vector2_rotate(Vector2 *vector, double radians) {
     *vector = Vector2_new(
         Vector2_dot(
