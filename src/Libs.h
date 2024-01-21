@@ -30,7 +30,6 @@
 #define BULLET_MISS_MODIFIER 10
 #define CURRENT_LEVEL_CHOOSE level-1
 
-#define TILE_SIZE 40
 
 typedef enum {
     MENU,
