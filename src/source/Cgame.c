@@ -3,6 +3,89 @@
 int countnumber = 0;
 int countHP = 0;
 
+typedef struct
+{
+    int mVelX;
+    SDL_Rect playerRect;
+    SDL_Rect playerClip[PLAYER_FRAMES];
+
+    SDL_Texture* PlayerTextureIdle;
+
+} PlayerSecretLvL;
+
+typedef struct
+{
+    int cVelX;
+    int cVelY;
+    SDL_Rect catsRect;
+    SDL_Rect catsClip[CATS_FRAMES];
+    SDL_Texture* FallingCat;
+    SDL_Texture* BubbleCat;
+    SDL_Texture* CurrentTex;
+
+    Mix_Chunk* CatFell;
+} FallingCats;
+
+typedef struct 
+{
+    FallingCats** cats;
+    int quantity;
+    int count;
+    int* catPosArr;
+    Mix_Chunk* CatSpawn;
+    Mix_Chunk* CatMeow;
+} CatManager;
+
+typedef struct
+{
+    SDL_Rect UnitsRect;
+    SDL_Rect TensRect;
+
+    SDL_Rect UnitsClip;
+    SDL_Rect TensClip;
+
+    SDL_Texture* UnitsTexture;
+    SDL_Texture* TensTexture;
+
+}Counter;
+
+typedef struct
+{
+    SDL_Rect HPcounterRect;
+    SDL_Rect HPcounterClip;
+    SDL_Texture* HPCounterTexture;
+
+}HPCounter;
+
+typedef struct
+{
+    int pVelX;
+    SDL_Rect PlaneRect;
+    SDL_Rect PlaneClip[PLAYER_FRAMES];
+    SDL_Texture* Plane;
+
+    Mix_Chunk* PlaneSound;
+}Enemy;
+
+typedef struct
+{
+    int bVelX;
+    SDL_Rect StoneRect;
+    SDL_Texture* StoneTexture;
+    Mix_Chunk* StoneColl;
+}Stone;
+
+typedef struct
+{
+    int capacity;
+    int count;
+    int* StonesPosArr;
+    Stone** stones;
+
+    Mix_Chunk* StoneSpawn;
+
+}StoneManager;
+
 PlayerSecretLvL* Player_create(SDL_Renderer* gRenderer)
 {
     PlayerSecretLvL* player = (PlayerSecretLvL*)malloc(sizeof(PlayerSecretLvL));
