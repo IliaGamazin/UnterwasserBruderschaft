@@ -56,7 +56,7 @@ void Level_Intro(GameState* PBState, SCENE introNum) {
     while (PBState->run == introNum) {
         while (SDL_PollEvent(&PBState->event)) {
             if (PBState->event.type == SDL_QUIT) {
-                PBState->run = -1;
+                PBState->run = QUIT;
             }
             else if (PBState->event.type == SDL_KEYDOWN) {
                 switch (PBState->event.key.keysym.sym) {

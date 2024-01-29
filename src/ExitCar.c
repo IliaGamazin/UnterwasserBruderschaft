@@ -39,3 +39,4 @@ void ExitCar_destroy(ExitCar* Car){
     Mix_FreeChunk(Car->open_sound);
     free(Car);
 }
+

@@ -32,6 +32,7 @@
 
 
 typedef enum {
+    QUIT,
     MENU,
     INTRO_1,
     INTRO_2,
@@ -46,15 +47,15 @@ typedef enum {
     LEVEL3,
     LEVEL_SECRET_INTRO,
     LEVEL_SECRET,
-    OUTRO
-}SCENE;
+    OUTRO,
+} SCENE;
 
 enum BUTTON_TYPE_MENU {
     START_BUTTON,
     FIRST_LEVEL_BUTTON,
     SECOND_LEVEL_BUTTON,
     THIRD_LEVEL_BUTTON,
-    EXIT_BUTTON
+    EXIT_BUTTON,
 };
 
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);

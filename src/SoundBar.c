@@ -1,4 +1,4 @@
-#include "SoundBar.h"
+#include "./SoundBar.h"
 
 SoundBar* createSoundBar(int x, int y, int barWidth, int barHeight, SDL_Renderer* r) {
     SoundBar* Bar = (SoundBar*)malloc(sizeof(SoundBar));
@@ -14,3 +14,4 @@ void destroyBar(SoundBar* b) {
     SDL_DestroyTexture(b->barTexture);
     free(b);
 }
+

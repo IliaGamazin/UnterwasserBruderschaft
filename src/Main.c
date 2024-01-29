@@ -1,7 +1,9 @@
-#include "Header_main.h"
+#include "./Header_main.h"
+
 SDL_Window* window;
 GameState* PBState;
-int main(){
+
+int main(void){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
     Mix_Init(MIX_INIT_MP3);
@@ -17,7 +19,7 @@ int main(){
     
     CHARACTER_TYPE CurrentChar = -1;
 
-    while (PBState->run !=-1) {
+    while (PBState->run != QUIT) {
         switch (PBState->run)
         {
         case MENU:
@@ -44,14 +46,14 @@ int main(){
         case LEVEL2:
             while (SDL_PollEvent(&PBState->event)) {
                 if (PBState->event.type == SDL_QUIT) {
-                    PBState->run = -1;
+                    PBState->run = QUIT;
                 }
             }
             break;
         case LEVEL3:
             while (SDL_PollEvent(&PBState->event)) {
                 if (PBState->event.type == SDL_QUIT) {
-                    PBState->run = -1;
+                    PBState->run = QUIT;
                 }
             }
             break;
@@ -63,3 +65,4 @@ int main(){
     destroyWindow(PBState, window);
     return 0;
 }
+

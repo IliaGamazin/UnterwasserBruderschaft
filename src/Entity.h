@@ -8,17 +8,15 @@
 
 // CHARACTER_TYPE
 
-typedef enum CHARACTER_TYPE CHARACTER_TYPE;
-enum CHARACTER_TYPE {
+typedef enum {
     SHAYLUSHAY,
     YALTPILS,
     DAWAWUE,
-};
+} CHARACTER_TYPE;
 
 // Entity
 
-typedef struct Entity Entity;
-struct Entity {
+typedef struct {
     SDL_Rect rect;
     Vector2 direction;
     double speed;
@@ -27,7 +25,7 @@ struct Entity {
     uint32_t last_animated;
     uint32_t animation_speed;
     uint32_t current_frame;
-};
+} Entity;
 
 void Entity_destroy(Entity *entity);
 void Entity_render(SDL_Renderer *renderer, Entity *entity);

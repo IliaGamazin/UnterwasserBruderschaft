@@ -1,4 +1,6 @@
-#include "Button.h"
+#include "./Button.h"
+
+// Button
 
 Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTexIdle, SDL_Texture* buttonTexHover, Mix_Chunk* buttonSound) {
     Button But;
@@ -45,3 +47,4 @@ void destroyButton(Button b) {
     SDL_DestroyTexture(b.buttonTexHover);
     Mix_FreeChunk(b.buttonSound);
 }
+

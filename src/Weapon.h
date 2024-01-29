@@ -8,17 +8,15 @@
 
 // WEAPON_TYPE
 
-typedef enum WEAPON_TYPE WEAPON_TYPE;
-enum WEAPON_TYPE {
+typedef enum {
     RIFLE,
     PISTOL,
     SHOTGUN,
-};
+} WEAPON_TYPE;
 
 // Weapon
 
-typedef struct Weapon Weapon;
-struct Weapon {
+typedef struct {
     WEAPON_TYPE type;
     uint32_t ammo_max;
     uint32_t ammo;
@@ -27,10 +25,11 @@ struct Weapon {
     uint32_t round_delay;
     Mix_Chunk *shot_sound;
     Mix_Chunk *no_ammo_sound;
-};
+} Weapon;
 
 Weapon *Weapon_new(WEAPON_TYPE type);
 void Weapon_destroy(Weapon *weapon);
 void Weapon_shoot(Weapon *weapon, BulletManager *bullet_manager, Vector2 oririn, Vector2 direction);
 
 #endif
+

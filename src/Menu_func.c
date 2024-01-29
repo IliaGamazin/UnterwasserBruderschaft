@@ -1,4 +1,5 @@
-#include "Header_main.h"
+#include "./Header_main.h"
+
 SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight) {
     SDL_Rect rect;
     rect.x = x;
@@ -72,3 +73,4 @@ void destroyWindow(GameState* PB, SDL_Window* window ) {
     Mix_Quit();
     SDL_Quit();
 }
+

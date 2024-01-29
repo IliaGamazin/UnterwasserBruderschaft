@@ -16,7 +16,7 @@ void Hood_render(SDL_Renderer *renderer, Entity *player, SDL_Texture *ammo_textu
     Vector2 size = Vector2_new(12, 33);
     int row_capacity = 10;
 
-    for (int i = 0; i < player -> weapon -> ammo_max; i++) {
+    for (size_t i = 0; i < player -> weapon -> ammo_max; i++) {
         SDL_RenderCopy(
             renderer,
             (i < player -> weapon -> ammo ? ammo_texture : ammo_fired_texture),
@@ -98,7 +98,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         while (SDL_PollEvent(&PBState -> event)) {
             switch (PBState -> event.type) {
                 case SDL_QUIT:
-                    PBState -> run = -1;
+                    PBState -> run = QUIT;
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     switch (PBState -> event.button.button) {

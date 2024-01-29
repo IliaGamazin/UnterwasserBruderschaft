@@ -1,12 +1,13 @@
 #pragma once
-#include "Libs.h"
-#include "Entity.h"
 #ifndef EXITCAR_H
 #define EXITCAR_H
 
+#include "./Libs.h"
+#include "./Entity.h"
+
 // ExitCar
 
-typedef struct{
+typedef struct {
     SDL_Rect car_rect;
     SDL_Rect door_rect;
     SDL_Rect door_collider;
@@ -17,7 +18,7 @@ typedef struct{
     bool is_opened;
     bool is_playing_sound;
     Mix_Chunk* open_sound;
-}ExitCar;
+} ExitCar;
 
 ExitCar *ExitCar_new(SDL_Renderer *r);
 void ExitCar_render(SDL_Renderer *r, ExitCar *Car);
@@ -25,3 +26,4 @@ void ExitCar_update(ExitCar *Car, SDL_Point PlayerCenter);
 void ExitCar_destroy(ExitCar *Car);
 
 #endif
+

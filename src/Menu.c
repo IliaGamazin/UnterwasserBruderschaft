@@ -25,7 +25,7 @@ void menu(GameState* PBState){
                 handleButtonPointingMenu(mousePoint, buttonArr, PBState);
             }
             if (PBState->event.type == SDL_QUIT) {
-                PBState->run = -1;
+                PBState->run = QUIT;
             }
             if (PBState->event.type == SDL_MOUSEBUTTONDOWN) {
                 for (int i = 0; i < BUTTON_COUNT_MENU; i++)
@@ -85,7 +85,7 @@ void menu(GameState* PBState){
             quitButtonSpeed += 1;
             if (buttonArr[BUTTON_COUNT_MENU - 1].buttonRect.x < -BUTTON_WIDTH)
             {
-                PBState->run = -1;
+                PBState->run = QUIT;
             }
         }
         updateSoundBar(Bar, Mix_MasterVolume(-1));

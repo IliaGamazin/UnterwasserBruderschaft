@@ -13,7 +13,7 @@
 #include "AmmoBox.h"
 
 typedef struct {
-    int run;
+    SCENE run;
     SDL_Renderer* renderer;
     SDL_Event event;
     SDL_Cursor* arrowCursor;
@@ -21,7 +21,7 @@ typedef struct {
     SDL_Texture* bgTexture;
     SDL_Rect bgRect;
     Mix_Music* bgMusic;
-}GameState;
+} GameState;
 
 void destroyMenu(Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, Mix_Music* bgMusic, Mix_Chunk* exitSound);
 void Intro_Destroy(SoundBar* Bar, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask* m);

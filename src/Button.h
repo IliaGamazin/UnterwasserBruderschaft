@@ -1,7 +1,8 @@
 #pragma once
-#include "Libs.h"
 #ifndef BUTTON_H
 #define BUTTON_H
+
+#include "./Libs.h"
 
 typedef struct {
     SDL_Rect buttonRect;
@@ -10,7 +11,7 @@ typedef struct {
     Mix_Chunk* buttonSound;
     bool isPointedAt;
     bool isPlayingSound;
-}Button;
+} Button;
 
 Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTexIdle, SDL_Texture* buttonTexHover, Mix_Chunk* buttonSound);
 Button* fillButtonArrChoose(SDL_Renderer* r);
@@ -19,3 +20,4 @@ void showButton(SDL_Renderer* r, Button button);
 void destroyButton(Button b);
 
 #endif
+

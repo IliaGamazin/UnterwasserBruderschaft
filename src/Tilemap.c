@@ -20,9 +20,9 @@ Tilemap Map_new(SDL_Renderer *r){
     Map.textures[OBSTACLE] = IMG_LoadTexture(r, "media/img/tiles/obstacle.png");
     Map.textures[FLOOR] = IMG_LoadTexture(r, "media/img/tiles/floor.png");
 
-    for (int i = 0; i < Map.width; i++)
+    for (size_t i = 0; i < Map.width; i++)
     {
-       for (int j = 0; j < Map.height; j++)
+       for (size_t j = 0; j < Map.height; j++)
        {
             Map.tiles[i][j].tile_rect = createRect(i*40, j*40, 40,40);
             if (((i == 0 || i == 47) && j < 48)||(i == 22 && (j >= 1 && j <=6)))
@@ -56,9 +56,9 @@ Tilemap Map_new(SDL_Renderer *r){
 }
 void Map_render(Tilemap t, SDL_Renderer* r){
     SDL_RenderCopy(r, t.bg_texture, NULL, &t.bg_rect);
-    for (int i = 0; i < t.width; i++)
+    for (size_t i = 0; i < t.width; i++)
     {
-        for (int j = 0; j < t.height; j++)
+        for (size_t j = 0; j < t.height; j++)
         {
             SDL_RenderCopy(r, t.textures[t.tiles[i][j].type], NULL, &t.tiles[i][j].tile_rect);
         }
@@ -69,7 +69,7 @@ void Map_destroy(Tilemap t){
     {
         SDL_DestroyTexture(t.textures[i]);
     } 
-    for (int i = 0; i < t.width; i++)
+    for (size_t i = 0; i < t.width; i++)
     {
         free(t.tiles[i]);
     }
@@ -88,7 +88,7 @@ double Map_raycast(Tilemap map, Ray ray, TILE_TYPE type) {
     while (map.tiles[map_x][map_y].type != type) {
         // Return -1 if out of bounds
 
-        if ((map_x < 0 || map_x >= map.width) || (map_y < 0 || map_y >= map.height)) {
+        if ((map_x < 0 || map_x >= (int) map.width) || (map_y < 0 || map_y >= (int) map.height)) {
             return -1;
         }
 

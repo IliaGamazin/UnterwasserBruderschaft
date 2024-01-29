@@ -54,7 +54,7 @@ CHARACTER_TYPE ChooseCharacter(GameState* PBState, SCENE level) {
             SDL_Point mousePoint = { mouseX, mouseY };
             handleButtonPointingChoose(mousePoint, buttonArr, maskArr, PBState);
             if (PBState->event.type == SDL_QUIT) {
-                PBState->run = -1;
+                PBState->run = QUIT;
             }
             if (PBState->event.type == SDL_MOUSEBUTTONDOWN) {
                 if (SDL_PointInRect(&mousePoint, &buttonArr[0].buttonRect) || SDL_PointInRect(&mousePoint, &buttonArr[1].buttonRect)||SDL_PointInRect(&mousePoint, &buttonArr[2].buttonRect)) {
