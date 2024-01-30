@@ -1,77 +1,96 @@
 #include "Header_main.h"
 
-void ChooseCharacter_destroy(Button* buttonArr, SDL_Texture* bgTexture, Mix_Music* bgMusic, Mask** maskArr) {
-    for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++)
-    {
-        destroyButton(buttonArr[i]);
-        destroyMask(maskArr[i]);
+#define BUTTON_COUNT_CHOOSE 3
+#define CURRENT_LEVEL_CHOOSE level-1
+
+void ChooseCharacter_destroy(Button *button_arr, SDL_Texture *bg_tex, Mix_Music *bg_mus, Mask **mask_arr) {
+    for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++) {
+        Button_destroy(button_arr[i]);
+        Mask_destroy(mask_arr[i]);
     }
-    free(maskArr);
-    free(buttonArr);
-    SDL_DestroyTexture(bgTexture);
-    Mix_FreeMusic(bgMusic);
+
+    free(mask_arr);
+    free(button_arr);
+    SDL_DestroyTexture(bg_tex);
+    Mix_FreeMusic(bg_mus);
 }
-void handleButtonPointingChoose(SDL_Point mousePoint, Button* buttonArr, Mask** maskArr, GameState* PBState) {
-    for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++)
-    {
-        if (SDL_PointInRect(&mousePoint, &buttonArr[i].buttonRect) == true) {
-            SDL_SetCursor(PBState->handCursor);
-            buttonArr[i].isPointedAt = true;
-            if (!buttonArr[i].isPlayingSound)
-            {
-                Mix_PlayChannel(-1, buttonArr[i].buttonSound, 0);
-                maskArr[i]->isAnimated = true;
-                buttonArr[i].isPlayingSound = true;
+
+void handle_pointing_choose(SDL_Point mouse_point, Button *button_arr, Mask **mask_arr, GameState *PBState) {
+    for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++) {
+        if (SDL_PointInRect(&mouse_point, &button_arr[i].button_rect)) {
+
+            SDL_SetCursor(PBState -> handCursor);
+            button_arr[i].hower = true;
+
+            if (!button_arr[i].playing_sound) {
+                Mix_PlayChannel(-1, button_arr[i].button_sound, 0);
+                mask_arr[i] -> is_animated = true;
+                button_arr[i].playing_sound = true;
             }
+
             break;
         }
         else {
-            SDL_SetCursor(PBState->arrowCursor);
-            maskArr[i]->isAnimated = false;
-            buttonArr[i].isPointedAt = false;
-            buttonArr[i].isPlayingSound = false;
+            SDL_SetCursor(PBState -> arrowCursor);
+            mask_arr[i] -> is_animated = false;
+            button_arr[i].hower = false;
+            button_arr[i].playing_sound = false;
         }
     }    
 }
 
-CHARACTER_TYPE ChooseCharacter(GameState* PBState, SCENE level) {
-    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroBg.png");
-    PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
-
-    Mix_PlayMusic(PBState->bgMusic, 0);
-    Mask** maskArr = fillMaskArr(PBState->renderer);
-
-    Button* buttonArr = fillButtonArrChoose(PBState->renderer);
-	CHARACTER_TYPE charType = 0;
+CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level) {
     
-    SDL_Texture* shaBorder = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroSha.png");
-    SDL_Texture* yalBorder = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroYal.png");
-    SDL_Texture* dawBorder = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroDaw.png");
-	while (PBState->run == CURRENT_LEVEL_CHOOSE) {
-		while (SDL_PollEvent(&PBState->event)) {
+    // Change game state variables
+
+    PBState -> bgTexture = IMG_LoadTexture(PBState -> renderer, "media/img/chooseHero/chooseHeroBg.png");
+    PBState -> bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+    Mix_PlayMusic(PBState -> bgMusic, 0);
+
+    // Initialize scene variables
+
+    Mask **mask_arr = Mask_arr_new(PBState -> renderer);
+
+    Button *button_arr = Button_arr_new_choose(PBState -> renderer);
+	CHARACTER_TYPE char_type = 0;
+    
+    SDL_Texture *sha_border = IMG_LoadTexture(PBState -> renderer, "media/img/chooseHero/chooseHeroSha.png");
+    SDL_Texture *yal_border = IMG_LoadTexture(PBState -> renderer, "media/img/chooseHero/chooseHeroYal.png");
+    SDL_Texture *daw_border = IMG_LoadTexture(PBState -> renderer, "media/img/chooseHero/chooseHeroDaw.png");
+
+	while (PBState -> run == CURRENT_LEVEL_CHOOSE) {
+		while (SDL_PollEvent(&PBState -> event)) {
             int mouseX, mouseY;
             SDL_GetMouseState(&mouseX, &mouseY);
-            SDL_Point mousePoint = { mouseX, mouseY };
-            handleButtonPointingChoose(mousePoint, buttonArr, maskArr, PBState);
-            if (PBState->event.type == SDL_QUIT) {
-                PBState->run = QUIT;
+            SDL_Point mouse_point = { mouseX, mouseY };
+            handle_pointing_choose(mouse_point, button_arr, mask_arr, PBState);
+
+            if (PBState -> event.type == SDL_QUIT) {
+                PBState -> run = QUIT;
             }
+
             if (PBState->event.type == SDL_MOUSEBUTTONDOWN) {
-                if (SDL_PointInRect(&mousePoint, &buttonArr[0].buttonRect) || SDL_PointInRect(&mousePoint, &buttonArr[1].buttonRect)||SDL_PointInRect(&mousePoint, &buttonArr[2].buttonRect)) {
-                    if(SDL_PointInRect(&mousePoint, &buttonArr[SHAYLUSHAY].buttonRect)){
-                        charType = SHAYLUSHAY;    
+                if (SDL_PointInRect(&mouse_point, &button_arr[0].button_rect) || 
+                    SDL_PointInRect(&mouse_point, &button_arr[1].button_rect)||
+                    SDL_PointInRect(&mouse_point, &button_arr[2].button_rect)) {
+                    
+                    if(SDL_PointInRect(&mouse_point, &button_arr[SHAYLUSHAY].button_rect)){
+                        char_type = SHAYLUSHAY;    
                     }
-                    if(SDL_PointInRect(&mousePoint, &buttonArr[YALTPILS].buttonRect)){
-                        charType = YALTPILS;   
+
+                    if(SDL_PointInRect(&mouse_point, &button_arr[YALTPILS].button_rect)){
+                        char_type = YALTPILS;   
                     }
-                    if(SDL_PointInRect(&mousePoint, &buttonArr[DAWAWUE].buttonRect)){
-                        charType = DAWAWUE;                        
+
+                    if(SDL_PointInRect(&mouse_point, &button_arr[DAWAWUE].button_rect)){
+                        char_type = DAWAWUE;                        
                     }
-                    PBState->run++;
+                    
+                    PBState -> run++;
                 }                    
             }
-            else if (PBState->event.type == SDL_KEYDOWN) {
-                switch (PBState->event.key.keysym.sym) {
+            else if (PBState -> event.type == SDL_KEYDOWN) {
+                switch (PBState -> event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                         PBState -> run = MENU;
                         break;
@@ -88,33 +107,34 @@ CHARACTER_TYPE ChooseCharacter(GameState* PBState, SCENE level) {
                 }
             }
 		}
-        SDL_RenderClear(PBState->renderer);
-        SDL_RenderCopy(PBState->renderer, PBState->bgTexture, NULL, &PBState->bgRect);
-        if (buttonArr[SHAYLUSHAY].isPointedAt)
-        {
-            SDL_RenderCopy(PBState->renderer, shaBorder, NULL, &PBState->bgRect);
+
+        SDL_RenderClear(PBState -> renderer);
+        SDL_RenderCopy(PBState -> renderer, PBState -> bgTexture, NULL, &PBState -> bgRect);
+
+        if (button_arr[SHAYLUSHAY].hower) {
+            SDL_RenderCopy(PBState -> renderer, sha_border, NULL, &PBState -> bgRect);
         }
-        else if (buttonArr[YALTPILS].isPointedAt)
-        {
-            SDL_RenderCopy(PBState->renderer, yalBorder, NULL, &PBState->bgRect);
+        else if (button_arr[YALTPILS].hower) {
+            SDL_RenderCopy(PBState -> renderer, yal_border, NULL, &PBState -> bgRect);
         }
-        else if (buttonArr[DAWAWUE].isPointedAt)
-        {
-            SDL_RenderCopy(PBState->renderer, dawBorder, NULL, &PBState->bgRect);
+        else if (button_arr[DAWAWUE].hower) {
+            SDL_RenderCopy(PBState -> renderer, daw_border, NULL, &PBState -> bgRect);
         }
         
-        for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++)
-        {
-            showButton(PBState->renderer, buttonArr[i]);
-            animMask(PBState->renderer, maskArr[i]);
+        for (int i = 0; i < BUTTON_COUNT_CHOOSE; i++) {
+            Button_render(PBState -> renderer, button_arr[i]);
+            Mask_render(PBState -> renderer, mask_arr[i]);
         }
-        SDL_RenderPresent(PBState->renderer);
+
+        SDL_RenderPresent(PBState -> renderer);
         SDL_Delay(1000 / 60);
 	}
-    SDL_DestroyTexture(shaBorder);
-    SDL_DestroyTexture(yalBorder);
-    SDL_DestroyTexture(dawBorder);
-    SDL_SetCursor(PBState->arrowCursor);
-    ChooseCharacter_destroy(buttonArr, PBState->bgTexture, PBState->bgMusic, maskArr);
-    return charType;
+
+    SDL_DestroyTexture(sha_border);
+    SDL_DestroyTexture(yal_border);
+    SDL_DestroyTexture(daw_border);
+    SDL_SetCursor(PBState -> arrowCursor);
+
+    ChooseCharacter_destroy(button_arr, PBState -> bgTexture, PBState -> bgMusic, mask_arr);
+    return char_type;
 }

@@ -5,19 +5,19 @@
 #include "./Libs.h"
 
 typedef struct {
-    SDL_Rect buttonRect;
-    SDL_Texture* buttonTexIdle;
-    SDL_Texture* buttonTexHover;
-    Mix_Chunk* buttonSound;
-    bool isPointedAt;
-    bool isPlayingSound;
+    SDL_Rect button_rect;
+    SDL_Texture *button_tex_idle;
+    SDL_Texture *button_tex_hover;
+    Mix_Chunk *button_sound;
+    bool hower;
+    bool playing_sound;
 } Button;
 
-Button createButton(int x, int y, int buttonWidth, int buttonHeight, SDL_Texture* buttonTexIdle, SDL_Texture* buttonTexHover, Mix_Chunk* buttonSound);
-Button* fillButtonArrChoose(SDL_Renderer* r);
-Button* fillButtonArrMenu(int x, int y, int buttonWidth, int buttonHeight, SDL_Renderer* r);
-void showButton(SDL_Renderer* r, Button button);
-void destroyButton(Button b);
+Button Button_new(int x, int y, int w, int h, SDL_Texture *button_tex_idle, SDL_Texture *button_tex_hover, Mix_Chunk *buttonSound);
+Button *Button_arr_new_choose(SDL_Renderer *r);
+Button *Button_arr_new_menu(int x, int y, int w, int h, SDL_Renderer *r);
+void Button_render(SDL_Renderer *r, Button button);
+void Button_destroy(Button b);
 
 #endif
 

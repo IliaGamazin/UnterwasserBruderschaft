@@ -1,6 +1,6 @@
 #include "./Header_main.h"
 
-void Level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
+void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
     SDL_DestroyTexture(ammo_texture);
     SDL_DestroyTexture(ammo_fired_texture);
     Mix_FreeMusic(bgMusic);
@@ -163,6 +163,6 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         SDL_Delay(1000 / 60);
     }
 
-    Level1_destroy(PBState -> bgMusic, bullet_manager, player, map, ammo_texture, ammo_fired_texture, box);
+    level1_destroy(PBState -> bgMusic, bullet_manager, player, map, ammo_texture, ammo_fired_texture, box);
 }
 

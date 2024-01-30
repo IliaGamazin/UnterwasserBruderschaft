@@ -17,7 +17,7 @@ typedef struct {
     double door_angle;
     bool is_opened;
     bool is_playing_sound;
-    Mix_Chunk* open_sound;
+    Mix_Chunk *open_sound;
 } ExitCar;
 
 ExitCar *ExitCar_new(SDL_Renderer *r);

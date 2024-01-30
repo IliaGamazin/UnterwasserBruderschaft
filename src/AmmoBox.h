@@ -1,10 +1,9 @@
+#pragma once
 #ifndef AMMOBOX_H
 #define AMMOBOX_H
 
 #include "./Libs.h"
 #include "./Tilemap.h"
-
-// AmmoBox
 
 typedef struct AmmoBox AmmoBox;
 struct AmmoBox {

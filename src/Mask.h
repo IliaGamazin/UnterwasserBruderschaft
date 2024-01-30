@@ -7,16 +7,16 @@
 
 typedef struct Mask Mask;
 struct Mask {
-    SDL_Rect maskRect;
-    SDL_Texture* maskTextureIdle;
-    SDL_Texture* maskTextureActive;
-    int initialY;
-    bool isAnimated;
+    SDL_Rect mask_rect;
+    SDL_Texture *mask_tex_idle;
+    SDL_Texture *mask_tex_active;
+    int init_y;
+    bool is_animated;
     double angle;
 };
 
-Mask* createMask(SDL_Renderer* r, CHARACTER_TYPE type, int x, int y, int w, int h);
-Mask** fillMaskArr(SDL_Renderer* r);
-void animMask(SDL_Renderer* r, Mask* m);
-void destroyMask(Mask* m);
+Mask *Mask_new(SDL_Renderer *r, CHARACTER_TYPE type, int x, int y, int w, int h);
+Mask **Mask_arr_new(SDL_Renderer *r);
+void Mask_render(SDL_Renderer *r, Mask* m);
+void Mask_destroy(Mask *m);
 #endif

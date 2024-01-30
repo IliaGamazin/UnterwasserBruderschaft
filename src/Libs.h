@@ -20,7 +20,6 @@
 #define LEVEL_HEIGHT 1080
 
 #define BUTTON_COUNT_MENU 5
-#define BUTTON_COUNT_CHOOSE 3
 #define BUTTON_HEIGHT 60
 #define BUTTON_WIDTH 150
 #define BUTTON_GAP 100
@@ -28,8 +27,6 @@
 #define BULLET_SIZE 15
 #define BULLET_SPEED  20
 #define BULLET_MISS_MODIFIER 10
-#define CURRENT_LEVEL_CHOOSE level-1
-
 
 typedef enum {
     QUIT,
@@ -58,6 +55,6 @@ enum BUTTON_TYPE_MENU {
     EXIT_BUTTON,
 };
 
-SDL_Rect createRect(int x, int y, int rectWidth, int rectHeight);
+SDL_Rect createRect(int x, int y, int w, int h);
 
 #endif
