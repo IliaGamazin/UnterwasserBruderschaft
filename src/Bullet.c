@@ -13,7 +13,7 @@ Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba c
 }
 
 void Bullet_update(Bullet *bullet) {
-    bullet -> position = Vector2_add(bullet -> position, bullet -> direction);
+    bullet->position = Vector2_add(bullet->position, bullet->direction);
 }
 
 void Bullet_render(SDL_Renderer *renderer, Bullet bullet) {

@@ -16,10 +16,10 @@ void Hood_render(SDL_Renderer *renderer, Entity *player, SDL_Texture *ammo_textu
     Vector2 size = Vector2_new(12, 33);
     int row_capacity = 10;
 
-    for (size_t i = 0; i < player -> weapon -> ammo_max; i++) {
+    for (size_t i = 0; i < player->weapon->ammo_max; i++) {
         SDL_RenderCopy(
             renderer,
-            (i < player -> weapon -> ammo ? ammo_texture : ammo_fired_texture),
+            (i < player->weapon->ammo ? ammo_texture : ammo_fired_texture),
             NULL,
             &(SDL_Rect) {
                 initials.x + i % row_capacity * gaps.x,
@@ -34,9 +34,9 @@ void Hood_render(SDL_Renderer *renderer, Entity *player, SDL_Texture *ammo_textu
 void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     // Variables initialization
 
-    Tilemap map = Map_new(PBState -> renderer);
+    Tilemap map = Map_new(PBState->renderer);
     Entity *player = Player_new(
-        PBState -> renderer,
+        PBState->renderer,
         character_type,
         (SDL_Rect) {
             640,
@@ -50,37 +50,37 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     );
     AmmoBox box = AmmoBox_new(PBState->renderer, 800, 160);
     BulletManager *bullet_manager = BulletManager_new(100);
-    ExitCar *exit = ExitCar_new(PBState -> renderer);
-    PBState -> bgMusic = Mix_LoadMUS("./media/sound/MiamiDisco.mp3");
-    Mix_PlayMusic(PBState -> bgMusic, 0);
+    ExitCar *exit = ExitCar_new(PBState->renderer);
+    PBState->bgMusic = Mix_LoadMUS("./media/sound/MiamiDisco.mp3");
+    Mix_PlayMusic(PBState->bgMusic, 0);
     SDL_Texture *ammo_texture;
     SDL_Texture *ammo_fired_texture;
 
     switch (character_type) {
         case SHAYLUSHAY:
-            ammo_texture = IMG_LoadTexture(PBState -> renderer, "./media/img/rifleAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState -> renderer, "./media/img/rifleNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/rifleAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/rifleNoAmmo.png");
             break;
         case YALTPILS:
-            ammo_texture = IMG_LoadTexture(PBState -> renderer, "./media/img/pistolAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState -> renderer, "./media/img/pistolNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/pistolAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/pistolNoAmmo.png");
             break;
         case DAWAWUE:
-            ammo_texture = IMG_LoadTexture(PBState -> renderer, "./media/img/shotgunAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState -> renderer, "./media/img/shotgunNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/shotgunAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/shotgunNoAmmo.png");
             break;
     }
     
     // Main loop
     
-    while (PBState -> run == LEVEL1) {
+    while (PBState->run == LEVEL1) {
         int mouseX;
         int mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
         Vector2 player_center = Vector2_new(
-            player -> rect.x + (player -> rect.w / 2.0),
-            player -> rect.y + (player -> rect.h / 2.0)
+            player->rect.x + (player->rect.w / 2.0),
+            player->rect.y + (player->rect.h / 2.0)
         );
 
         SDL_Point PlayerCenter = (SDL_Point) {
@@ -88,40 +88,40 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
             player_center.y,
         };
 
-        player -> direction = Vector2_from_points(
+        player->direction = Vector2_from_points(
             player_center,
             Vector2_new(mouseX, mouseY)
         );
 
         // Events
 
-        while (SDL_PollEvent(&PBState -> event)) {
-            switch (PBState -> event.type) {
+        while (SDL_PollEvent(&PBState->event)) {
+            switch (PBState->event.type) {
                 case SDL_QUIT:
-                    PBState -> run = QUIT;
+                    PBState->run = QUIT;
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-                    switch (PBState -> event.button.button) {
+                    switch (PBState->event.button.button) {
                         case SDL_BUTTON_LEFT:
                             Weapon_shoot(
-                                player -> weapon,
+                                player->weapon,
                                 bullet_manager,
                                 Vector2_add(
                                     player_center,
                                     Vector2_with_magnitude(
-                                        player -> direction,
-                                        player -> rect.h / 2
+                                        player->direction,
+                                        player->rect.h / 2
                                     )
                                 ),
-                                player -> direction
+                                player->direction
                             );
                             break;
                     }
                     break;
                 case SDL_KEYDOWN:
-                    switch (PBState -> event.key.keysym.sym) {
+                    switch (PBState->event.key.keysym.sym) {
                         case SDLK_ESCAPE:
-                            PBState -> run = MENU;
+                            PBState->run = MENU;
                             break;
                         case SDLK_EQUALS:
                         case SDLK_KP_PLUS:
@@ -146,23 +146,23 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
         // Render
         
-        SDL_RenderClear(PBState -> renderer);
+        SDL_RenderClear(PBState->renderer);
         
-        if (exit -> is_opened && SDL_PointInRect(&PlayerCenter, &exit -> seat_collider)) {
-            PBState -> run = MENU;
+        if (exit->is_opened && SDL_PointInRect(&PlayerCenter, &exit->seat_collider)) {
+            PBState->run = MENU;
         }
         
-        Map_render(map, PBState -> renderer);
+        Map_render(map, PBState->renderer);
         AmmoBox_render(PBState->renderer, box);
-        BulletManager_render(PBState -> renderer, bullet_manager);
-        Entity_render(PBState -> renderer, player);
-        ExitCar_render(PBState -> renderer, exit);
-        Hood_render(PBState -> renderer, player, ammo_texture, ammo_fired_texture);
+        BulletManager_render(PBState->renderer, bullet_manager);
+        Entity_render(PBState->renderer, player);
+        ExitCar_render(PBState->renderer, exit);
+        Hood_render(PBState->renderer, player, ammo_texture, ammo_fired_texture);
 
-        SDL_RenderPresent(PBState -> renderer);
+        SDL_RenderPresent(PBState->renderer);
         SDL_Delay(1000 / 60);
     }
 
-    level1_destroy(PBState -> bgMusic, bullet_manager, player, map, ammo_texture, ammo_fired_texture, box);
+    level1_destroy(PBState->bgMusic, bullet_manager, player, map, ammo_texture, ammo_fired_texture, box);
 }
 

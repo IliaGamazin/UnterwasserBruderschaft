@@ -5,45 +5,45 @@
 void Mask_render(SDL_Renderer *r, Mask* m) {
     static double angle_inc = 1.2;
 
-    if (m -> is_animated) {
-        if (m -> angle > 25.0 || m -> angle < -25.0) {
+    if (m->is_animated) {
+        if (m->angle > 25.0 || m->angle < -25.0) {
             angle_inc *= -1;
         }
-        m -> angle += angle_inc;
-        m -> mask_rect.w = 200;
-        m -> mask_rect.h = 200;
-        m -> mask_rect.y = m -> init_y - 30;
-        SDL_RenderCopyEx(r, m -> mask_tex_active, NULL, &m -> mask_rect, m->angle, NULL, SDL_FLIP_NONE);
+        m->angle += angle_inc;
+        m->mask_rect.w = 200;
+        m->mask_rect.h = 200;
+        m->mask_rect.y = m->init_y - 30;
+        SDL_RenderCopyEx(r, m->mask_tex_active, NULL, &m->mask_rect, m->angle, NULL, SDL_FLIP_NONE);
     }
     else {
-        m -> angle = 0;
-        m -> mask_rect.w = 170;
-        m -> mask_rect.h = 170;
-        m -> mask_rect.y = m -> init_y;
-        SDL_RenderCopyEx(r, m -> mask_tex_idle, NULL, &m -> mask_rect, m -> angle, NULL, SDL_FLIP_NONE);
+        m->angle = 0;
+        m->mask_rect.w = 170;
+        m->mask_rect.h = 170;
+        m->mask_rect.y = m->init_y;
+        SDL_RenderCopyEx(r, m->mask_tex_idle, NULL, &m->mask_rect, m->angle, NULL, SDL_FLIP_NONE);
     }
 }
 
 Mask *Mask_new(SDL_Renderer *r, CHARACTER_TYPE type, int x, int y, int w, int h) {
     Mask* heroMask = (Mask*)malloc(sizeof(Mask));
-    heroMask -> angle = 0;
-    heroMask -> is_animated = false;
-    heroMask -> mask_rect = createRect(x, y, w, h);
-    heroMask -> init_y = y;
+    heroMask->angle = 0;
+    heroMask->is_animated = false;
+    heroMask->mask_rect = createRect(x, y, w, h);
+    heroMask->init_y = y;
 
     switch (type)
     {
     case SHAYLUSHAY:
-        heroMask -> mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/shaIdle.png");
-        heroMask -> mask_tex_active = IMG_LoadTexture(r, "media/img/masks/shaActive.png");
+        heroMask->mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/shaIdle.png");
+        heroMask->mask_tex_active = IMG_LoadTexture(r, "media/img/masks/shaActive.png");
         break;
     case YALTPILS:
-        heroMask -> mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/yalIdle.png");
-        heroMask -> mask_tex_active = IMG_LoadTexture(r, "media/img/masks/yalActive.png");
+        heroMask->mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/yalIdle.png");
+        heroMask->mask_tex_active = IMG_LoadTexture(r, "media/img/masks/yalActive.png");
         break;
     case DAWAWUE:
-        heroMask -> mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/dawIdle.png");
-        heroMask -> mask_tex_active = IMG_LoadTexture(r, "media/img/masks/dawActive.png");
+        heroMask->mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/dawIdle.png");
+        heroMask->mask_tex_active = IMG_LoadTexture(r, "media/img/masks/dawActive.png");
         break;
     default:
         break;
@@ -61,7 +61,7 @@ Mask **Mask_arr_new(SDL_Renderer *r) {
 }
 
 void Mask_destroy(Mask *m) {
-    SDL_DestroyTexture(m -> mask_tex_idle);
-    SDL_DestroyTexture(m -> mask_tex_active);
+    SDL_DestroyTexture(m->mask_tex_idle);
+    SDL_DestroyTexture(m->mask_tex_active);
     free(m);
 }

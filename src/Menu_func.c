@@ -12,12 +12,12 @@ SDL_Rect createRect(int x, int y, int w, int h) {
 void handleButtonPointingMenu(SDL_Point mouse_point, Button *button_arr, GameState *PBState) {
     for (int i = 0; i < BUTTON_COUNT_MENU; i++) {
         if (SDL_PointInRect(&mouse_point, &button_arr[i].button_rect)) {
-            SDL_SetCursor(PBState -> handCursor);
+            SDL_SetCursor(PBState->handCursor);
             button_arr[i].hower = true;
             break;
         }
         else {
-            SDL_SetCursor(PBState -> arrowCursor);
+            SDL_SetCursor(PBState->arrowCursor);
             button_arr[i].hower = false;
             button_arr[i].playing_sound = false;
         }

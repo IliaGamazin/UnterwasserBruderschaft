@@ -6,30 +6,30 @@ void menu(GameState* PBState){
 
     // Change game state variables 
 
-    PBState -> run = MENU;
-    PBState -> bgTexture = IMG_LoadTexture(PBState -> renderer, "media/img/menu/menu_bg.png");
-    PBState -> bgRect = createRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    PBState -> bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+    PBState->run = MENU;
+    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/menu/menu_bg.png");
+    PBState->bgRect = createRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
 
-    SDL_QueryTexture(PBState -> bgTexture, NULL, NULL, &PBState -> bgRect.w, &PBState -> bgRect.h);
-    Mix_PlayMusic(PBState -> bgMusic, 0);
+    SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
+    Mix_PlayMusic(PBState->bgMusic, 0);
 
     // Initialize scene variables
 
     bool is_quitting = false;
     int quit_speed = 1;
 
-    Button *button_arr = Button_arr_new_menu((WINDOW_WIDTH - BUTTON_WIDTH) - 17, BUTTON_GAP * 1.5, BUTTON_WIDTH, BUTTON_HEIGHT, PBState -> renderer);
-    SoundBar *Bar = createSoundBar(185, 690, Mix_MasterVolume(-1) * 3, 30, PBState -> renderer);
+    Button *button_arr = Button_arr_new_menu((WINDOW_WIDTH - BUTTON_WIDTH) - 17, BUTTON_GAP * 1.5, BUTTON_WIDTH, BUTTON_HEIGHT, PBState->renderer);
+    SoundBar *Bar = createSoundBar(185, 690, Mix_MasterVolume(-1) * 3, 30, PBState->renderer);
     Mix_Chunk *exit_sound = Mix_LoadWAV("media/sound/carPass.wav");
 
     // Scene loop
 
-    while (PBState -> run == MENU) {
+    while (PBState->run == MENU) {
         while (SDL_PollEvent(&PBState->event)) {
 
-            if (PBState -> event.type == SDL_QUIT) {
-                PBState -> run = QUIT;
+            if (PBState->event.type == SDL_QUIT) {
+                PBState->run = QUIT;
             }
 
             // Handle mouse input
@@ -42,22 +42,22 @@ void menu(GameState* PBState){
                 handleButtonPointingMenu(mouse_point, button_arr, PBState);
             }
 
-            if (PBState -> event.type == SDL_MOUSEBUTTONDOWN) {
+            if (PBState->event.type == SDL_MOUSEBUTTONDOWN) {
                 for (int i = 0; i < BUTTON_COUNT_MENU; i++) {
                     if (SDL_PointInRect(&mouse_point, &button_arr[i].button_rect)) {
                         switch (i)
                         {
                         case START_BUTTON:
-                            PBState -> run = INTRO_1;
+                            PBState->run = INTRO_1;
                             break;
                         case FIRST_LEVEL_BUTTON:
-                            PBState -> run = LEVEL1_INTRO;
+                            PBState->run = LEVEL1_INTRO;
                             break;
                         case SECOND_LEVEL_BUTTON:
-                            PBState -> run = LEVEL2;
+                            PBState->run = LEVEL2;
                             break;
                         case THIRD_LEVEL_BUTTON:
-                            PBState -> run = LEVEL3;
+                            PBState->run = LEVEL3;
                             break;
                         case EXIT_BUTTON:
                             if (!is_quitting) {
@@ -74,8 +74,8 @@ void menu(GameState* PBState){
 
             // Handle keyboard input
             
-            else if (PBState -> event.type == SDL_KEYDOWN) {
-                switch (PBState -> event.key.keysym.sym) {
+            else if (PBState->event.type == SDL_KEYDOWN) {
+                switch (PBState->event.key.keysym.sym) {
                     case SDLK_EQUALS:
                     case SDLK_KP_PLUS:
                         Mix_MasterVolume(Mix_MasterVolume(-1) + (MIX_MAX_VOLUME / 8));
@@ -97,27 +97,27 @@ void menu(GameState* PBState){
             quit_speed += 1;
 
             if (button_arr[BUTTON_COUNT_MENU - 1].button_rect.x < -BUTTON_WIDTH) {
-                PBState -> run = QUIT;
+                PBState->run = QUIT;
             }
         }
         
         // Render the scene
 
         updateSoundBar(Bar, Mix_MasterVolume(-1));
-        SDL_RenderCopy(PBState -> renderer, PBState -> bgTexture, NULL, &PBState -> bgRect);
-        SDL_RenderCopy(PBState -> renderer, Bar -> barTexture, NULL, &Bar -> barRect);
+        SDL_RenderCopy(PBState->renderer, PBState->bgTexture, NULL, &PBState->bgRect);
+        SDL_RenderCopy(PBState->renderer, Bar->barTexture, NULL, &Bar->barRect);
         
         for (int i = 0; i < BUTTON_COUNT_MENU; i++) {
-            Button_render(PBState -> renderer, button_arr[i]);
+            Button_render(PBState->renderer, button_arr[i]);
         }
 
-        SDL_RenderPresent(PBState -> renderer);
+        SDL_RenderPresent(PBState->renderer);
         SDL_Delay(1000 / 60);
     }
 
     // Destroy the scene
 
-    SDL_RenderClear(PBState -> renderer);
-    SDL_SetCursor(PBState -> arrowCursor);
-    destroyMenu(button_arr, PBState->bgTexture, Bar, PBState -> bgMusic, exit_sound);
+    SDL_RenderClear(PBState->renderer);
+    SDL_SetCursor(PBState->arrowCursor);
+    destroyMenu(button_arr, PBState->bgTexture, Bar, PBState->bgMusic, exit_sound);
 }

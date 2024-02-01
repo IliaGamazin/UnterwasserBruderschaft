@@ -42,8 +42,8 @@ bool Vector2_is_null(Vector2 vector) {
 }
 
 void Vector2_scale(Vector2 *vector, double scale_factor) {
-    vector -> x *= scale_factor;
-    vector -> y *= scale_factor;
+    vector->x *= scale_factor;
+    vector->y *= scale_factor;
 }
 
 void Vector2_normalize(Vector2 *vector) {
@@ -70,8 +70,8 @@ Vector2 Vector2_with_magnitude(Vector2 vector, double magnitude) {
 }
 
 void Vector2_scale_to_x(Vector2 *vector, double x) {
-    if (vector -> x) {
-        Vector2_scale(vector, x / vector -> x);
+    if (vector->x) {
+        Vector2_scale(vector, x / vector->x);
     }
 }
 
@@ -82,8 +82,8 @@ Vector2 Vector2_scaled_to_x(Vector2 vector, double x) {
 }
 
 void Vector2_scale_to_y(Vector2 *vector, double y) {
-    if (vector -> y) {
-        Vector2_scale(vector, y / vector -> y);
+    if (vector->y) {
+        Vector2_scale(vector, y / vector->y);
     }
 }
 

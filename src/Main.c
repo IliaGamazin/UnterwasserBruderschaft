@@ -50,14 +50,14 @@ int main(void){
             level_intro(PBState, LEVEL2_INTRO);
             break;
         case LEVEL2:
-            while (SDL_PollEvent(&PBState -> event)) {
-                if (PBState -> event.type == SDL_QUIT) {
-                    PBState -> run = QUIT;
+            while (SDL_PollEvent(&PBState->event)) {
+                if (PBState->event.type == SDL_QUIT) {
+                    PBState->run = QUIT;
                 }
             }
             break;
         case LEVEL3:
-            while (SDL_PollEvent(&PBState -> event)) {
+            while (SDL_PollEvent(&PBState->event)) {
                 if (PBState->event.type == SDL_QUIT) {
                     PBState->run = QUIT;
                 }
@@ -66,7 +66,7 @@ int main(void){
         default:
             break;
         }  
-        SDL_RenderPresent(PBState -> renderer);
+        SDL_RenderPresent(PBState->renderer);
     }
     
     destroyWindow(PBState, window);
