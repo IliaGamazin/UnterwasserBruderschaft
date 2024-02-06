@@ -1,7 +1,7 @@
 #pragma once
 #ifndef AMMOBOX_H
 #define AMMOBOX_H
-
+#include "Camera.h"
 #include "./Libs.h"
 #include "./Tilemap.h"
 
@@ -15,7 +15,7 @@ struct AmmoBox {
 };
 
 AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y);
-void AmmoBox_render(SDL_Renderer *r, AmmoBox box);
+void AmmoBox_render(SDL_Renderer *r, AmmoBox box, Camera camera);
 void AmmoBox_destroy(AmmoBox box);
 
 #endif

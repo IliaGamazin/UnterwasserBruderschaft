@@ -5,7 +5,7 @@
 #include "./Libs.h"
 #include "./Vector.h"
 #include "./Weapon.h"
-
+#include "Camera.h"
 // CHARACTER_TYPE
 
 typedef enum {
@@ -28,7 +28,7 @@ typedef struct {
 } Entity;
 
 void Entity_destroy(Entity *entity);
-void Entity_render(SDL_Renderer *renderer, Entity *entity);
+void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera);
 
 // Entity player
 

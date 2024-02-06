@@ -5,7 +5,7 @@
 
 #include "./Libs.h"
 #include "./Ray.h"
-
+#include "Camera.h"
 // TILE_TYPE
 
 typedef enum {
@@ -33,7 +33,7 @@ typedef struct {
 } Tilemap;
 
 Tilemap Map_new(SDL_Renderer *r);
-void Map_render(Tilemap t, SDL_Renderer *r);
+void Map_render(Tilemap t, SDL_Renderer *r, Camera camera);
 void Map_destroy(Tilemap t);
 double Map_raycast(Tilemap map, Ray ray, TILE_TYPE type);
 

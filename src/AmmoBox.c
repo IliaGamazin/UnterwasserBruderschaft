@@ -1,6 +1,5 @@
 #include "AmmoBox.h"
-
-// AmmoBox
+#include "Camera.h"
 
 AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y) {
     AmmoBox box;
@@ -12,12 +11,20 @@ AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y) {
     return box;
 }
 
-void AmmoBox_render(SDL_Renderer *r, AmmoBox box) {
+void AmmoBox_render(SDL_Renderer *r, AmmoBox box, Camera camera) {
+   
+    SDL_Rect renderQuad = {
+        box.rect.x - camera.position.x,
+        box.rect.y - camera.position.y,
+        box.rect.w,
+        box.rect.h
+    };
+
+    // Render the correct texture based on whether the box is full or empty
     if (box.is_full) {
-        SDL_RenderCopy(r, box.full_tex, NULL, &box.rect);
-    }
-    else{
-        SDL_RenderCopy(r, box.empty_tex, NULL, &box.rect);
+        SDL_RenderCopy(r, box.full_tex, NULL, &renderQuad);
+    } else {
+        SDL_RenderCopy(r, box.empty_tex, NULL, &renderQuad);
     }
 }
 
@@ -26,4 +33,11 @@ void AmmoBox_destroy(AmmoBox box) {
     SDL_DestroyTexture(box.full_tex);
     Mix_FreeChunk(box.reload_sound);
 }
+
+
+
+
+
+
+
 

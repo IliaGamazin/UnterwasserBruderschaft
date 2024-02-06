@@ -1,5 +1,5 @@
 #include "Tilemap.h"
-
+#include "Camera.h"
 // Tilemap
 
 Tilemap Map_new(SDL_Renderer *r){
@@ -54,13 +54,26 @@ Tilemap Map_new(SDL_Renderer *r){
     }
     return Map;
 }
-void Map_render(Tilemap t, SDL_Renderer* r){
-    SDL_RenderCopy(r, t.bg_texture, NULL, &t.bg_rect);
-    for (size_t i = 0; i < t.width; i++)
-    {
-        for (size_t j = 0; j < t.height; j++)
-        {
-            SDL_RenderCopy(r, t.textures[t.tiles[i][j].type], NULL, &t.tiles[i][j].tile_rect);
+void Map_render(Tilemap t, SDL_Renderer* r, Camera camera){
+    // Move background rect according to camera
+    SDL_Rect adjustedBgRect = {
+        t.bg_rect.x - camera.position.x,
+        t.bg_rect.y - camera.position.y,
+        t.bg_rect.w,
+        t.bg_rect.h
+    };
+    SDL_RenderCopy(r, t.bg_texture, NULL, &adjustedBgRect);
+
+    // Render each tile cons camera
+    for (size_t i = 0; i < t.width; i++) {
+        for (size_t j = 0; j < t.height; j++) {
+            SDL_Rect adjustedTileRect = {
+                t.tiles[i][j].tile_rect.x - camera.position.x,
+                t.tiles[i][j].tile_rect.y - camera.position.y,
+                t.tiles[i][j].tile_rect.w,
+                t.tiles[i][j].tile_rect.h
+            };
+            SDL_RenderCopy(r, t.textures[t.tiles[i][j].type], NULL, &adjustedTileRect);
         }
     }
 }

@@ -1,6 +1,6 @@
 #include "./BulletManager.h"
+#include "Camera.h"
 
-// BulletManager
 
 BulletManager *BulletManager_new(size_t capacity) {
     BulletManager *manager = malloc(sizeof(BulletManager));
@@ -27,20 +27,21 @@ void BulletManager_add(BulletManager *manager, Bullet bullet) {
     manager->bullets[manager->count++] = bullet;
 }
 
-void BulletManager_update(BulletManager *manager) {
+void BulletManager_update(BulletManager *manager, int levelWidth, int levelHeight) {
     for (size_t i = 0; i < manager->count; i++) {
-        if (manager->bullets[i].position.x < 0 || manager->bullets[i].position.x >= 1280 ||
-            manager->bullets[i].position.y < 0 || manager->bullets[i].position.y >= 720) {
-            BulletManager_remove(manager, i--);
-            continue;
+       
+        if (manager->bullets[i].position.x < 0 || manager->bullets[i].position.x > levelWidth ||
+            manager->bullets[i].position.y < 0 || manager->bullets[i].position.y > levelHeight) {
+            BulletManager_remove(manager, i);
+            i--; // Decrement to remove bulls
+        } else {
+           
+            Bullet_update(&manager->bullets[i]);
         }
-
-        Bullet_update(&manager->bullets[i]);
     }
 }
-
-void BulletManager_render(SDL_Renderer *renderer, BulletManager *manager) {
+void BulletManager_render(SDL_Renderer *renderer, BulletManager *manager, Camera camera) {
     for (size_t i = 0; i < manager->count; i++) {
-        Bullet_render(renderer, manager->bullets[i]);
+        Bullet_render(renderer, manager->bullets[i], camera);
     }
 }

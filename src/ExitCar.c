@@ -29,11 +29,34 @@ void ExitCar_update(ExitCar *Car, SDL_Point PlayerCenter){
     }
 }
 
-void ExitCar_render(SDL_Renderer *r, ExitCar *Car){
-    SDL_Point door_anchor = {0, 0};
-    SDL_RenderCopy(r, Car->car_tex, NULL, &Car->car_rect);
-    SDL_RenderCopyEx(r, Car->door_tex, NULL, &Car->door_rect, Car->door_angle, &door_anchor, SDL_FLIP_NONE);
+void ExitCar_render(SDL_Renderer *r, ExitCar *Car, Camera camera){
+    // camera's offset
+    SDL_Rect adjustedCarRect = {
+        Car->car_rect.x - camera.position.x,
+        Car->car_rect.y - camera.position.y,
+        Car->car_rect.w,
+        Car->car_rect.h
+    };
+
+    // door's position by the camera's offset
+    SDL_Rect adjustedDoorRect = {
+        Car->door_rect.x - camera.position.x,
+        Car->door_rect.y - camera.position.y,
+        Car->door_rect.w,
+        Car->door_rect.h
+    };
+
+    //  anchor point relative to the adjusted door's position
+    SDL_Point door_anchor = {
+        (int)(adjustedDoorRect.x + Car->door_rect.w / 2),
+        (int)(adjustedDoorRect.y + Car->door_rect.h / 2)
+    };
+
+    // Render the car and the door
+    SDL_RenderCopy(r, Car->car_tex, NULL, &adjustedCarRect);
+    SDL_RenderCopyEx(r, Car->door_tex, NULL, &adjustedDoorRect, Car->door_angle, &door_anchor, SDL_FLIP_NONE);
 }
+
 
 void ExitCar_destroy(ExitCar *Car){
     SDL_DestroyTexture(Car->car_tex);
