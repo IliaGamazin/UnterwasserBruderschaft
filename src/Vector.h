@@ -1,9 +1,11 @@
-#ifndef VECTOR
-#define VECTOR
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <stdbool.h>
 
-
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 // Vector2
 
