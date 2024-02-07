@@ -1,6 +1,7 @@
 #include <math.h>
-#include "Camera.h"
+
 #include "./Entity.h"
+#include "./Camera.h"
 
 // Entity
 
@@ -12,7 +13,7 @@ void Entity_destroy(Entity *entity) {
 
 void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera) {
     SDL_Rect src_rect = {
-        (entity->current_frame * entity->rect.w) + entity->current_frame,
+        entity->current_frame * entity->rect.w,
         0,
         entity->rect.w,
         entity->rect.h,
@@ -26,9 +27,7 @@ void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera) {
         entity->rect.h,
     };
 
-    double angle = atan2(entity->direction.y, entity->direction.x) * (180 / M_PI);
-
-
+    double angle = radians_to_degrees(atan2(entity->direction.y, entity->direction.x));
   
     SDL_RenderCopyEx(
         renderer,
@@ -40,6 +39,7 @@ void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera) {
         SDL_FLIP_NONE
     );
 }
+
 // Entity player
 
 Entity *Player_new(
@@ -130,5 +130,4 @@ void Player_update(Entity *entity) {
 }
 
 // Entity enemy
-
 
