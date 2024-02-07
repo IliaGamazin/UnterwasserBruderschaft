@@ -5,7 +5,8 @@
 #include "./Libs.h"
 #include "./Vector.h"
 #include "./Weapon.h"
-#include "Camera.h"
+#include "./Camera.h"
+
 // CHARACTER_TYPE
 
 typedef enum {
@@ -18,6 +19,7 @@ typedef enum {
 
 typedef struct {
     SDL_Rect rect;
+    SDL_Rect hitbox;
     Vector2 direction;
     double speed;
     Weapon *weapon;

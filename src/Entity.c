@@ -53,6 +53,12 @@ Entity *Player_new(
     Entity *entity = malloc(sizeof(Entity));
 
     entity->rect = rect;
+    entity->hitbox = (SDL_Rect) {
+        3, // Offset on x
+        0, // Offset on y
+        49,
+        49,
+    };
     entity->direction = direction;
     entity->speed = speed;
     entity->last_animated = 0;
