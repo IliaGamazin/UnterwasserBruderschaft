@@ -1,6 +1,6 @@
 #include <math.h>
 
-#include "./Vector.h"
+#include "../include/Vector.h"
 
 // Vector2
 

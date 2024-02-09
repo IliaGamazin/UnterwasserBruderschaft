@@ -1,4 +1,4 @@
-#include "Header_main.h"
+#include "../include/Header_main.h"
 
 #define BUTTON_COUNT_CHOOSE 3
 #define CURRENT_LEVEL_CHOOSE level-1
@@ -40,7 +40,6 @@ void handle_pointing_choose(SDL_Point mouse_point, Button *button_arr, Mask **ma
 }
 
 CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level) {
-    
     // Change game state variables
 
     PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroBg.png");
@@ -138,3 +137,4 @@ CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level) {
     ChooseCharacter_destroy(button_arr, PBState->bgTexture, PBState->bgMusic, mask_arr);
     return char_type;
 }
+

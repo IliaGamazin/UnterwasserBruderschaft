@@ -1,5 +1,6 @@
-#include "./Header_main.h"
-#include "Camera.h"
+#include "../include/Header_main.h"
+#include "../include/Camera.h"
+
 void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
     SDL_DestroyTexture(ammo_texture);
     SDL_DestroyTexture(ammo_fired_texture);
@@ -9,7 +10,6 @@ void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* p
     BulletManager_destroy(bullet_manager);
     Entity_destroy(player);
 }
-
 
 void updateCameraPosition(Camera* camera, Entity* player, int levelWidth, int levelHeight) {
     camera->position.x = (player->rect.x + player->rect.w / 2) - WINDOW_WIDTH / 2;
@@ -25,7 +25,6 @@ void updateCameraPosition(Camera* camera, Entity* player, int levelWidth, int le
         camera->position.y = levelHeight - camera->viewPort.h;
     }
 }
-
 
 void Hood_render(SDL_Renderer *renderer, Entity *player, SDL_Texture *ammo_texture, SDL_Texture *ammo_fired_texture){
     Vector2 initials = Vector2_new(40, 0);

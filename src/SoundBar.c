@@ -1,17 +1,20 @@
-#include "./SoundBar.h"
+#include "../include/SoundBar.h"
 
-SoundBar* createSoundBar(int x, int y, int barWidth, int barHeight, SDL_Renderer* r) {
-    SoundBar* Bar = (SoundBar*)malloc(sizeof(SoundBar));
-    Bar->barRect = createRect(x, y, barWidth, barHeight);
-    Bar->barTexture = IMG_LoadTexture(r, "media/img/soundbar.png");
+SoundBar *SoundBar_new(SDL_Renderer *renderer, int x, int y, int w, int h) {
+    SoundBar* Bar = malloc(sizeof(SoundBar));
+
+    Bar->rect = Rect_new(x, y, w, h);
+    Bar->texture = IMG_LoadTexture(renderer, "./media/img/soundbar.png");
+
     return Bar;
 }
 
-void updateSoundBar(SoundBar* soundBar, int volume) {
-    soundBar->barRect.w = volume * 3;
+void SoundBar_update(SoundBar *bar, int volume) {
+    bar->rect.w = volume * 3;
 }
-void destroyBar(SoundBar* b) {
-    SDL_DestroyTexture(b->barTexture);
-    free(b);
+
+void SoundBar_destroy(SoundBar *bar) {
+    SDL_DestroyTexture(bar->texture);
+    free(bar);
 }
 

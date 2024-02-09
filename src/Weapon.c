@@ -1,4 +1,4 @@
-#include "./Weapon.h"
+#include "../include/Weapon.h"
 
 // Weapon
 

@@ -1,12 +1,12 @@
-#include "./Header_main.h"
+#include "../include/Header_main.h"
 
-SDL_Rect createRect(int x, int y, int w, int h) {
-    SDL_Rect rect;
-    rect.x = x;
-    rect.y = y;
-    rect.w = w;
-    rect.h = h;
-    return rect;
+SDL_Rect Rect_new(int x, int y, int w, int h) {
+    return (SDL_Rect) {
+        x,
+        y,
+        w,
+        h,
+    };
 }
 
 void handleButtonPointingMenu(SDL_Point mouse_point, Button *button_arr, GameState *PBState) {
@@ -57,7 +57,7 @@ void destroyMenu(Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, Mix_M
     }
     Mix_FreeChunk(exitSound);
     Mix_FreeMusic(bgMusic);
-    destroyBar(Bar);
+    SoundBar_destroy(Bar);
     free(buttonArr);
 }
 

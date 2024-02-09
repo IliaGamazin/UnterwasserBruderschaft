@@ -1,5 +1,6 @@
-#include "./Bullet.h"
-#include "Camera.h"
+#include "../include/Bullet.h"
+#include "../include/Camera.h"
+
 // Bullet
 
 Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba color) {
@@ -42,9 +43,4 @@ void Bullet_render(SDL_Renderer *renderer, Bullet bullet, Camera camera) {
         adjustedEnd.y
     );
 }
-
-
-
-
-
 

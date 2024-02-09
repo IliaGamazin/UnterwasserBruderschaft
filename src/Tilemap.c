@@ -1,13 +1,14 @@
-#include "Tilemap.h"
-#include "Camera.h"
+#include "../include/Tilemap.h"
+#include "../include/Camera.h"
+
 // Tilemap
 
-Tilemap Map_new(SDL_Renderer *r){
+Tilemap Map_new(SDL_Renderer *r) {
     Tilemap Map;
 
     Map.width = 48;
     Map.height = 27;
-    Map.bg_rect = createRect(0, 0, LEVEL_WIDTH, LEVEL_HEIGHT);
+    Map.bg_rect = Rect_new(0, 0, LEVEL_WIDTH, LEVEL_HEIGHT);
     Map.tiles = malloc(sizeof(Tile *) * 48);
 
     for (int i = 0; i < 48; i++) {
@@ -24,7 +25,7 @@ Tilemap Map_new(SDL_Renderer *r){
     {
        for (size_t j = 0; j < Map.height; j++)
        {
-            Map.tiles[i][j].tile_rect = createRect(i*40, j*40, 40,40);
+            Map.tiles[i][j].tile_rect = Rect_new(i*40, j*40, 40,40);
             if (((i == 0 || i == 47) && j < 48)||(i == 22 && (j >= 1 && j <=6)))
             {
                 Map.tiles[i][j].type = WALL;
@@ -54,6 +55,7 @@ Tilemap Map_new(SDL_Renderer *r){
     }
     return Map;
 }
+
 void Map_render(Tilemap t, SDL_Renderer* r, Camera camera){
     // Move background rect according to camera
     SDL_Rect adjustedBgRect = {
@@ -77,6 +79,7 @@ void Map_render(Tilemap t, SDL_Renderer* r, Camera camera){
         }
     }
 }
+
 void Map_destroy(Tilemap t){
     for (int i = 0; i < 3; i++)
     {

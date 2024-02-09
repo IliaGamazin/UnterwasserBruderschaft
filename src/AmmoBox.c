@@ -1,18 +1,17 @@
-#include "AmmoBox.h"
-#include "Camera.h"
+#include "../include/AmmoBox.h"
+#include "../include/Camera.h"
 
 AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y) {
-    AmmoBox box;
-    box.rect = createRect(x, y, TILE_SIZE * 2, TILE_SIZE);
-    box.empty_tex = IMG_LoadTexture(r, "media/img/ammobox_empty.png");
-    box.full_tex = IMG_LoadTexture(r, "media/img/ammobox_full.png");
-    box.is_full = true;
-    box.reload_sound = Mix_LoadWAV("media/sound/reloadbox_sound.wav");
-    return box;
+    return (AmmoBox) {
+        Rect_new(x, y, TILE_SIZE * 2, TILE_SIZE),
+        IMG_LoadTexture(r, "./media/img/ammobox_full.png"),
+        IMG_LoadTexture(r, "./media/img/ammobox_empty.png"),
+        Mix_LoadWAV("./media/sound/reloadbox_sound.wav"),
+        true,
+    };
 }
 
 void AmmoBox_render(SDL_Renderer *r, AmmoBox box, Camera camera) {
-   
     SDL_Rect renderQuad = {
         box.rect.x - camera.position.x,
         box.rect.y - camera.position.y,
@@ -21,11 +20,8 @@ void AmmoBox_render(SDL_Renderer *r, AmmoBox box, Camera camera) {
     };
 
     // Render the correct texture based on whether the box is full or empty
-    if (box.is_full) {
-        SDL_RenderCopy(r, box.full_tex, NULL, &renderQuad);
-    } else {
-        SDL_RenderCopy(r, box.empty_tex, NULL, &renderQuad);
-    }
+
+    SDL_RenderCopy(r, (box.is_full ? box.full_tex : box.empty_tex), NULL, &renderQuad);
 }
 
 void AmmoBox_destroy(AmmoBox box) {
@@ -33,11 +29,4 @@ void AmmoBox_destroy(AmmoBox box) {
     SDL_DestroyTexture(box.full_tex);
     Mix_FreeChunk(box.reload_sound);
 }
-
-
-
-
-
-
-
 

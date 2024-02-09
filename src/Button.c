@@ -1,15 +1,16 @@
-#include "./Button.h"
+#include "../include/Button.h"
 
 // Button
 
 Button Button_new(int x, int y, int w, int h, SDL_Texture *button_tex_idle, SDL_Texture *button_tex_hover, Mix_Chunk *button_sound ) {
-    Button But;
-    But.button_rect = createRect(x, y, w, h);
-    But.button_tex_idle = button_tex_idle;
-    But.button_tex_hover = button_tex_hover;
-    But.button_sound = button_sound;
-    But.hower = false;
-    return But;
+    return (Button) {
+        Rect_new(x, y, w, h),
+        button_tex_idle,
+        button_tex_hover,
+        button_sound,
+        false,
+        false,
+    };
 }
 
 Button *Button_arr_new_menu(int x, int y, int w, int h, SDL_Renderer *r) {

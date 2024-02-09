@@ -1,4 +1,4 @@
-#include "./Header_main.h"
+#include "../include/Header_main.h"
 
 SDL_Window* window;
 GameState* PBState;

@@ -55,6 +55,6 @@ enum BUTTON_TYPE_MENU {
     EXIT_BUTTON,
 };
 
-SDL_Rect createRect(int x, int y, int w, int h);
+SDL_Rect Rect_new(int x, int y, int w, int h);
 
 #endif
