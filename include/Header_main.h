@@ -11,7 +11,8 @@
 #include "Tilemap.h"
 #include "ExitCar.h"
 #include "AmmoBox.h"
-
+#include "PlayerDrive.h"
+#include "Background.h"
 typedef struct {
     SCENE run;
     SDL_Renderer *renderer;
@@ -33,6 +34,7 @@ void level_intro(GameState* PBState, SCENE level);
 CHARACTER_TYPE ChooseCharacter(GameState* PBState, SCENE level);
 void menu(GameState* PBState);
 void level1(GameState* PBState, CHARACTER_TYPE CharType);
+void level2(GameState *PBState, CHARACTER_TYPE char_type);
 
 void handleButtonPointingMenu(SDL_Point mousePoint, Button* buttonArr, GameState* PBState);
 void handle_pointing_choose(SDL_Point mousePoint, Button* buttonArr, Mask** maskArr, GameState* PBState);

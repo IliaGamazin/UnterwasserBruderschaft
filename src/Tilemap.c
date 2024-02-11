@@ -25,30 +25,59 @@ Tilemap Map_new(SDL_Renderer *r) {
     {
        for (size_t j = 0; j < Map.height; j++)
        {
-            Map.tiles[i][j].tile_rect = Rect_new(i*40, j*40, 40,40);
-            if (((i == 0 || i == 47) && j < 48)||(i == 22 && (j >= 1 && j <=6)))
-            {
+            Map.tiles[i][j].tile_rect = Rect_new(i * 40, j * 40, 40, 40);
+            if (i == 22 && (j >= 1 && j <= 6)) {
                 Map.tiles[i][j].type = WALL;
             }
-            else if (i == 15 && (j >= 4 && j< 12))
-            {
+            else if ((i == 0 || i == 47) && j < 48) {
                 Map.tiles[i][j].type = WALL;
             }
-            else if(i == 4 && (j>=4 && j <= 17)){
+            else if (i == 4 && (j >= 4 && j <= 17)) {
                 Map.tiles[i][j].type = WALL;
             }
-            
-            else if((j == 3 && ((i >= 4 && i <= 15)|| (i>= 18 && i <= 21)))||(j == 0 &&(i >= 22 && i <= 34)) 
-            | (j == 7 &&(( i >= 16 && i <= 18) || (i >= 21 && i <=26)))){
+            else if ((i >= 4 && i <= 23) && (j == 18)) {
                 Map.tiles[i][j].type = WALL;
             }
-            else if(j == 6 && (i>=5 && i <= 14)){
+            else if (((i >= 4 && i <= 15) || (i >= 18 && i <= 21)) && j == 3) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if ((i >= 5 && i <= 14) && j == 6) {
                 Map.tiles[i][j].type = OBSTACLE;
             }
-            else if(j == 4 && (i>=26 && i <= 27)){
+            else if (i == 15 && (j >= 4 && j < 12)) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if (i == 15 && (j >= 14 && j <= 18)) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if (((i >= 16 && i <= 18) || (i >= 21 && i <= 26)) && j == 7) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if ((i >= 22 && i <= 34) && j == 0) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if ((i >= 26 && i <= 27) && j == 4) {
                 Map.tiles[i][j].type = OBSTACLE;
             }
-            else{
+            else if ((i >= 27 && i <= 43) && j == 18) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if ((i >= 30 && i <= 33) && j == 7) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if (i == 34 && (j >= 1 && j <= 11)) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if (i == 34 && (j >= 14 && j <= 17)) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if ((i >= 35 && i <= 42) && j == 6) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else if (i == 43 && (j >= 6 && j <= 18)) {
+                Map.tiles[i][j].type = WALL;
+            }
+            else {
                 Map.tiles[i][j].type = FLOOR;
             }
        }

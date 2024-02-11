@@ -51,7 +51,7 @@ void menu(GameState* PBState){
                                 PBState->run = LEVEL1_INTRO;
                                 break;
                             case SECOND_LEVEL_BUTTON:
-                                PBState->run = LEVEL2;
+                                PBState->run = LEVEL2_INTRO;
                                 break;
                             case THIRD_LEVEL_BUTTON:
                                 PBState->run = LEVEL3;

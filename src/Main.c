@@ -49,12 +49,11 @@ int main(void){
         case LEVEL2_INTRO:
             level_intro(PBState, LEVEL2_INTRO);
             break;
+        case LEVEL2_CHOOSE:
+            character = ChooseCharacter(PBState, LEVEL2);
+            break;
         case LEVEL2:
-            while (SDL_PollEvent(&PBState->event)) {
-                if (PBState->event.type == SDL_QUIT) {
-                    PBState->run = QUIT;
-                }
-            }
+            level2(PBState, character);
             break;
         case LEVEL3:
             while (SDL_PollEvent(&PBState->event)) {

@@ -20,6 +20,7 @@ typedef enum {
 typedef struct {
     SDL_Rect rect;
     SDL_Rect hitbox;
+    SDL_Point pivot;
     Vector2 direction;
     double speed;
     Weapon *weapon;

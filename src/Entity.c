@@ -35,7 +35,7 @@ void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera) {
         &src_rect,
         &dest_rect,  // Updated for the usage of rec
         angle,
-        NULL,  // Center of rotation
+        &entity->pivot,  // Center of rotation
         SDL_FLIP_NONE
     );
 }
@@ -58,6 +58,10 @@ Entity *Player_new(
         0, // Offset on y
         49,
         49,
+    };
+    entity->pivot = (SDL_Point) {
+        entity->hitbox.w / 2 + entity->hitbox.x,
+        entity->hitbox.h / 2
     };
     entity->direction = direction;
     entity->speed = speed;
