@@ -71,15 +71,15 @@ Entity *Player_new(
 
     switch (type) {
         case SHAYLUSHAY:
-            entity->texture = IMG_LoadTexture(renderer, "./media/img/shaylushay.png");
+            entity->texture = IMG_LoadTexture(renderer, "./media/img/entities/shaylushay.png");
             entity->weapon = Weapon_new(RIFLE);
             break;
         case YALTPILS:
-            entity->texture = IMG_LoadTexture(renderer, "./media/img/yaltpils.png");
+            entity->texture = IMG_LoadTexture(renderer, "./media/img/entities/yaltpils.png");
             entity->weapon = Weapon_new(PISTOL);
             break;
         case DAWAWUE:
-            entity->texture = IMG_LoadTexture(renderer, "./media/img/dawawue.png");
+            entity->texture = IMG_LoadTexture(renderer, "./media/img/entities/dawawue.png");
             entity->weapon = Weapon_new(SHOTGUN);
             break;
     }

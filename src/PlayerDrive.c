@@ -10,18 +10,18 @@ Player *player_drive_new(SDL_Renderer *r, int x, int y, CHARACTER_TYPE type) {
 	switch (type) {
 		case SHAYLUSHAY:
 			player_drive->texture = IMG_LoadTexture(r, "media/img/level2/car_shaylu.png");
-			player_drive->velocity_x = 2;
-			player_drive->velocity_y = 2;
+			player_drive->velocity_x = 8;
+			player_drive->velocity_y = 8;
 			break;
 		case YALTPILS:
-			player_drive->texture = IMG_LoadTexture(r, "../media/img/level2/carDrive.png");
-			player_drive->velocity_x = 4;
-			player_drive->velocity_y = 4;
+			player_drive->texture = IMG_LoadTexture(r, "media/img/level2/car_yal.png");
+			player_drive->velocity_x = 12;
+			player_drive->velocity_y = 12;
 			break;
 		case DAWAWUE:
-			player_drive->texture = IMG_LoadTexture(r, "../media/img/level2/carDrive.png");
-			player_drive->velocity_x = 6;
-			player_drive->velocity_y = 6;
+			player_drive->texture = IMG_LoadTexture(r, "media/img/level2/car_daw.png");
+			player_drive->velocity_x = 16;
+			player_drive->velocity_y = 16;
 			break;
 		default:
 			break;

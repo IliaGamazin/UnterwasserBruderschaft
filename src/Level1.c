@@ -74,16 +74,16 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
     switch (character_type) {
         case SHAYLUSHAY:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/rifleAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/rifleNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud//rifleAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/hud//img/rifleNoAmmo.png");
             break;
         case YALTPILS:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/pistolAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/pistolNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud//pistolAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/hud//img/pistolNoAmmo.png");
             break;
         case DAWAWUE:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/shotgunAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/shotgunNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/shotgunAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/hud//img/shotgunNoAmmo.png");
             break;
     }
     

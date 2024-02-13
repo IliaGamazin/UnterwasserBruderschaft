@@ -13,6 +13,7 @@
 #include "AmmoBox.h"
 #include "PlayerDrive.h"
 #include "Background.h"
+#include "Obstacles.h"
 typedef struct {
     SCENE run;
     SDL_Renderer *renderer;

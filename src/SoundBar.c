@@ -4,7 +4,7 @@ SoundBar *SoundBar_new(SDL_Renderer *renderer, int x, int y, int w, int h) {
     SoundBar* Bar = malloc(sizeof(SoundBar));
 
     Bar->rect = Rect_new(x, y, w, h);
-    Bar->texture = IMG_LoadTexture(renderer, "./media/img/soundbar.png");
+    Bar->texture = IMG_LoadTexture(renderer, "./media/img/hud/soundbar.png");
 
     return Bar;
 }

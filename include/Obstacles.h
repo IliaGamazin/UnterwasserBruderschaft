@@ -7,7 +7,9 @@
 // Obstacle type
 
 typedef enum {
-    
+    MSHN,
+    TRKTR,
+    RDBLK,
 } OBSTACLE_TYPE;
 
 // Obstacle
@@ -22,32 +24,26 @@ typedef struct {
 // Obstacle Manager
 
 typedef struct {
-    Obstacle* current_obstacles;
+    Obstacle *current_obstacles;
     int count;
     int capacity;
     int types_count;
-    int spawnRate;
+    int spawn_rate;
     int lane_height;
-    int time;
+    double top_offset_ratio;
 } ObstaclesManager;
 
-ObstaclesManager* obstacle_manager_new(int quantity);
+ObstaclesManager *obstacle_manager_new(int capacity, int types_count, int spawn_rate);
+Obstacle obstacle_new(ObstaclesManager *manager, int lane, OBSTACLE_TYPE type, SDL_Renderer *r);
 
-void destroy_obstacle_manager(ObstaclesManager* om);
+void obstacle_manager_destroy(ObstaclesManager *om);
+void obstacle_manager_update(ObstaclesManager *manager, int speed);
+void obstacle_manager_render(ObstaclesManager *manager, SDL_Renderer* renderer);
 
-void add_obstacle(ObstaclesManager* manager, Obstacle* obstacle);
+void spawn_obstacles(ObstaclesManager *manager, SDL_Renderer *r);
+void remove_obstacle(ObstaclesManager *manager, int index);
 
-void remove_obstacle(ObstaclesManager* manager, int index);
 
-void update_obstacles(ObstaclesManager* manager, int speed, int screenWidth);
-
-void spawn_obstacles(ObstaclesManager* manager);
-
-Obstacle generate_obstacle(ObstaclesManager* manager, int lane, ObstacleType* type);
-
-void obstacles_rendercopy(ObstaclesManager* manager, SDL_Renderer* renderer);
-
-void add_obstacle_type(ObstaclesManager* manager, char* name, int default_velocity, int width, int height, SDL_Texture* tex);
 
 #endif
 

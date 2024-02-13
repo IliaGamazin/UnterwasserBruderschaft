@@ -5,12 +5,12 @@
 ExitCar *ExitCar_new(SDL_Renderer *r){
     ExitCar *Car;
     Car = (ExitCar*)malloc(sizeof(ExitCar));
-    Car->car_rect = Rect_new(600, 600, 214, 94);
+    Car->car_rect = Rect_new(200, 960, 214, 94);
     Car->car_tex = IMG_LoadTexture(r, "media/img/carExit.png");
-    Car->door_rect = Rect_new(672, 606, 52, 18);
+    Car->door_rect = Rect_new(Car->car_rect.x + 72, Car->car_rect.y + 6, 52, 18);
     Car->door_tex = IMG_LoadTexture(r, "media/img/doorExit.png");
-    Car->door_collider = Rect_new(600, 400, 214, 294);
-    Car->seat_collider = Rect_new(672, 570, 50, 50);
+    Car->door_collider = Rect_new(Car->car_rect.x, Car->car_rect.y - 200, 214, 294);
+    Car->seat_collider = Rect_new(Car->car_rect.x + 72, Car->car_rect.y - 30, 50, 50);
     Car->door_angle = 0;
     Car->is_opened = false;
     Car->open_sound = Mix_LoadWAV("");
@@ -30,7 +30,7 @@ void ExitCar_update(ExitCar *Car, SDL_Point PlayerCenter){
 }
 
 void ExitCar_render(SDL_Renderer *r, ExitCar *Car, Camera camera){
-    // camera's offset
+    // Camera's offset
     SDL_Rect adjustedCarRect = {
         Car->car_rect.x - camera.position.x,
         Car->car_rect.y - camera.position.y,
@@ -38,7 +38,7 @@ void ExitCar_render(SDL_Renderer *r, ExitCar *Car, Camera camera){
         Car->car_rect.h
     };
 
-    // door's position by the camera's offset
+    // Door's position by the camera's offset
     SDL_Rect adjustedDoorRect = {
         Car->door_rect.x - camera.position.x,
         Car->door_rect.y - camera.position.y,
@@ -46,7 +46,7 @@ void ExitCar_render(SDL_Renderer *r, ExitCar *Car, Camera camera){
         Car->door_rect.h
     };
 
-    //  anchor point relative to the adjusted door's position
+    //  Anchor point relative to the adjusted door's position
     SDL_Point door_anchor = {
         (int)(adjustedDoorRect.x + Car->door_rect.w / 2),
         (int)(adjustedDoorRect.y + Car->door_rect.h / 2)

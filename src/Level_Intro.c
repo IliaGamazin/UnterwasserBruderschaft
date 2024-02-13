@@ -21,12 +21,12 @@ void level_intro(GameState *PBState, SCENE intro_type) {
     switch (intro_type) {
         case INTRO_1:
             PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/intros/main_intro1.png");
-            PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+            PBState->bgMusic = Mix_LoadMUS("media/sound/intro_theme.mp3");
             mask_sprite = Mask_new(PBState->renderer, YALTPILS, 10, 550, 170, 170);
             break;
         case INTRO_2:
             PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/intros/main_intro2.png");
-            PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+            PBState->bgMusic = Mix_LoadMUS("media/sound/intro_theme.mp3");
             mask_sprite = Mask_new(PBState->renderer, SHAYLUSHAY, 10, 550, 170, 170);
             break;
         case LEVEL1_INTRO:
