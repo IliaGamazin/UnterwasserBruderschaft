@@ -55,7 +55,9 @@ void level_intro(GameState *PBState, SCENE intro_type) {
 
     SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
     SDL_DestroyTexture(mask_sprite->mask_tex_active);
+
     Mix_PlayMusic(PBState->bgMusic, 0);
+
     mask_sprite->mask_tex_active = mask_sprite->mask_tex_idle;
     mask_sprite->is_animated = true;
 

@@ -1,6 +1,7 @@
 #pragma once
 #ifndef AMMOBOX_H
 #define AMMOBOX_H
+
 #include "Camera.h"
 #include "./Libs.h"
 #include "./Tilemap.h"

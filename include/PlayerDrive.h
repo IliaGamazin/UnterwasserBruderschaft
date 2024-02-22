@@ -2,6 +2,8 @@
 
 #include "Libs.h"
 #include "Entity.h"
+#include "Obstacles.h"
+
 
 #ifndef PLAYER_DRIVE_H
 #define PLAYER_DRIVE_H
@@ -16,16 +18,17 @@ typedef struct {
     SDL_Rect rect;
     SDL_Texture *texture;
     int velocity_x;
+    int initial_velocity_x;
     int velocity_y;
+    int passed_distance;
     CHARACTER_TYPE type;
 } Player;
 
 Player *player_drive_new(SDL_Renderer *r, int x, int y, CHARACTER_TYPE type);
 
+bool player_check_collision(ObstaclesManager *manager, Player *player_drive);
 void player_drive_update(Player *player_drive, bool key_w, bool key_s);
-
 void player_drive_render(Player *player_drive, SDL_Renderer *r);
-
 void player_drive_destroy(Player *player_drive);
 
 #endif

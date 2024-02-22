@@ -9,7 +9,7 @@ SDL_Rect Rect_new(int x, int y, int w, int h) {
     };
 }
 
-void handleButtonPointingMenu(SDL_Point mouse_point, Button *button_arr, GameState *PBState) {
+void handle_pointing_menu(SDL_Point mouse_point, Button *button_arr, GameState *PBState) {
     for (int i = 0; i < BUTTON_COUNT_MENU; i++) {
         if (SDL_PointInRect(&mouse_point, &button_arr[i].button_rect)) {
             SDL_SetCursor(PBState->handCursor);
@@ -22,6 +22,7 @@ void handleButtonPointingMenu(SDL_Point mouse_point, Button *button_arr, GameSta
             button_arr[i].playing_sound = false;
         }
     }
+
     for (int i = 0; i < BUTTON_COUNT_MENU - 1; i++) {
         if (button_arr[i].hower) {
             if (!button_arr[i].playing_sound) {
@@ -42,6 +43,7 @@ void handleButtonPointingMenu(SDL_Point mouse_point, Button *button_arr, GameSta
             button_arr[i].playing_sound = false;
         }
     }
+    
     if (button_arr[BUTTON_COUNT_MENU - 1].hower) {
         if (!button_arr[BUTTON_COUNT_MENU - 1].playing_sound) {
             Mix_PlayChannel(-1, button_arr[BUTTON_COUNT_MENU - 1].button_sound, 0);

@@ -16,6 +16,7 @@ void updateCameraPosition(Camera* camera, Entity* player, int levelWidth, int le
     camera->position.y = (player->rect.y + player->rect.h / 2) - WINDOW_HEIGHT / 2;
 
     // Clamp the camera
+    
     if (camera->position.x < 0) { camera->position.x = 0; }
     if (camera->position.y < 0) { camera->position.y = 0; }
     if (camera->position.x > levelWidth - camera->viewPort.w) {
@@ -74,26 +75,25 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
     switch (character_type) {
         case SHAYLUSHAY:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud//rifleAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/hud//img/rifleNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/rifleAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/rifleNoAmmo.png");
             break;
         case YALTPILS:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud//pistolAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/hud//img/pistolNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/pistolAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/pistolNoAmmo.png");
             break;
         case DAWAWUE:
             ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/shotgunAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/hud//img/shotgunNoAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/shotgunNoAmmo.png");
             break;
     }
     
     Camera camera = {{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT}, {0, 0}};
-    int levelWidth = 1920;
-    int levelHeight = 1080;    
+
     // Main loop
     
     while (PBState->run == LEVEL1) {
-        updateCameraPosition(&camera, player, levelWidth, levelHeight);
+        updateCameraPosition(&camera, player, LEVEL_WIDTH, LEVEL_HEIGHT);
         int mouseX;
         int mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
@@ -102,11 +102,11 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         mouseY += camera.position.y;
         
         Vector2 player_center = Vector2_new(
-            player -> rect.x + (player -> rect.w / 2.0),
-            player -> rect.y + (player -> rect.h / 2.0)
+            player->rect.x + (player -> rect.w / 2.0),
+            player->rect.y + (player -> rect.h / 2.0)
         );
         
-        player -> direction = Vector2_from_points(
+        player->direction = Vector2_from_points(
                 player_center,
                 Vector2_new(mouseX, mouseY)
             );
@@ -120,7 +120,9 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
             player_center,
             Vector2_new(mouseX, mouseY)
         );
-        updateCameraPosition(&camera, player, levelWidth, levelHeight);
+
+        updateCameraPosition(&camera, player, LEVEL_WIDTH, LEVEL_HEIGHT);
+
         // Events
 
         while (SDL_PollEvent(&PBState->event)) {
@@ -168,7 +170,8 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
         // Update
 
-        BulletManager_update(bullet_manager, levelWidth, levelHeight);
+        BulletManager_update(bullet_manager, LEVEL_WIDTH, LEVEL_HEIGHT);
+
         Player_update(player);
         ExitCar_update(exit, PlayerCenter);
 
@@ -182,10 +185,10 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         }
         
         Map_render(map, PBState->renderer, camera);
-                AmmoBox_render(PBState->renderer, box, camera);
-                BulletManager_render(PBState->renderer, bullet_manager, camera);
-                Entity_render(PBState->renderer, player, camera);
-                ExitCar_render(PBState->renderer, exit, camera);
+        AmmoBox_render(PBState->renderer, box, camera);
+        BulletManager_render(PBState->renderer, bullet_manager, camera);
+        Entity_render(PBState->renderer, player, camera);
+        ExitCar_render(PBState->renderer, exit, camera);
         Hood_render(PBState -> renderer, player, ammo_texture, ammo_fired_texture);
 
 

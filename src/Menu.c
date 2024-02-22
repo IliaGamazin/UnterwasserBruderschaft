@@ -37,7 +37,7 @@ void menu(GameState* PBState){
             SDL_Point mouse_point = { mouseX, mouseY };
 
             if (!is_quitting) {
-                handleButtonPointingMenu(mouse_point, button_arr, PBState);
+                handle_pointing_menu(mouse_point, button_arr, PBState);
             }
 
             if (PBState->event.type == SDL_MOUSEBUTTONDOWN) {

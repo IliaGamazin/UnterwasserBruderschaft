@@ -50,23 +50,23 @@ Obstacle obstacle_new(ObstaclesManager *manager, int lane, OBSTACLE_TYPE type, S
     new_obst.rect.x = WINDOW_WIDTH;
     new_obst.rect.y = top_offset_abs + lane * manager->lane_height;
     new_obst.type = type;
-    
+
     switch (type)
     {
     case MSHN:
-        new_obst.rect.w = 212;
+        new_obst.rect.w = 94;
         new_obst.rect.h = 94;
-        new_obst.tex = IMG_LoadTexture(r, "./media/img/level2/rdblk.png");
+        new_obst.tex = IMG_LoadTexture(r, "./media/img/level2/mshn.png");
         new_obst.velocity = 5;
         break;
     case TRKTR:
         new_obst.rect.w = 94;
         new_obst.rect.h = 94;
         new_obst.tex = IMG_LoadTexture(r, "./media/img/level2/rdblk.png");
-        new_obst.velocity = 10;
+        new_obst.velocity = 5;
         break;
     case RDBLK:
-        new_obst.rect.w = 300;
+        new_obst.rect.w = 71;
         new_obst.rect.h = 94;
         new_obst.tex = IMG_LoadTexture(r, "./media/img/level2/rdblk.png");
         new_obst.velocity = 0;

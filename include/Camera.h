@@ -1,6 +1,8 @@
-// Camera.h
 #ifndef CAMERA_H
 #define CAMERA_H
+
+// Camera
+
 #include <SDL2/SDL_rect.h>
 #include "Vector.h" 
 

@@ -33,7 +33,7 @@ void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera) {
         renderer,
         entity->texture,
         &src_rect,
-        &dest_rect,  // Updated for the usage of rec
+        &dest_rect,      // Updated for the usage of rec
         angle,
         &entity->pivot,  // Center of rotation
         SDL_FLIP_NONE
