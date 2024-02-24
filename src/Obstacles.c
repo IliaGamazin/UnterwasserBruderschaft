@@ -1,4 +1,4 @@
-#include "../include/Obstacles.h"
+#include "../inc/Obstacles.h"
 
 ObstaclesManager *obstacle_manager_new(int capacity, int types_count, int spawn_rate) {
     ObstaclesManager *manager = malloc(sizeof(ObstaclesManager));

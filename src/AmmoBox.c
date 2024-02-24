@@ -1,5 +1,5 @@
-#include "../include/AmmoBox.h"
-#include "../include/Camera.h"
+#include "../inc/AmmoBox.h"
+#include "../inc/Camera.h"
 
 AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y) {
     return (AmmoBox) {

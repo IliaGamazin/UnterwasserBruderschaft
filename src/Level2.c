@@ -1,4 +1,4 @@
-#include "../include/Header_main.h"
+#include "../inc/Header_main.h"
 
 void level2_destroy(ObstaclesManager *ob_manager, BackgroundManager *bg_manager, Player *player_drive, Mix_Music *bg_music, t_Timer *timer) {
     timer_destroy(timer);

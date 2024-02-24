@@ -1,4 +1,4 @@
-#include "../include/Button.h"
+#include "../inc/Button.h"
 
 // Button
 

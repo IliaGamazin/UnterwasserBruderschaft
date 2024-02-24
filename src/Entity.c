@@ -1,7 +1,7 @@
 #include <math.h>
 
-#include "../include/Entity.h"
-#include "../include/Camera.h"
+#include "../inc/Entity.h"
+#include "../inc/Camera.h"
 
 // Entity
 

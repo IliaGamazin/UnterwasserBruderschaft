@@ -1,4 +1,4 @@
-#include "../include/Rgba.h"
+#include "../inc/Rgba.h"
 
 // Rgba
 

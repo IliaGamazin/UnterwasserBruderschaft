@@ -1,5 +1,5 @@
-#include "../include/PlayerDrive.h"
-#include "../include/Obstacles.h"
+#include "../inc/PlayerDrive.h"
+#include "../inc/Obstacles.h"
 
 // I drive (2011)
 

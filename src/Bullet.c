@@ -1,5 +1,5 @@
-#include "../include/Bullet.h"
-#include "../include/Camera.h"
+#include "../inc/Bullet.h"
+#include "../inc/Camera.h"
 
 // Bullet
 

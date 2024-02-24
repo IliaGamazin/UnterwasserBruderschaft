@@ -1,5 +1,5 @@
-#include "../include/Tilemap.h"
-#include "../include/Camera.h"
+#include "../inc/Tilemap.h"
+#include "../inc/Camera.h"
 
 // Tilemap
 

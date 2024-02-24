@@ -1,4 +1,4 @@
-#include "../include/Ray.h"
+#include "../inc/Ray.h"
 
 // Ray
 

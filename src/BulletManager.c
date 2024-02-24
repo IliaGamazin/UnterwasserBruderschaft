@@ -1,5 +1,5 @@
-#include "../include/BulletManager.h"
-#include "../include/Camera.h"
+#include "../inc/BulletManager.h"
+#include "../inc/Camera.h"
 
 // BulletManager
 

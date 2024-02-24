@@ -1,4 +1,4 @@
-#include "../include/Mask.h"
+#include "../inc/Mask.h"
 
 // Mask
 

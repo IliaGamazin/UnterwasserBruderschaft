@@ -1,5 +1,5 @@
-#include "../include/Header_main.h"
-#include "../include/Camera.h"
+#include "../inc/Header_main.h"
+#include "../inc/Camera.h"
 
 void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
     SDL_DestroyTexture(ammo_texture);

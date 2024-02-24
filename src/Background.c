@@ -1,5 +1,5 @@
-#include "../include/Libs.h"
-#include "../include/Background.h"
+#include "../inc/Libs.h"
+#include "../inc/Background.h"
 
 // Background
 

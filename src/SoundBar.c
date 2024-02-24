@@ -1,4 +1,4 @@
-#include "../include/SoundBar.h"
+#include "../inc/SoundBar.h"
 
 SoundBar *SoundBar_new(SDL_Renderer *renderer, int x, int y, int w, int h) {
     SoundBar* Bar = malloc(sizeof(SoundBar));

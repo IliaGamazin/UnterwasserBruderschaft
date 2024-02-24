@@ -1,4 +1,4 @@
-#include "../include/Timer.h"
+#include "../inc/Timer.h"
 
 // Timer create
 

@@ -1,4 +1,4 @@
-#include "../include/Header_main.h"
+#include "../inc/Header_main.h"
 
 #define BUTTON_COUNT_CHOOSE 3
 #define CURRENT_LEVEL_CHOOSE level-1

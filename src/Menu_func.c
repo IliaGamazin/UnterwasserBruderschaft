@@ -1,4 +1,4 @@
-#include "../include/Header_main.h"
+#include "../inc/Header_main.h"
 
 SDL_Rect Rect_new(int x, int y, int w, int h) {
     return (SDL_Rect) {
