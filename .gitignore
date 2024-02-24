@@ -1,3 +1,5 @@
-executable
+endgame
+./obj
 .DS_Store
+./*.o
 
