@@ -6,9 +6,9 @@ void menu(GameState* PBState){
     // Change game state variables 
 
     PBState->run = MENU;
-    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/menu/menu_bg.png");
+    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "./resource/img/menu/menu_bg.png");
     PBState->bgRect = Rect_new(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+    PBState->bgMusic = Mix_LoadMUS("./resource/sound/nightcall.mp3");
 
     SDL_QueryTexture(PBState->bgTexture, NULL, NULL, &PBState->bgRect.w, &PBState->bgRect.h);
     Mix_PlayMusic(PBState->bgMusic, 0);
@@ -20,7 +20,7 @@ void menu(GameState* PBState){
 
     Button *button_arr = Button_arr_new_menu((WINDOW_WIDTH - BUTTON_WIDTH) - 17, BUTTON_GAP * 1.5, BUTTON_WIDTH, BUTTON_HEIGHT, PBState->renderer);
     SoundBar *Bar = SoundBar_new(PBState->renderer, 185, 690, Mix_MasterVolume(-1) * 3, 30);
-    Mix_Chunk *exit_sound = Mix_LoadWAV("media/sound/carPass.wav");
+    Mix_Chunk *exit_sound = Mix_LoadWAV("./resource/sound/carPass.wav");
 
     // Scene loop
 

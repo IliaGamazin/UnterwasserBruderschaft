@@ -8,7 +8,7 @@ t_Timer *timer_new(int limit_time, SDL_Renderer *r) {
     Timer->current_time = 0;
     Timer->is_stopped = false;
     Timer->last_update_time = 0;
-    Timer->tex = IMG_LoadTexture(r, "media/img/hud/num_sheet.png");
+    Timer->tex = IMG_LoadTexture(r, "./resource/img/hud/num_sheet.png");
 
     return Timer;
 }

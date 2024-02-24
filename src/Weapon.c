@@ -7,7 +7,7 @@ Weapon *Weapon_new(WEAPON_TYPE type) {
 
     weapon->type = type;
     weapon->last_shoot = 0;
-    weapon->no_ammo_sound = Mix_LoadWAV("media/sound/no_ammo.wav");
+    weapon->no_ammo_sound = Mix_LoadWAV("./resource/sound/no_ammo.wav");
 
     switch (type) {
         case RIFLE:
@@ -15,21 +15,21 @@ Weapon *Weapon_new(WEAPON_TYPE type) {
             weapon->ammo = weapon->ammo_max;
             weapon->bullets_num = 1;
             weapon->round_delay = 170;
-            weapon->shot_sound = Mix_LoadWAV("media/sound/RifleShot.wav");
+            weapon->shot_sound = Mix_LoadWAV("./resource/sound/RifleShot.wav");
             break;
         case SHOTGUN:
             weapon->ammo_max = 8;
             weapon->ammo = weapon->ammo_max;
             weapon->bullets_num = 4;
             weapon->round_delay = 1000;
-            weapon->shot_sound = Mix_LoadWAV("media/sound/ShotgunShot.wav");
+            weapon->shot_sound = Mix_LoadWAV("./resource/sound/ShotgunShot.wav");
             break;
         case PISTOL:
             weapon->ammo_max = 18;
             weapon->ammo = weapon->ammo_max;
             weapon->bullets_num = 1;
             weapon->round_delay = 600;
-            weapon->shot_sound = Mix_LoadWAV("media/sound/PistolShot.wav");
+            weapon->shot_sound = Mix_LoadWAV("./resource/sound/PistolShot.wav");
             break;
     }
 

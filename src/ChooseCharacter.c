@@ -42,8 +42,8 @@ void handle_pointing_choose(SDL_Point mouse_point, Button *button_arr, Mask **ma
 CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level) {
     // Change game state variables
 
-    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroBg.png");
-    PBState->bgMusic = Mix_LoadMUS("media/sound/nightcall.mp3");
+    PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "./resource/img/chooseHero/chooseHeroBg.png");
+    PBState->bgMusic = Mix_LoadMUS("./resource/sound/nightcall.mp3");
     Mix_PlayMusic(PBState->bgMusic, 0);
 
     // Initialize scene variables
@@ -53,9 +53,9 @@ CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level) {
     Button *button_arr = Button_arr_new_choose(PBState->renderer);
 	CHARACTER_TYPE char_type = 0;
     
-    SDL_Texture *sha_border = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroSha.png");
-    SDL_Texture *yal_border = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroYal.png");
-    SDL_Texture *daw_border = IMG_LoadTexture(PBState->renderer, "media/img/chooseHero/chooseHeroDaw.png");
+    SDL_Texture *sha_border = IMG_LoadTexture(PBState->renderer, "./resource/img/chooseHero/chooseHeroSha.png");
+    SDL_Texture *yal_border = IMG_LoadTexture(PBState->renderer, "./resource/img/chooseHero/chooseHeroYal.png");
+    SDL_Texture *daw_border = IMG_LoadTexture(PBState->renderer, "./resource/img/chooseHero/chooseHeroDaw.png");
 
 	while (PBState->run == CURRENT_LEVEL_CHOOSE) {
 		while (SDL_PollEvent(&PBState->event)) {

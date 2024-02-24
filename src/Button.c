@@ -21,22 +21,22 @@ Button *Button_arr_new_menu(int x, int y, int w, int h, SDL_Renderer *r) {
     char path_hover[30];
 
     for (int i = 0; i < BUTTON_COUNT_MENU - 1; i++) {
-        sprintf(path_idle, "media/img/menu/%d.png", i);
-        sprintf(path_hover, "media/img/menu/%d.png", i + 10);
-        button_arr[i] = Button_new(x, incY, w, h, IMG_LoadTexture(r, path_idle), IMG_LoadTexture(r, path_hover), Mix_LoadWAV("media/sound/pointSound.wav"));
+        sprintf(path_idle, "./resource/img/menu/%d.png", i);
+        sprintf(path_hover, "./resource/img/menu/%d.png", i + 10);
+        button_arr[i] = Button_new(x, incY, w, h, IMG_LoadTexture(r, path_idle), IMG_LoadTexture(r, path_hover), Mix_LoadWAV("./resource/sound/pointSound.wav"));
         incY += BUTTON_GAP;
     }
 
-    button_arr[BUTTON_COUNT_MENU - 1] = Button_new(x, incY, w, h, IMG_LoadTexture(r, "media/img/menu/chevy_idle.png"), IMG_LoadTexture(r, "media/img/menu/chevy_start.png"), Mix_LoadWAV("media/sound/carIgnition.wav"));
+    button_arr[BUTTON_COUNT_MENU - 1] = Button_new(x, incY, w, h, IMG_LoadTexture(r, "./resource/img/menu/chevy_idle.png"), IMG_LoadTexture(r, "./resource/img/menu/chevy_start.png"), Mix_LoadWAV("./resource/sound/carIgnition.wav"));
     return button_arr;
 }
 
 Button *Button_arr_new_choose(SDL_Renderer *r) {
     Button *ButtonArr = (Button*)malloc(3 * sizeof(Button));
 
-    ButtonArr[0] = Button_new(290, 180, 175, 520, IMG_LoadTexture(r, "media/img/chooseHero/shaButton.png"), IMG_LoadTexture(r, "media/img/chooseHero/shaButtonAct.png"), Mix_LoadWAV("media/sound/ShayluButton.wav"));
-    ButtonArr[1] = Button_new(555, 180, 175, 520, IMG_LoadTexture(r, "media/img/chooseHero/yalButton.png"), IMG_LoadTexture(r, "media/img/chooseHero/yalButtonAct.png"), Mix_LoadWAV("media/sound/YaltButton.wav"));
-    ButtonArr[2] = Button_new(820, 180, 175, 520, IMG_LoadTexture(r, "media/img/chooseHero/dawButton.png"), IMG_LoadTexture(r, "media/img/chooseHero/dawButtonAct.png"), Mix_LoadWAV("media/sound/DawButton.wav"));
+    ButtonArr[0] = Button_new(290, 180, 175, 520, IMG_LoadTexture(r, "./resource/img/chooseHero/shaButton.png"), IMG_LoadTexture(r, "./resource/img/chooseHero/shaButtonAct.png"), Mix_LoadWAV("./resource/sound/ShayluButton.wav"));
+    ButtonArr[1] = Button_new(555, 180, 175, 520, IMG_LoadTexture(r, "./resource/img/chooseHero/yalButton.png"), IMG_LoadTexture(r, "./resource/img/chooseHero/yalButtonAct.png"), Mix_LoadWAV("./resource/sound/YaltButton.wav"));
+    ButtonArr[2] = Button_new(820, 180, 175, 520, IMG_LoadTexture(r, "./resource/img/chooseHero/dawButton.png"), IMG_LoadTexture(r, "./resource/img/chooseHero/dawButtonAct.png"), Mix_LoadWAV("./resource/sound/DawButton.wav"));
 
     return ButtonArr;
 }

@@ -6,9 +6,9 @@ ExitCar *ExitCar_new(SDL_Renderer *r){
     ExitCar *Car;
     Car = (ExitCar*)malloc(sizeof(ExitCar));
     Car->car_rect = Rect_new(200, 960, 214, 94);
-    Car->car_tex = IMG_LoadTexture(r, "media/img/carExit.png");
+    Car->car_tex = IMG_LoadTexture(r, "./recource/img/carExit.png");
     Car->door_rect = Rect_new(Car->car_rect.x + 72, Car->car_rect.y + 6, 52, 18);
-    Car->door_tex = IMG_LoadTexture(r, "media/img/doorExit.png");
+    Car->door_tex = IMG_LoadTexture(r, "./resource/img/doorExit.png");
     Car->door_collider = Rect_new(Car->car_rect.x, Car->car_rect.y - 200, 214, 294);
     Car->seat_collider = Rect_new(Car->car_rect.x + 72, Car->car_rect.y - 30, 50, 50);
     Car->door_angle = 0;

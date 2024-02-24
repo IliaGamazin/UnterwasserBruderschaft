@@ -4,9 +4,9 @@
 AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y) {
     return (AmmoBox) {
         Rect_new(x, y, TILE_SIZE * 2, TILE_SIZE),
-        IMG_LoadTexture(r, "./media/img/ammobox_full.png"),
-        IMG_LoadTexture(r, "./media/img/ammobox_empty.png"),
-        Mix_LoadWAV("./media/sound/reloadbox_sound.wav"),
+        IMG_LoadTexture(r, "./resource/img/ammobox_full.png"),
+        IMG_LoadTexture(r, "./resource/img/ammobox_empty.png"),
+        Mix_LoadWAV("./resource/sound/reloadbox_sound.wav"),
         true,
     };
 }

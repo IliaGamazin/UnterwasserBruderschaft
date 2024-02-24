@@ -56,19 +56,19 @@ Obstacle obstacle_new(ObstaclesManager *manager, int lane, OBSTACLE_TYPE type, S
     case MSHN:
         new_obst.rect.w = 94;
         new_obst.rect.h = 94;
-        new_obst.tex = IMG_LoadTexture(r, "./media/img/level2/mshn.png");
+        new_obst.tex = IMG_LoadTexture(r, "./resource/img/level2/mshn.png");
         new_obst.velocity = 5;
         break;
     case TRKTR:
         new_obst.rect.w = 94;
         new_obst.rect.h = 94;
-        new_obst.tex = IMG_LoadTexture(r, "./media/img/level2/rdblk.png");
+        new_obst.tex = IMG_LoadTexture(r, "./resource/img/level2/rdblk.png");
         new_obst.velocity = 5;
         break;
     case RDBLK:
         new_obst.rect.w = 71;
         new_obst.rect.h = 94;
-        new_obst.tex = IMG_LoadTexture(r, "./media/img/level2/rdblk.png");
+        new_obst.tex = IMG_LoadTexture(r, "./resource/img/level2/rdblk.png");
         new_obst.velocity = 0;
         break;
     default:

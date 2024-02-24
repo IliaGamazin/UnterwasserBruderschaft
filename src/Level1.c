@@ -68,23 +68,23 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     AmmoBox box = AmmoBox_new(PBState->renderer, 800, 160);
     BulletManager *bullet_manager = BulletManager_new(100);
     ExitCar *exit = ExitCar_new(PBState->renderer);
-    PBState->bgMusic = Mix_LoadMUS("./media/sound/MiamiDisco.mp3");
+    PBState->bgMusic = Mix_LoadMUS("./resource/sound/MiamiDisco.mp3");
     Mix_PlayMusic(PBState->bgMusic, 0);
     SDL_Texture *ammo_texture;
     SDL_Texture *ammo_fired_texture;
 
     switch (character_type) {
         case SHAYLUSHAY:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/rifleAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/rifleNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./resource/img/hud/rifleAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./resource/img/hud/rifleNoAmmo.png");
             break;
         case YALTPILS:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/pistolAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/pistolNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./resource/img/hud/pistolAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./resource/img/hud/pistolNoAmmo.png");
             break;
         case DAWAWUE:
-            ammo_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/shotgunAmmo.png");
-            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./media/img/hud/shotgunNoAmmo.png");
+            ammo_texture = IMG_LoadTexture(PBState->renderer, "./resource/img/hud/shotgunAmmo.png");
+            ammo_fired_texture = IMG_LoadTexture(PBState->renderer, "./resource/img/hud/shotgunNoAmmo.png");
             break;
     }
     

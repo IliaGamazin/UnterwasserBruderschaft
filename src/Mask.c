@@ -11,16 +11,16 @@ Mask *Mask_new(SDL_Renderer *r, CHARACTER_TYPE type, int x, int y, int w, int h)
 
     switch (type) {
         case SHAYLUSHAY:
-            heroMask->mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/shaIdle.png");
-            heroMask->mask_tex_active = IMG_LoadTexture(r, "media/img/masks/shaActive.png");
+            heroMask->mask_tex_idle = IMG_LoadTexture(r, "./resource/img/masks/shaIdle.png");
+            heroMask->mask_tex_active = IMG_LoadTexture(r, "./resource/img/masks/shaActive.png");
             break;
         case YALTPILS:
-            heroMask->mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/yalIdle.png");
-            heroMask->mask_tex_active = IMG_LoadTexture(r, "media/img/masks/yalActive.png");
+            heroMask->mask_tex_idle = IMG_LoadTexture(r, "./resource/img/masks/yalIdle.png");
+            heroMask->mask_tex_active = IMG_LoadTexture(r, "./resource/img/masks/yalActive.png");
             break;
         case DAWAWUE:
-            heroMask->mask_tex_idle = IMG_LoadTexture(r, "media/img/masks/dawIdle.png");
-            heroMask->mask_tex_active = IMG_LoadTexture(r, "media/img/masks/dawActive.png");
+            heroMask->mask_tex_idle = IMG_LoadTexture(r, "./resource/img/masks/dawIdle.png");
+            heroMask->mask_tex_active = IMG_LoadTexture(r, "./resource/img/masks/dawActive.png");
             break;
     }
 

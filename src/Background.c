@@ -8,9 +8,9 @@ BackgroundManager *bg_manager_new(SDL_Renderer *r, int speed) {
 
 	bg_manager->bg_arr = (Background*)malloc(BACKGROUND_COUNT * sizeof(Background));
 	bg_manager->speed = speed;
-	bg_manager->bg_arr[0].texture = IMG_LoadTexture(r, "./media/img/level2/road1.png");
-	bg_manager->bg_arr[1].texture = IMG_LoadTexture(r, "./media/img/level2/road2.png");
-	bg_manager->bg_arr[2].texture = IMG_LoadTexture(r, "./media/img/level2/road3.png");
+	bg_manager->bg_arr[0].texture = IMG_LoadTexture(r, "./resource/img/level2/road1.png");
+	bg_manager->bg_arr[1].texture = IMG_LoadTexture(r, "./resource/img/level2/road2.png");
+	bg_manager->bg_arr[2].texture = IMG_LoadTexture(r, "./resource/img/level2/road3.png");
 	for (int i = 0; i < BACKGROUND_COUNT; i++) {
 		bg_manager->bg_arr[i].rect = Rect_new(i * WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}

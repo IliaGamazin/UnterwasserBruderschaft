@@ -15,11 +15,11 @@ Tilemap Map_new(SDL_Renderer *r) {
         Map.tiles[i] = malloc(sizeof(Tile) * 27);
     }
 
-    Map.bg_texture = IMG_LoadTexture(r, "media/img/tiles/bg.png");
+    Map.bg_texture = IMG_LoadTexture(r, "./resource/img/tiles/bg.png");
     Map.textures = malloc(sizeof(SDL_Texture *) * 3);
-    Map.textures[WALL] = IMG_LoadTexture(r, "media/img/tiles/wall.png");
-    Map.textures[OBSTACLE] = IMG_LoadTexture(r, "media/img/tiles/obstacle.png");
-    Map.textures[FLOOR] = IMG_LoadTexture(r, "media/img/tiles/floor.png");
+    Map.textures[WALL] = IMG_LoadTexture(r, "./resource/img/tiles/wall.png");
+    Map.textures[OBSTACLE] = IMG_LoadTexture(r, "./resource/img/tiles/obstacle.png");
+    Map.textures[FLOOR] = IMG_LoadTexture(r, "./resource/img/tiles/floor.png");
 
     for (size_t i = 0; i < Map.width; i++)
     {
