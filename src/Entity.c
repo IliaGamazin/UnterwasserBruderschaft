@@ -87,7 +87,7 @@ Entity *Player_new(
     return entity;
 }
 
-void Player_update(Entity *entity) {
+void Player_update(Entity *entity, Tilemap map) {
     Vector2 direction = Vector2_new(0, 0);
 
     const uint8_t *keys = SDL_GetKeyboardState(NULL);
@@ -120,16 +120,83 @@ void Player_update(Entity *entity) {
         );
     }
 
-    Vector2_set_magnitude(&direction, entity->speed);
-
-    entity->rect.x += direction.x;
-    entity->rect.y += direction.y;
+    // Return if no movement detected
 
     if (Vector2_is_null(direction)) {
         return;
     }
 
-    // Handle animation
+    // Hitbox literal
+
+    SDL_Rect hitbox_literal = Rect_new(
+        entity->rect.x + entity->hitbox.x,
+        entity->rect.y + entity->hitbox.y,
+        entity->hitbox.w,
+        entity->hitbox.h
+    );
+
+    // Calculate hit distance
+
+    double hit_distance = INFINITY;
+
+    if (direction.x) {
+        Ray ray = Ray_new(
+            Vector2_new(
+                hitbox_literal.x + hitbox_literal.w * (direction.x > 0),
+                hitbox_literal.y
+            ),
+            direction
+        );
+
+        while (ray.origin.y <= hitbox_literal.y + hitbox_literal.h) {
+            double cast = Map_raycast(map, ray, WALL);
+
+            if (!cast) {
+                return;
+            }
+
+            if (cast < hit_distance) {
+                hit_distance = cast;
+            }
+
+            ray.origin.y++;
+        }
+    }
+
+    if (direction.y) {
+        Ray ray = Ray_new(
+            Vector2_new(
+                hitbox_literal.x,
+                hitbox_literal.y + hitbox_literal.h * (direction.y > 0)
+            ),
+            direction
+        );
+
+        while (ray.origin.x <= hitbox_literal.x + hitbox_literal.w) {
+            double cast = Map_raycast(map, ray, WALL);
+
+            if (!cast) {
+                return;
+            }
+
+            if (cast < hit_distance) {
+                hit_distance = cast;
+            }
+
+            ray.origin.x++;
+        }
+    }
+
+    // Tweak walk distance
+
+    Vector2_set_magnitude(&direction, (hit_distance < entity->speed ? hit_distance : entity->speed));
+
+    // Move player
+
+    entity->rect.x += direction.x;
+    entity->rect.y += direction.y;
+
+    // Animate player
 
     if (SDL_GetTicks() > entity->last_animated + entity->animation_speed) {
         entity->current_frame = (entity->current_frame + 1) % 3;

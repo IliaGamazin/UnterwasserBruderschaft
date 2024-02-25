@@ -6,6 +6,7 @@
 #include "./Vector.h"
 #include "./Weapon.h"
 #include "./Camera.h"
+#include "./Tilemap.h"
 
 // CHARACTER_TYPE
 
@@ -43,7 +44,7 @@ Entity *Player_new(
     double speed,
     uint32_t animation_speed
 );
-void Player_update(Entity *entity);
+void Player_update(Entity *entity, Tilemap map);
 
 #endif
 

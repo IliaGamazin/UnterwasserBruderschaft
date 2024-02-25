@@ -56,7 +56,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         PBState->renderer,
         character_type,
         (SDL_Rect) {
-            640,
+            637,
             460,
             70,
             49,
@@ -172,7 +172,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
         BulletManager_update(bullet_manager, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-        Player_update(player);
+        Player_update(player, map);
         ExitCar_update(exit, PlayerCenter);
 
         // Render
