@@ -125,47 +125,47 @@ void Map_destroy(Tilemap t){
 
 double Map_raycast(Tilemap map, Ray ray, TILE_TYPE type) {
     Vector2_scale(&ray.origin, 1.0 / TILE_SIZE);
-    Vector2 position = ray.origin;
 
-    int map_x = position.x - (ray.direction.x < 0);
-    int map_y = position.y - (ray.direction.y < 0);
+    int map_x = ray.origin.x;
+    int map_y = ray.origin.y;
 
-    while (map.tiles[map_x][map_y].type != type) {
-        // Return -1 if out of bounds
+    double distance = 0;
 
-        if ((map_x < 0 || map_x >= (int) map.width) || (map_y < 0 || map_y >= (int) map.height)) {
-            return -1;
+    Vector2 unit_distance = Vector2_new(
+        sqrt(1 + (ray.direction.y * ray.direction.y) / (ray.direction.x * ray.direction.x)),
+        sqrt(1 + (ray.direction.x * ray.direction.x) / (ray.direction.y * ray.direction.y))
+    );
+
+    Vector2 acc_distance = Vector2_new(
+        (ray.direction.x < 0 ? ray.origin.x - map_x : map_x + 1 - ray.origin.x) * unit_distance.x,
+        (ray.direction.y < 0 ? ray.origin.y - map_y : map_y + 1 - ray.origin.y) * unit_distance.y
+    );
+
+    Vector2 step = Vector2_new(
+        (ray.direction.x < 0 ? -1 : 1),
+        (ray.direction.y < 0 ? -1 : 1)
+    );
+
+    while (true) {
+        if (map_x < 0 || map_x >= (int) map.width || map_y < 0 || map_y >= (int) map.height) {
+            return INFINITY;
         }
 
-        // Ray casting
-
-        Vector2 deltas = Vector2_new(5, 5);
-
-        if (ray.direction.x) {
-            deltas.x = (ray.direction.x < 0 ? ceil(position.x - 1) : floor(position.x + 1)) - position.x;
+        if (map.tiles[map_x][map_y].type == type) {
+            break;
         }
 
-        if (ray.direction.y) {
-            deltas.y = (ray.direction.y < 0 ? ceil(position.y - 1) : floor(position.y + 1)) - position.y;
+        if (acc_distance.x < acc_distance.y) {
+            distance = acc_distance.x;
+            acc_distance.x += unit_distance.x;
+            map_x += step.x;
+        } else {
+            distance = acc_distance.y;
+            acc_distance.y += unit_distance.y;
+            map_y += step.y;
         }
-
-        Vector2 deltas_squared = Vector2_new(
-            deltas.x * deltas.x,
-            deltas.y * deltas.y
-        );
-
-        position = Vector2_add(
-            position,
-            (deltas_squared.x <= deltas_squared.y ?
-             Vector2_scaled_to_x(ray.direction, deltas.x) :
-             Vector2_scaled_to_y(ray.direction, deltas.y)
-            )
-        );
-
-        map_x += (ray.direction.x < 0 ? -1 : 1) * (deltas_squared.x <= deltas_squared.y);
-        map_y += (ray.direction.y < 0 ? -1 : 1) * (deltas_squared.y <= deltas_squared.x);
     }
 
-    return Vector2_magnitude(Vector2_from_points(ray.origin, position)) * TILE_SIZE;
+    return distance * TILE_SIZE;
 }
 
