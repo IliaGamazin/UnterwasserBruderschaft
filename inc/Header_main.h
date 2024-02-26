@@ -19,6 +19,7 @@
 
 typedef struct {
     SCENE run;
+    SCENE rerun;
     SDL_Renderer *renderer;
     SDL_Event event;
     SDL_Cursor *arrowCursor;
@@ -28,6 +29,7 @@ typedef struct {
     Mix_Music *bgMusic;
 } GameState;
 
+
 void destroyMenu(Button *buttonArr, SDL_Texture *bgTexture, SoundBar *Bar, Mix_Music *bgMusic, Mix_Chunk *exitSound);
 void intro_destroy(SoundBar *Bar, SDL_Texture *bgTexture, Mix_Music *bgMusic, Mask *m);
 void ChooseCharacter_destroy(Button *buttonArr, SDL_Texture *bgTexture, Mix_Music *bgMusic, Mask **maskArr);
@@ -36,6 +38,8 @@ void level2_destroy(ObstaclesManager *ob_manager, BackgroundManager *bg_manager,
 void destroyWindow(GameState *PBState, SDL_Window *window);
 
 void level_intro(GameState *PBState, SCENE level);
+void gameover(GameState *PBstate);
+
 CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level);
 void menu(GameState *PBState);
 void level1(GameState *PBState, CHARACTER_TYPE CharType);

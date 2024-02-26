@@ -4,7 +4,9 @@
 
 #include "./Libs.h"
 #include "./Entity.h"
-#include "Camera.h"// ExitCar
+#include "Camera.h"
+
+// ExitCar
 
 typedef struct {
     SDL_Rect car_rect;
@@ -13,9 +15,11 @@ typedef struct {
     SDL_Rect seat_collider;
     SDL_Texture *car_tex;
     SDL_Texture *door_tex;
+    
     double door_angle;
     bool is_opened;
     bool is_playing_sound;
+
     Mix_Chunk *open_sound;
 } ExitCar;
 

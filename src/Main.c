@@ -62,6 +62,9 @@ int main(void){
                 }
             }
             break;
+        case GAME_OVER:
+            gameover(PBState);
+            break;
         default:
             break;
         }  
@@ -71,4 +74,3 @@ int main(void){
     destroyWindow(PBState, window);
     return 0;
 }
-

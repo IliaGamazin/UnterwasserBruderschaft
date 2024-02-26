@@ -40,10 +40,8 @@ typedef enum {
     LEVEL2_CHOOSE,
     LEVEL2,
     LEVEL3_INTRO,
-    LEVEL3_CHOOSE,
     LEVEL3,
-    LEVEL_SECRET_INTRO,
-    LEVEL_SECRET,
+    GAME_OVER,
     OUTRO,
 } SCENE;
 

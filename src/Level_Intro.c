@@ -44,11 +44,6 @@ void level_intro(GameState *PBState, SCENE intro_type) {
             PBState->bgMusic = Mix_LoadMUS("./resource/sound/nightcall.mp3");
             mask_sprite = Mask_new(PBState->renderer, DAWAWUE, 10, 10, 170, 170);
             break;
-        case LEVEL_SECRET_INTRO:
-            PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "./resource/img/lvl1_intro_bg.png");
-            PBState->bgMusic = Mix_LoadMUS("./resource/sound/nightcall.mp3");
-            mask_sprite = Mask_new(PBState->renderer, DAWAWUE, 10, 10, 170, 170);
-            break;
         default:
             break;
     }

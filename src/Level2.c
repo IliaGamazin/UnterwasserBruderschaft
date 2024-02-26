@@ -113,7 +113,8 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
         // Collision
 
         if (player_check_collision(ob_manager, player_drive)) {
-            PBState->run = MENU;
+            PBState->run = GAME_OVER;
+            PBState->rerun = LEVEL2;
         }
         
         // Render
