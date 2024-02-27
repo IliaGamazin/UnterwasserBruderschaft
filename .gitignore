@@ -1,5 +1,5 @@
 endgame
-./obj
+obj
 .DS_Store
-./*.o
+*.o
 
