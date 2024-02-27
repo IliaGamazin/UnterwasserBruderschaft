@@ -92,8 +92,8 @@ void Cat_move(FallingCat *cat, PlayerSecretLvL *player, CatManager *catManager, 
         Mix_PlayChannel(0, catManager->CatMeow, 0);
         cat->catsRect.y = -100;
         cat->catsRect.x = catManager->CatPosArr[rand() % 12];
-        counter->countnumber++;
-    }    
+        counter->countnumber++;    
+    }
 }
 void Cats_destroy(FallingCat *cat) {
     SDL_DestroyTexture(cat->FallingCat);
@@ -111,7 +111,7 @@ void destroy_CollidedCat(CatManager *catManager, int index) {
 }
 void catManager_update(CatManager *catManager, PlayerSecretLvL *player, Counter *counter) {
     for (int i = 0; i < catManager->count; i++) {
-        Cat_move(catManager->cats[i], player, catManager,counter);
+        Cat_move(catManager->cats[i], player, catManager, counter);
 
         if (catManager->cats[i]->catsRect.x <= 0 || catManager->cats[i]->catsRect.x >= WINDOW_WIDTH) {
             destroy_CollidedCat(catManager, i);

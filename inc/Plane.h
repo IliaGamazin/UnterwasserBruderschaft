@@ -6,7 +6,7 @@
 
 #define PLANE_WIDTH 150
 #define PLANE_HEIGHT 80
-#define PLANE_VEL 7
+#define PLANE_VEL 8
 
 typedef struct
 {

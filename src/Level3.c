@@ -29,7 +29,7 @@ void  level3 (GameState *PBState) {
     PlayerSecretLvL* player = Player_create(PBState->renderer);
     Enemy* plane = Plane_create(PBState->renderer);
     Counter* counter = Counter_create(PBState->renderer);
-    CatManager* catManager = CatManager_create(5);
+    CatManager* catManager = CatManager_create(10);
 
     bool key_LEFT = false;
     bool key_RIGHT = false;
@@ -44,11 +44,9 @@ void  level3 (GameState *PBState) {
                 case SDLK_a:
                     key_LEFT = true;
                     break;
-
                 case SDLK_d:
                     key_RIGHT = true;
                     break;
-
                 case SDLK_MINUS:
                     if (volume > 0) {
                         volume -= MAX_VOLUME / 10;
@@ -57,7 +55,6 @@ void  level3 (GameState *PBState) {
                         volume = 0;
                     }
                     break;
-
                 case SDLK_EQUALS:
                     if (volume < MAX_VOLUME) {
                         volume += MAX_VOLUME / 10;
@@ -65,6 +62,9 @@ void  level3 (GameState *PBState) {
                     else {
                         volume = MAX_VOLUME;
                     }
+                case SDLK_ESCAPE:
+                    PBState->run = MENU;
+                    break;
                 }
                 Mix_Volume(-1, volume);
                 Mix_VolumeMusic(volume);
@@ -82,7 +82,7 @@ void  level3 (GameState *PBState) {
                 }
             }
         }
-        if(plane->PlaneRect.x >= WINDOW_WIDTH && SDL_GetTicks() % 150 == 0) {
+        if(plane->PlaneRect.x >= WINDOW_WIDTH && SDL_GetTicks() % 120 == 0) {
             SpawnCat(catManager, PBState->renderer, true);
         }
         if (SDL_GetTicks() % 100 == 0) {
@@ -102,11 +102,21 @@ void  level3 (GameState *PBState) {
         if (player->playerRect.x >= WINDOW_WIDTH - LVL3PLAYER_WIDTH) {
             player->playerRect.x = WINDOW_WIDTH - LVL3PLAYER_WIDTH;
         }
-        if(SDL_GetTicks()%5==0) {
+
+        if(SDL_GetTicks()%5 == 0) {
             ++bcat;
         }
         if(bcat/3 >= CATS_FRAMES) {
             bcat = 0;
+        }
+        if (SDL_GetTicks() % 3 == 0) {
+            ++backgr;
+        }
+        if (backgr >= BACKGROUNDS) {
+            backgr = 0;
+        }
+        if(counter->countnumber == 35) {
+            PBState->run = MENU;
         }
         SDL_RenderClear(PBState->renderer);
         catManager_update(catManager, player, counter);
@@ -114,18 +124,16 @@ void  level3 (GameState *PBState) {
         Player_animate(player);
         SDL_RenderCopy(PBState->renderer, gMap[backgr], NULL, &g_map);
 
-        if (SDL_GetTicks() % 3 == 0) {
-            ++backgr;
-        }
-        if (backgr >= BACKGROUNDS) {
-            backgr = 0;
-        }
-
         Player_show(player, PBState->renderer);
         CatArr_show(catManager, PBState->renderer, bcat);
         Counter_show(counter, PBState->renderer);
         Plane_show(plane, PBState->renderer);
         SDL_RenderPresent(PBState->renderer);
+
+        if (counter->countHP == 3) {
+            PBState->run = GAME_OVER;
+            PBState->rerun = LEVEL3;
+        }
 
         SDL_Delay(1000 / 60);
     }

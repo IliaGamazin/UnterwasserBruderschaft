@@ -10,10 +10,8 @@
 #define CATS_VEL 7
 #define CATS_FRAMES 3
 #define CATS_POS_COUNT 11
-
 #define STONES_POS_COUNT 8
-/*#define STONE_SIZE 60
-#define STONE_VEL 8*/
+
 
 typedef struct
 {
@@ -21,6 +19,7 @@ typedef struct
     int cVelY;
     bool is_stone;
     bool is_bubble;
+    bool is_collide;
     SDL_Rect catsRect;
     SDL_Rect catsClip[CATS_FRAMES];
     SDL_Texture* FallingCat;
