@@ -56,6 +56,7 @@ int main(void){
             level2(PBState, character);
             break;
         case LEVEL3:
+            level3(PBState);
             while (SDL_PollEvent(&PBState->event)) {
                 if (PBState->event.type == SDL_QUIT) {
                     PBState->run = QUIT;

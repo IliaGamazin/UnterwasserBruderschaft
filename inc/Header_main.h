@@ -15,7 +15,10 @@
 #include "Background.h"
 #include "Obstacles.h"
 #include "Timer.h"
-
+#include "PlayerLvl3.h"
+#include "FallingCats.h"
+#include "Plane.h"
+#include "Counter.h"
 
 typedef struct {
     SCENE run;
@@ -44,6 +47,7 @@ CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level);
 void menu(GameState *PBState);
 void level1(GameState *PBState, CHARACTER_TYPE CharType);
 void level2(GameState *PBState, CHARACTER_TYPE char_type);
+void level3 (GameState *PBState);
 
 void handle_pointing_menu(SDL_Point mousePoint, Button *buttonArr, GameState *PBState);
 void handle_pointing_choose(SDL_Point mousePoint, Button *buttonArr, Mask **maskArr, GameState *PBState);

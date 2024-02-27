@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "../inc/Counter.h"
 
 Counter *Counter_create(SDL_Renderer* gRenderer) {
     Counter* counter = (Counter*)malloc(sizeof(Counter));
@@ -15,12 +15,12 @@ Counter *Counter_create(SDL_Renderer* gRenderer) {
 
     counter->TensClip.x = 0;
     counter->TensClip.y = 0;
-    counter->TensClip.w = 32;
+    counter->TensClip.w = 26;
     counter->TensClip.h = 40;
 
     counter->UnitsClip.x = 0;
     counter->UnitsClip.y = 0;
-    counter->UnitsClip.w = 32;
+    counter->UnitsClip.w = 26;
     counter->UnitsClip.h = 40;
 
     counter->HPcounterRect.x = 0;
@@ -36,19 +36,19 @@ Counter *Counter_create(SDL_Renderer* gRenderer) {
     counter->countnumber = 0; 
     counter->countHP = 0;
 
-    counter->HPCounterTexture = IMG_LoadTexture(gRenderer, "images/catbread2.png");
-    counter->TensTexture = IMG_LoadTexture(gRenderer, "images/n1.png");
-    counter->UnitsTexture = IMG_LoadTexture(gRenderer, "images/n1.png");
+    counter->HPCounterTexture = IMG_LoadTexture(gRenderer, "resource/img/level3/catbread2.png");
+    counter->TensTexture = IMG_LoadTexture(gRenderer, "resource/img/level3/n1.png");
+    counter->UnitsTexture = IMG_LoadTexture(gRenderer, "resource/img/level3/n1.png");
 
     return counter;
 }
 
 void CounterSprites(Counter *counter) {
-            counter->UnitsClip.x = 32 * (counter->countnumber%10);
-            counter->TensClip.x = 32 * (counter->countnumber/10);
+    counter->UnitsClip.x = 26 * (counter->countnumber % 10);
+    counter->TensClip.x = 26 * (counter->countnumber / 10);
 
-            counter->HPcounterClip.w = HPCOUNTER_WIDTH - 40*counter->countHP;
-            counter->HPcounterRect.w = HPCOUNTER_WIDTH - 40*counter->countHP;
+    counter->HPcounterClip.w = HPCOUNTER_WIDTH - 40*counter->countHP;
+    counter->HPcounterRect.w = HPCOUNTER_WIDTH - 40*counter->countHP;
 }
 
 void Counter_destroy(Counter *counter) {
