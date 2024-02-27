@@ -4,7 +4,7 @@
 
 #include "./Libs.h"
 #include "./Entity.h"
-#include "Camera.h"
+#include "./Tilemap.h"
 
 // ExitCar
 
@@ -24,7 +24,7 @@ typedef struct {
 } ExitCar;
 
 ExitCar *ExitCar_new(SDL_Renderer *r);
-void ExitCar_render(SDL_Renderer *r, ExitCar *Car, Camera camera);
+void ExitCar_render(SDL_Renderer *renderer, ExitCar *car, Tilemap *map);
 void ExitCar_update(ExitCar *Car, SDL_Point PlayerCenter);
 void ExitCar_destroy(ExitCar *Car);
 

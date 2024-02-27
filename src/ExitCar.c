@@ -29,32 +29,24 @@ void ExitCar_update(ExitCar *Car, SDL_Point PlayerCenter){
     }
 }
 
-void ExitCar_render(SDL_Renderer *r, ExitCar *Car, Camera camera){
-    // Camera's offset
-    SDL_Rect adjustedCarRect = {
-        Car->car_rect.x - camera.position.x,
-        Car->car_rect.y - camera.position.y,
-        Car->car_rect.w,
-        Car->car_rect.h
-    };
-
-    // Door's position by the camera's offset
-    SDL_Rect adjustedDoorRect = {
-        Car->door_rect.x - camera.position.x,
-        Car->door_rect.y - camera.position.y,
-        Car->door_rect.w,
-        Car->door_rect.h
-    };
-
-    //  Anchor point relative to the adjusted door's position
-    SDL_Point door_anchor = {
-        (int)(adjustedDoorRect.x + Car->door_rect.w / 2),
-        (int)(adjustedDoorRect.y + Car->door_rect.h / 2)
-    };
-
-    // Render the car and the door
-    SDL_RenderCopy(r, Car->car_tex, NULL, &adjustedCarRect);
-    SDL_RenderCopyEx(r, Car->door_tex, NULL, &adjustedDoorRect, Car->door_angle, &door_anchor, SDL_FLIP_NONE);
+void ExitCar_render(SDL_Renderer *renderer, ExitCar *car, Tilemap *map){
+    SDL_SetRenderTarget(renderer, map->render_texture);
+    SDL_RenderCopy(
+        renderer,
+        car->car_tex,
+        NULL,
+        &car->car_rect
+    );
+    SDL_RenderCopyEx(
+        renderer,
+        car->door_tex,
+        NULL,
+        &car->door_rect,
+        car->door_angle,
+        NULL,
+        SDL_FLIP_NONE
+    );
+    SDL_SetRenderTarget(renderer, NULL);
 }
 
 void ExitCar_destroy(ExitCar *Car){

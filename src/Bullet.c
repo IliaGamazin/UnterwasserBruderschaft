@@ -1,5 +1,4 @@
 #include "../inc/Bullet.h"
-#include "../inc/Camera.h"
 
 // Bullet
 
@@ -17,17 +16,10 @@ void Bullet_update(Bullet *bullet) {
     bullet->position = Vector2_add(bullet->position, bullet->direction);
 }
 
-void Bullet_render(SDL_Renderer *renderer, Bullet bullet, Camera camera) {
-    // Adjusting bullet position
-    Vector2 adjustedStart = Vector2_sub(bullet.position, bullet.direction);
-    Vector2 adjustedEnd = bullet.position;
+void Bullet_render(SDL_Renderer *renderer, Bullet bullet, Tilemap *map) {
+    Vector2 start = Vector2_sub(bullet.position, bullet.direction);
 
-    // Subtracted the camera position to get the correct screen coordinates for bullets
-    adjustedStart.x -= camera.position.x;
-    adjustedStart.y -= camera.position.y;
-    adjustedEnd.x -= camera.position.x;
-    adjustedEnd.y -= camera.position.y;
-
+    SDL_SetRenderTarget(renderer, map->render_texture);
     SDL_SetRenderDrawColor(
         renderer,
         bullet.color.r,
@@ -37,10 +29,11 @@ void Bullet_render(SDL_Renderer *renderer, Bullet bullet, Camera camera) {
     );
     SDL_RenderDrawLine(
         renderer,
-        adjustedStart.x,
-        adjustedStart.y,
-        adjustedEnd.x,
-        adjustedEnd.y
+        start.x,
+        start.y,
+        bullet.position.x,
+        bullet.position.y
     );
+    SDL_SetRenderTarget(renderer, NULL);
 }
 

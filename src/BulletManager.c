@@ -1,5 +1,4 @@
 #include "../inc/BulletManager.h"
-#include "../inc/Camera.h"
 
 // BulletManager
 
@@ -40,9 +39,9 @@ void BulletManager_update(BulletManager *manager, int levelWidth, int levelHeigh
     }
 }
 
-void BulletManager_render(SDL_Renderer *renderer, BulletManager *manager, Camera camera) {
+void BulletManager_render(SDL_Renderer *renderer, BulletManager *manager, Tilemap *map) {
     for (size_t i = 0; i < manager->count; i++) {
-        Bullet_render(renderer, manager->bullets[i], camera);
+        Bullet_render(renderer, manager->bullets[i], map);
     }
 }
 

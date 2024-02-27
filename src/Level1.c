@@ -1,7 +1,7 @@
 #include "../inc/Header_main.h"
-#include "../inc/Camera.h"
+#include "../inc/Viewport.h"
 
-void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
+void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap *map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
     SDL_DestroyTexture(ammo_texture);
     SDL_DestroyTexture(ammo_fired_texture);
     Mix_FreeMusic(bgMusic);
@@ -9,22 +9,6 @@ void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* p
     AmmoBox_destroy(box);
     BulletManager_destroy(bullet_manager);
     Entity_destroy(player);
-}
-
-void updateCameraPosition(Camera* camera, Entity* player, int levelWidth, int levelHeight) {
-    camera->position.x = (player->rect.x + player->rect.w / 2) - WINDOW_WIDTH / 2;
-    camera->position.y = (player->rect.y + player->rect.h / 2) - WINDOW_HEIGHT / 2;
-
-    // Clamp the camera
-    
-    if (camera->position.x < 0) { camera->position.x = 0; }
-    if (camera->position.y < 0) { camera->position.y = 0; }
-    if (camera->position.x > levelWidth - camera->viewPort.w) {
-        camera->position.x = levelWidth - camera->viewPort.w;
-    }
-    if (camera->position.y > levelHeight - camera->viewPort.h) {
-        camera->position.y = levelHeight - camera->viewPort.h;
-    }
 }
 
 void Hood_render(SDL_Renderer *renderer, Entity *player, SDL_Texture *ammo_texture, SDL_Texture *ammo_fired_texture){
@@ -51,7 +35,11 @@ void Hood_render(SDL_Renderer *renderer, Entity *player, SDL_Texture *ammo_textu
 void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     // Variables initialization
 
-    Tilemap map = Map_new(PBState->renderer);
+    Tilemap *map = Map_parse(
+        PBState->renderer,
+        "./resource/maps/level1",
+        "./resource/img/tiles/bg.png"
+    );
     Entity *player = Player_new(
         PBState->renderer,
         character_type,
@@ -88,18 +76,22 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
             break;
     }
     
-    Camera camera = {{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT}, {0, 0}};
+    Viewport viewport = Viewport_centralized(
+        player->rect.x + player->pivot.x,
+        player->rect.y + player->pivot.y,
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT
+    );
 
     // Main loop
     
     while (PBState->run == LEVEL1) {
-        updateCameraPosition(&camera, player, LEVEL_WIDTH, LEVEL_HEIGHT);
         int mouseX;
         int mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        mouseX += camera.position.x;
-        mouseY += camera.position.y;
+        mouseX += viewport.x;
+        mouseY += viewport.y;
         
         Vector2 player_center = Vector2_new(
             player->rect.x + (player -> rect.w / 2.0),
@@ -116,12 +108,10 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
             player_center.y,
         };
 
-        player -> direction = Vector2_from_points(
+        player->direction = Vector2_from_points(
             player_center,
             Vector2_new(mouseX, mouseY)
         );
-
-        updateCameraPosition(&camera, player, LEVEL_WIDTH, LEVEL_HEIGHT);
 
         // Events
 
@@ -172,27 +162,29 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
         BulletManager_update(bullet_manager, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-        Player_update(player, map);
+        Player_update(player, map, &viewport);
         ExitCar_update(exit, PlayerCenter);
 
         // Render
         
         SDL_SetRenderDrawColor(PBState->renderer, 0, 0, 0, 255);
-        SDL_RenderClear(PBState -> renderer);
+        SDL_RenderClear(PBState->renderer);
         
         if (exit->is_opened && SDL_PointInRect(&PlayerCenter, &exit->seat_collider)) {
             PBState->run = MENU;
         }
         
-        Map_render(map, PBState->renderer, camera);
-        AmmoBox_render(PBState->renderer, box, camera);
-        BulletManager_render(PBState->renderer, bullet_manager, camera);
-        Entity_render(PBState->renderer, player, camera);
-        ExitCar_render(PBState->renderer, exit, camera);
-        Hood_render(PBState -> renderer, player, ammo_texture, ammo_fired_texture);
-
+        AmmoBox_render(PBState->renderer, box, map);
+        BulletManager_render(PBState->renderer, bullet_manager, map);
+        Entity_render(PBState->renderer, player, map);
+        ExitCar_render(PBState->renderer, exit, map);
+        Map_render(map, PBState->renderer, &viewport);
+        Hood_render(PBState->renderer, player, ammo_texture, ammo_fired_texture);
 
         SDL_RenderPresent(PBState->renderer);
+
+        Map_initialize(map, PBState->renderer);
+
         SDL_Delay(1000 / 60);
     }
 

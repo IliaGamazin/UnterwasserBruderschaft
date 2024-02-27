@@ -1,7 +1,4 @@
-#include <math.h>
-
 #include "../inc/Entity.h"
-#include "../inc/Camera.h"
 
 // Entity
 
@@ -11,7 +8,7 @@ void Entity_destroy(Entity *entity) {
     free(entity);
 }
 
-void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera) {
+void Entity_render(SDL_Renderer *renderer, Entity *entity, Tilemap *map) {
     SDL_Rect src_rect = {
         entity->current_frame * entity->rect.w,
         0,
@@ -19,25 +16,19 @@ void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera) {
         entity->rect.h,
     };
 
-  
-    SDL_Rect dest_rect = {
-        entity->rect.x - camera.position.x,
-        entity->rect.y - camera.position.y,
-        entity->rect.w,
-        entity->rect.h,
-    };
-
     double angle = radians_to_degrees(atan2(entity->direction.y, entity->direction.x));
   
+    SDL_SetRenderTarget(renderer, map->render_texture);
     SDL_RenderCopyEx(
         renderer,
         entity->texture,
         &src_rect,
-        &dest_rect,      // Updated for the usage of rec
+        &entity->rect,
         angle,
-        &entity->pivot,  // Center of rotation
+        &entity->pivot,
         SDL_FLIP_NONE
     );
+    SDL_SetRenderTarget(renderer, NULL);
 }
 
 // Entity player
@@ -61,7 +52,7 @@ Entity *Player_new(
     };
     entity->pivot = (SDL_Point) {
         entity->hitbox.w / 2 + entity->hitbox.x,
-        entity->hitbox.h / 2
+        entity->hitbox.h / 2 + entity->hitbox.y
     };
     entity->direction = direction;
     entity->speed = speed;
@@ -87,7 +78,7 @@ Entity *Player_new(
     return entity;
 }
 
-void Player_update(Entity *entity, Tilemap map) {
+void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
     Vector2 direction = Vector2_new(0, 0);
 
     const uint8_t *keys = SDL_GetKeyboardState(NULL);
@@ -149,7 +140,7 @@ void Player_update(Entity *entity, Tilemap map) {
         );
 
         while (ray.origin.y <= hitbox_literal.y + hitbox_literal.h) {
-            double cast = Map_raycast(map, ray, WALL);
+            double cast = Map_raycast(map, ray, WALL | OBSTACLE);
 
             if (!cast) {
                 return;
@@ -173,7 +164,7 @@ void Player_update(Entity *entity, Tilemap map) {
         );
 
         while (ray.origin.x <= hitbox_literal.x + hitbox_literal.w) {
-            double cast = Map_raycast(map, ray, WALL);
+            double cast = Map_raycast(map, ray, WALL | OBSTACLE);
 
             if (!cast) {
                 return;
@@ -190,6 +181,22 @@ void Player_update(Entity *entity, Tilemap map) {
     // Tweak walk distance
 
     Vector2_set_magnitude(&direction, (hit_distance < entity->speed ? hit_distance : entity->speed));
+
+    // Move viewport
+
+    Viewport_centralize(viewport, entity->rect.x + entity->pivot.x, entity->rect.y + entity->pivot.y);
+
+    if (viewport->x < 0) {
+        viewport->x = 0;
+    } else if (viewport->x + viewport->w >= (int) map->width * TILE_SIZE) {
+        viewport->x = map->width * TILE_SIZE - viewport->w - 1;
+    }
+
+    if (viewport->y < 0) {
+        viewport->y = 0;
+    } else if (viewport->y + viewport->h >= (int) map->height * TILE_SIZE) {
+        viewport->y = map->height * TILE_SIZE - viewport->h - 1;
+    }
 
     // Move player
 

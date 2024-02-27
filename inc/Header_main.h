@@ -33,11 +33,41 @@ typedef struct {
 } GameState;
 
 
-void destroyMenu(Button *buttonArr, SDL_Texture *bgTexture, SoundBar *Bar, Mix_Music *bgMusic, Mix_Chunk *exitSound);
-void intro_destroy(SoundBar *Bar, SDL_Texture *bgTexture, Mix_Music *bgMusic, Mask *m);
-void ChooseCharacter_destroy(Button *buttonArr, SDL_Texture *bgTexture, Mix_Music *bgMusic, Mask **maskArr);
-void level1_destroy(Mix_Music *bgMusic, BulletManager *bulletManager, Entity *Player, Tilemap Map, SDL_Texture *ammoTex, SDL_Texture *ammoTexFired, AmmoBox box);
-void level2_destroy(ObstaclesManager *ob_manager, BackgroundManager *bg_manager, Player *player_drive, Mix_Music *bg_music, t_Timer *timer_new);
+void destroyMenu(
+    Button *buttonArr,
+    SDL_Texture *bgTexture,
+    SoundBar *Bar,
+    Mix_Music *bgMusic,
+    Mix_Chunk *exitSound
+);
+void intro_destroy(
+    SoundBar *Bar,
+    SDL_Texture *bgTexture,
+    Mix_Music *bgMusic,
+    Mask *m
+);
+void ChooseCharacter_destroy(
+    Button *buttonArr,
+    SDL_Texture *bgTexture,
+    Mix_Music *bgMusic,
+    Mask **maskArr
+);
+void level1_destroy(
+    Mix_Music *bgMusic,
+    BulletManager *bulletManager,
+    Entity *Player,
+    Tilemap *Map,
+    SDL_Texture *ammoTex,
+    SDL_Texture *ammoTexFired,
+    AmmoBox box
+);
+void level2_destroy(
+    ObstaclesManager *ob_manager,
+    BackgroundManager *bg_manager,
+    Player *player_drive,
+    Mix_Music *bg_music,
+    t_Timer *timer_new
+);
 void destroyWindow(GameState *PBState, SDL_Window *window);
 
 void level_intro(GameState *PBState, SCENE level);
@@ -47,7 +77,7 @@ CHARACTER_TYPE ChooseCharacter(GameState *PBState, SCENE level);
 void menu(GameState *PBState);
 void level1(GameState *PBState, CHARACTER_TYPE CharType);
 void level2(GameState *PBState, CHARACTER_TYPE char_type);
-void level3 (GameState *PBState);
+void level3(GameState *PBState);
 
 void handle_pointing_menu(SDL_Point mousePoint, Button *buttonArr, GameState *PBState);
 void handle_pointing_choose(SDL_Point mousePoint, Button *buttonArr, Mask **maskArr, GameState *PBState);

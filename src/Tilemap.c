@@ -1,129 +1,86 @@
 #include "../inc/Tilemap.h"
-#include "../inc/Camera.h"
 
 // Tilemap
 
-Tilemap Map_new(SDL_Renderer *r) {
-    Tilemap Map;
+Tilemap *Map_parse(
+    SDL_Renderer *renderer,
+    const char *map_path,
+    const char *bg_path
+) {
+    Tilemap *map = malloc(sizeof(Tilemap));
 
-    Map.width = 48;
-    Map.height = 27;
-    Map.bg_rect = Rect_new(0, 0, LEVEL_WIDTH, LEVEL_HEIGHT);
-    Map.tiles = malloc(sizeof(Tile *) * 48);
+    // Open the map file
+    
+    FILE *map_file = fopen(map_path, "r");
 
-    for (int i = 0; i < 48; i++) {
-        Map.tiles[i] = malloc(sizeof(Tile) * 27);
+    if (map_file == NULL) {
+        fprintf(stderr, "Failed to open the map file: %s\n", map_path);
+        free(map);
+        return NULL;
     }
 
-    Map.bg_texture = IMG_LoadTexture(r, "./resource/img/tiles/bg.png");
-    Map.textures = malloc(sizeof(SDL_Texture *) * 3);
-    Map.textures[WALL] = IMG_LoadTexture(r, "./resource/img/tiles/wall.png");
-    Map.textures[OBSTACLE] = IMG_LoadTexture(r, "./resource/img/tiles/obstacle.png");
-    Map.textures[FLOOR] = IMG_LoadTexture(r, "./resource/img/tiles/floor.png");
+    // Parse map's width and height
 
-    for (size_t i = 0; i < Map.width; i++)
-    {
-       for (size_t j = 0; j < Map.height; j++)
-       {
-            Map.tiles[i][j].tile_rect = Rect_new(i * 40, j * 40, 40, 40);
-            if (i == 22 && (j >= 1 && j <= 6)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if ((i == 0 || i == 47) && j < 48) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if (i == 4 && (j >= 4 && j <= 17)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if ((i >= 4 && i <= 23) && (j == 18)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if (((i >= 4 && i <= 15) || (i >= 18 && i <= 21)) && j == 3) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if ((i >= 5 && i <= 14) && j == 6) {
-                Map.tiles[i][j].type = OBSTACLE;
-            }
-            else if (i == 15 && (j >= 4 && j < 12)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if (i == 15 && (j >= 14 && j <= 18)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if (((i >= 16 && i <= 18) || (i >= 21 && i <= 26)) && j == 7) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if ((i >= 22 && i <= 34) && j == 0) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if ((i >= 26 && i <= 27) && j == 4) {
-                Map.tiles[i][j].type = OBSTACLE;
-            }
-            else if ((i >= 27 && i <= 43) && j == 18) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if ((i >= 30 && i <= 33) && j == 7) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if (i == 34 && (j >= 1 && j <= 11)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if (i == 34 && (j >= 14 && j <= 17)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if ((i >= 35 && i <= 42) && j == 6) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else if (i == 43 && (j >= 6 && j <= 18)) {
-                Map.tiles[i][j].type = WALL;
-            }
-            else {
-                Map.tiles[i][j].type = FLOOR;
-            }
-       }
-    }
-    return Map;
-}
+    fscanf(map_file, "%zu %zu", &map->width, &map->height);
 
-void Map_render(Tilemap t, SDL_Renderer* r, Camera camera){
-    // Move background rect according to camera
-    SDL_Rect adjustedBgRect = {
-        t.bg_rect.x - camera.position.x,
-        t.bg_rect.y - camera.position.y,
-        t.bg_rect.w,
-        t.bg_rect.h
-    };
-    SDL_RenderCopy(r, t.bg_texture, NULL, &adjustedBgRect);
+    // Parse map's tiles
 
-    // Render each tile cons camera
-    for (size_t i = 0; i < t.width; i++) {
-        for (size_t j = 0; j < t.height; j++) {
-            SDL_Rect adjustedTileRect = {
-                t.tiles[i][j].tile_rect.x - camera.position.x,
-                t.tiles[i][j].tile_rect.y - camera.position.y,
-                t.tiles[i][j].tile_rect.w,
-                t.tiles[i][j].tile_rect.h
-            };
-            SDL_RenderCopy(r, t.textures[t.tiles[i][j].type], NULL, &adjustedTileRect);
+    map->tiles = malloc(sizeof(TILE_TYPE *) * map->height);
+
+    for (size_t i = 0; i < map->height; i++) {
+        map->tiles[i] = malloc(sizeof(TILE_TYPE) * map->width);
+
+        for (size_t j = 0; j < map->width; j++) {
+            fscanf(map_file, "%i", map->tiles[i] + j);
         }
     }
+
+    // Set textures
+    
+    map->bg_texture = IMG_LoadTexture(renderer, bg_path);
+    map->render_texture = SDL_CreateTexture(
+        renderer,
+        SDL_PIXELFORMAT_RGBA8888,
+        SDL_TEXTUREACCESS_TARGET,
+        map->width * TILE_SIZE,
+        map->height * TILE_SIZE
+    );
+
+    return map;
 }
 
-void Map_destroy(Tilemap t){
-    for (int i = 0; i < 3; i++)
-    {
-        SDL_DestroyTexture(t.textures[i]);
-    } 
-    for (size_t i = 0; i < t.width; i++)
-    {
-        free(t.tiles[i]);
+void Map_render(Tilemap *map, SDL_Renderer *renderer, SDL_Rect *viewport) {
+    SDL_RenderCopy(
+        renderer,
+        map->render_texture,
+        viewport,
+        NULL
+    );
+}
+
+void Map_initialize(Tilemap *map, SDL_Renderer *renderer) {
+    SDL_SetRenderTarget(renderer, map->render_texture);
+    SDL_RenderCopy(
+        renderer,
+        map->bg_texture,
+        NULL,
+        NULL
+    );
+    SDL_SetRenderTarget(renderer, NULL);
+}
+
+void Map_destroy(Tilemap *map) {
+    for (size_t i = 0; i < map->height; i++) {
+        free(map->tiles[i]);
     }
-    SDL_DestroyTexture(t.bg_texture);
-    free(t.tiles);
-    free(t.textures);
+
+    free(map->tiles);
+    SDL_DestroyTexture(map->bg_texture);
+    SDL_DestroyTexture(map->render_texture);
+    free(map);
 }
 
-double Map_raycast(Tilemap map, Ray ray, TILE_TYPE type) {
+double Map_raycast(Tilemap *map, Ray ray, uint8_t flags) {
     Vector2_scale(&ray.origin, 1.0 / TILE_SIZE);
 
     int map_x = ray.origin.x;
@@ -147,11 +104,11 @@ double Map_raycast(Tilemap map, Ray ray, TILE_TYPE type) {
     );
 
     while (true) {
-        if (map_x < 0 || map_x >= (int) map.width || map_y < 0 || map_y >= (int) map.height) {
+        if (map_x < 0 || map_x >= (int) map->width || map_y < 0 || map_y >= (int) map->height) {
             return INFINITY;
         }
 
-        if (map.tiles[map_x][map_y].type == type) {
+        if (map->tiles[map_y][map_x] & flags) {
             break;
         }
 

@@ -1,5 +1,4 @@
 #include "../inc/AmmoBox.h"
-#include "../inc/Camera.h"
 
 AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y) {
     return (AmmoBox) {
@@ -11,17 +10,15 @@ AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y) {
     };
 }
 
-void AmmoBox_render(SDL_Renderer *r, AmmoBox box, Camera camera) {
-    SDL_Rect renderQuad = {
-        box.rect.x - camera.position.x,
-        box.rect.y - camera.position.y,
-        box.rect.w,
-        box.rect.h
-    };
-
-    // Render the correct texture based on whether the box is full or empty
-
-    SDL_RenderCopy(r, (box.is_full ? box.full_tex : box.empty_tex), NULL, &renderQuad);
+void AmmoBox_render(SDL_Renderer *renderer, AmmoBox box, Tilemap *map) {
+    SDL_SetRenderTarget(renderer, map->render_texture);
+    SDL_RenderCopy(
+        renderer,
+        (box.is_full ? box.full_tex : box.empty_tex),
+        NULL,
+        &box.rect
+    );
+    SDL_SetRenderTarget(renderer, NULL);
 }
 
 void AmmoBox_destroy(AmmoBox box) {

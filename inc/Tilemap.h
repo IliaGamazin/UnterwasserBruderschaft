@@ -5,37 +5,35 @@
 
 #include "./Libs.h"
 #include "./Ray.h"
-#include "Camera.h"
+#include "./Viewport.h"
+
 // TILE_TYPE
 
 typedef enum {
-    WALL,
-    OBSTACLE,
-    FLOOR,
+    FLOOR = 1,
+    OBSTACLE = 2,
+    WALL = 4,
 } TILE_TYPE;
-
-// Tile
-
-typedef struct {
-    SDL_Rect tile_rect;
-    TILE_TYPE type;
-} Tile;
 
 // Tilemap
 
 typedef struct { 
     size_t width; 
     size_t height; 
-    Tile **tiles;
-    SDL_Texture **textures;
+    TILE_TYPE **tiles;
     SDL_Texture *bg_texture;
-    SDL_Rect bg_rect;
+    SDL_Texture *render_texture;
 } Tilemap;
 
-Tilemap Map_new(SDL_Renderer *r);
-void Map_render(Tilemap t, SDL_Renderer *r, Camera camera);
-void Map_destroy(Tilemap t);
-double Map_raycast(Tilemap map, Ray ray, TILE_TYPE type);
+Tilemap *Map_parse(
+    SDL_Renderer *renderer,
+    const char *map_path,
+    const char *bg_path
+);
+void Map_render(Tilemap *map, SDL_Renderer *renderer, Viewport *viewport);
+void Map_initialize(Tilemap *map, SDL_Renderer *renderer);
+void Map_destroy(Tilemap *map);
+double Map_raycast(Tilemap *map, Ray ray, uint8_t flags);
 
 #endif
 

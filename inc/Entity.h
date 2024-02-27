@@ -1,11 +1,12 @@
-#pragma once
 #ifndef ENTITY_H
 #define ENTITY_H
+
+#include <math.h>
 
 #include "./Libs.h"
 #include "./Vector.h"
 #include "./Weapon.h"
-#include "./Camera.h"
+#include "./Viewport.h"
 #include "./Tilemap.h"
 
 // CHARACTER_TYPE
@@ -32,7 +33,7 @@ typedef struct {
 } Entity;
 
 void Entity_destroy(Entity *entity);
-void Entity_render(SDL_Renderer *renderer, Entity *entity, Camera camera);
+void Entity_render(SDL_Renderer *renderer, Entity *entity, Tilemap *map);
 
 // Entity player
 
@@ -44,7 +45,7 @@ Entity *Player_new(
     double speed,
     uint32_t animation_speed
 );
-void Player_update(Entity *entity, Tilemap map);
+void Player_update(Entity *entity, Tilemap *map, Viewport *viewport);
 
 #endif
 
