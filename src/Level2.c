@@ -31,7 +31,6 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
             if (PBState->event.type == SDL_QUIT) {
                 PBState->run = QUIT;
             }
-            
             if (PBState->event.type == SDL_KEYDOWN) {
                 switch (PBState->event.key.keysym.sym) {
                 case SDLK_a:
@@ -90,7 +89,7 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
         }
 
         if (player_drive->passed_distance >= finish_distance) {
-            PBState->run = MENU;
+            PBState->run = LEVEL3_INTRO;
         }
 
         SDL_RenderClear(PBState->renderer);

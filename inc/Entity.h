@@ -30,6 +30,7 @@ typedef struct {
     uint32_t last_animated;
     uint32_t animation_speed;
     uint32_t current_frame;
+    Mix_Chunk *walking_sound;
 } Entity;
 
 void Entity_destroy(Entity *entity);

@@ -30,6 +30,7 @@ void ExitCar_update(ExitCar *Car, SDL_Point PlayerCenter){
 }
 
 void ExitCar_render(SDL_Renderer *renderer, ExitCar *car, Tilemap *map){
+    SDL_Point door_anchor = {0, 0};
     SDL_SetRenderTarget(renderer, map->render_texture);
     SDL_RenderCopy(
         renderer,
@@ -43,7 +44,7 @@ void ExitCar_render(SDL_Renderer *renderer, ExitCar *car, Tilemap *map){
         NULL,
         &car->door_rect,
         car->door_angle,
-        NULL,
+        &door_anchor,
         SDL_FLIP_NONE
     );
     SDL_SetRenderTarget(renderer, NULL);

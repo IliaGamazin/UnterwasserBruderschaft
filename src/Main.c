@@ -55,13 +55,11 @@ int main(void){
         case LEVEL2:
             level2(PBState, character);
             break;
+        case LEVEL3_INTRO:
+            level_intro(PBState, LEVEL3_INTRO);
+            break;
         case LEVEL3:
             level3(PBState);
-            while (SDL_PollEvent(&PBState->event)) {
-                if (PBState->event.type == SDL_QUIT) {
-                    PBState->run = QUIT;
-                }
-            }
             break;
         case GAME_OVER:
             gameover(PBState);

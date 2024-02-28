@@ -62,6 +62,7 @@ void  level3 (GameState *PBState) {
                     else {
                         volume = MAX_VOLUME;
                     }
+                    break;
                 case SDLK_ESCAPE:
                     PBState->run = MENU;
                     break;
@@ -137,15 +138,16 @@ void  level3 (GameState *PBState) {
 
         SDL_Delay(1000 / 60);
     }
+    
     Player_destroy(player);
     Counter_destroy(counter);
     CatManager_destroy(catManager);
     Plane_destroy(plane);
 
-    for(int i = 0; i < BACKGROUNDS; i++)
-    {
+    for(int i = 0; i < BACKGROUNDS; i++) {
         SDL_DestroyTexture(gMap[i]);
     }
+
     Mix_FreeMusic(gBGMusic);
 }
 

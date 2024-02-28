@@ -51,7 +51,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         },
         Vector2_new(1, 0),
         7,
-        500
+        250
     );
     AmmoBox box = AmmoBox_new(PBState->renderer, 800, 160);
     BulletManager *bullet_manager = BulletManager_new(100);
@@ -84,7 +84,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     );
 
     // Main loop
-    
+
     while (PBState->run == LEVEL1) {
         int mouseX;
         int mouseY;
@@ -143,6 +143,9 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
                         case SDLK_ESCAPE:
                             PBState->run = MENU;
                             break;
+                        case SDLK_RETURN:
+                            exit->is_opened = true;
+                            break;
                         case SDLK_EQUALS:
                         case SDLK_KP_PLUS:
                             Mix_MasterVolume(Mix_MasterVolume(-1) + (MIX_MAX_VOLUME / 8));
@@ -171,7 +174,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         SDL_RenderClear(PBState->renderer);
         
         if (exit->is_opened && SDL_PointInRect(&PlayerCenter, &exit->seat_collider)) {
-            PBState->run = MENU;
+            PBState->run++;
         }
         
         AmmoBox_render(PBState->renderer, box, map);

@@ -5,6 +5,7 @@
 void Entity_destroy(Entity *entity) {
     Weapon_destroy(entity->weapon);
     SDL_DestroyTexture(entity->texture);
+    Mix_FreeChunk(entity->walking_sound);
     free(entity);
 }
 
@@ -50,15 +51,18 @@ Entity *Player_new(
         49,
         49,
     };
+    
     entity->pivot = (SDL_Point) {
         entity->hitbox.w / 2 + entity->hitbox.x,
         entity->hitbox.h / 2 + entity->hitbox.y
     };
+
     entity->direction = direction;
     entity->speed = speed;
     entity->last_animated = 0;
     entity->animation_speed = animation_speed;
     entity->current_frame = 0;
+    entity->walking_sound = Mix_LoadWAV("./resource/sound/walking_sound.wav");
 
     switch (type) {
         case SHAYLUSHAY:
@@ -196,6 +200,12 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
         viewport->y = 0;
     } else if (viewport->y + viewport->h >= (int) map->height * TILE_SIZE) {
         viewport->y = map->height * TILE_SIZE - viewport->h - 1;
+    }
+
+    // Walking Sound 
+    
+    if (!Mix_Playing(3)) {
+        Mix_PlayChannel(3, entity->walking_sound, 1);
     }
 
     // Move player
