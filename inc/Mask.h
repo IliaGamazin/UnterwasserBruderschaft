@@ -1,12 +1,10 @@
-#pragma once
 #ifndef MASK_H
 #define MASK_H
 
 #include "./Libs.h"
 #include "./Entity.h"
 
-typedef struct Mask Mask;
-struct Mask {
+typedef struct {
     SDL_Rect mask_rect;
     SDL_Texture *mask_tex_idle;
     SDL_Texture *mask_tex_active;
@@ -21,7 +19,7 @@ struct Mask {
     double angle_limit;
     double angle_inc;
 
-};
+} Mask;
 
 Mask *Mask_gameover_new(SDL_Renderer *r);
 Mask *Mask_new(SDL_Renderer *r, CHARACTER_TYPE type, int x, int y, int w, int h);
@@ -30,3 +28,4 @@ void Mask_render(SDL_Renderer *r, Mask* m);
 void Mask_destroy(Mask *m);
 
 #endif
+

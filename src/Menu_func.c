@@ -63,12 +63,12 @@ void destroyMenu(Button* buttonArr, SDL_Texture* bgTexture, SoundBar* Bar, Mix_M
     free(buttonArr);
 }
 
-void destroyWindow(GameState* PB, SDL_Window* window ) {
-    SDL_DestroyRenderer(PB->renderer);
-    SDL_FreeCursor(PB->arrowCursor);
-    SDL_FreeCursor(PB->handCursor);
-    free(PB);
-    SDL_DestroyWindow(window);
+void destroyWindow(GameState *state) {
+    SDL_DestroyRenderer(state->renderer);
+    SDL_FreeCursor(state->arrowCursor);
+    SDL_FreeCursor(state->handCursor);
+    free(state);
+    SDL_DestroyWindow(state->window);
     Mix_Quit();
     SDL_Quit();
 }

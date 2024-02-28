@@ -46,7 +46,7 @@ Entity *Player_new(
     double speed,
     uint32_t animation_speed
 );
-void Player_update(Entity *entity, Tilemap *map, Viewport *viewport);
+void Player_update(Entity *entity, Tilemap *map, Viewport *viewport, Vector2 mouse_position);
 
 #endif
 

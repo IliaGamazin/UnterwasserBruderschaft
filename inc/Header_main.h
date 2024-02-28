@@ -23,6 +23,7 @@
 typedef struct {
     SCENE run;
     SCENE rerun;
+    SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Event event;
     SDL_Cursor *arrowCursor;
@@ -68,7 +69,7 @@ void level2_destroy(
     Mix_Music *bg_music,
     t_Timer *timer_new
 );
-void destroyWindow(GameState *PBState, SDL_Window *window);
+void destroyWindow(GameState *PBState);
 
 void level_intro(GameState *PBState, SCENE level);
 void gameover(GameState *PBstate);

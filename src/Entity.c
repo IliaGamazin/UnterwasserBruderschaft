@@ -1,5 +1,17 @@
 #include "../inc/Entity.h"
 
+int clampi(int x, int min, int max) {
+    if (x < min) {
+        return min;
+    }
+
+    if (x > max) {
+        return max;
+    }
+
+    return x;
+}
+
 // Entity
 
 void Entity_destroy(Entity *entity) {
@@ -82,44 +94,64 @@ Entity *Player_new(
     return entity;
 }
 
-void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
-    Vector2 direction = Vector2_new(0, 0);
+void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport, Vector2 mouse_position) {
+    // Calculate player center
+
+    Vector2 player_center = Vector2_new(
+        entity->rect.x + entity->pivot.x,
+        entity->rect.y + entity->pivot.y
+    );
+
+    // Calculate map pixel size
+    
+    Vector2 map_pixel_size = Vector2_new(
+        map->width * TILE_SIZE,
+        map->height * TILE_SIZE
+    );
+
+    // Calculate walk_direction
+
+    Vector2 walk_direction = Vector2_new(0, 0);
 
     const uint8_t *keys = SDL_GetKeyboardState(NULL);
 
     if (keys[SDL_SCANCODE_W]) {
-        direction = Vector2_add(
-            direction,
+        walk_direction = Vector2_add(
+            walk_direction,
             Vector2_new(0, -1)
         );
     }
 
     if (keys[SDL_SCANCODE_S]) {
-        direction = Vector2_add(
-            direction,
+        walk_direction = Vector2_add(
+            walk_direction,
             Vector2_new(0, 1)
         );
     }
 
     if (keys[SDL_SCANCODE_A]) {
-        direction = Vector2_add(
-            direction,
+        walk_direction = Vector2_add(
+            walk_direction,
             Vector2_new(-1, 0)
         );
     }
 
     if (keys[SDL_SCANCODE_D]) {
-        direction = Vector2_add(
-            direction,
+        walk_direction = Vector2_add(
+            walk_direction,
             Vector2_new(1, 0)
         );
     }
 
-    // Return if no movement detected
+    // Update direction
 
-    if (Vector2_is_null(direction)) {
-        return;
-    }
+    entity->direction = Vector2_from_points(
+        player_center,
+        Vector2_new(
+            mouse_position.x + viewport->x,
+            mouse_position.y + viewport->y
+        )
+    );
 
     // Hitbox literal
 
@@ -130,17 +162,38 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
         entity->hitbox.h
     );
 
+    // Update viewport
+
+    if (keys[SDL_SCANCODE_LSHIFT]) {
+        Viewport_centralize(
+            viewport,
+            player_center.x + mouse_position.x - viewport->w / 2,
+            player_center.y + mouse_position.y - viewport->h / 2
+        );
+    } else {
+        Viewport_centralize(viewport, player_center.x, player_center.y);
+    }
+
+    viewport->x = clampi(viewport->x, 0, map_pixel_size.x - viewport->w - 1);
+    viewport->y = clampi(viewport->y, 0, map_pixel_size.y - viewport->h - 1);
+
+    // Return if no movement detected
+
+    if (Vector2_is_null(walk_direction)) {
+        return;
+    }
+
     // Calculate hit distance
 
     double hit_distance = INFINITY;
 
-    if (direction.x) {
+    if (walk_direction.x) {
         Ray ray = Ray_new(
             Vector2_new(
-                hitbox_literal.x + hitbox_literal.w * (direction.x > 0),
+                hitbox_literal.x + hitbox_literal.w * (walk_direction.x > 0),
                 hitbox_literal.y
             ),
-            direction
+            walk_direction
         );
 
         while (ray.origin.y <= hitbox_literal.y + hitbox_literal.h) {
@@ -158,13 +211,13 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
         }
     }
 
-    if (direction.y) {
+    if (walk_direction.y) {
         Ray ray = Ray_new(
             Vector2_new(
                 hitbox_literal.x,
-                hitbox_literal.y + hitbox_literal.h * (direction.y > 0)
+                hitbox_literal.y + hitbox_literal.h * (walk_direction.y > 0)
             ),
-            direction
+            walk_direction
         );
 
         while (ray.origin.x <= hitbox_literal.x + hitbox_literal.w) {
@@ -184,23 +237,7 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
 
     // Tweak walk distance
 
-    Vector2_set_magnitude(&direction, (hit_distance < entity->speed ? hit_distance : entity->speed));
-
-    // Move viewport
-
-    Viewport_centralize(viewport, entity->rect.x + entity->pivot.x, entity->rect.y + entity->pivot.y);
-
-    if (viewport->x < 0) {
-        viewport->x = 0;
-    } else if (viewport->x + viewport->w >= (int) map->width * TILE_SIZE) {
-        viewport->x = map->width * TILE_SIZE - viewport->w - 1;
-    }
-
-    if (viewport->y < 0) {
-        viewport->y = 0;
-    } else if (viewport->y + viewport->h >= (int) map->height * TILE_SIZE) {
-        viewport->y = map->height * TILE_SIZE - viewport->h - 1;
-    }
+    Vector2_set_magnitude(&walk_direction, (hit_distance < entity->speed ? hit_distance : entity->speed));
 
     // Walking Sound 
     
@@ -210,8 +247,8 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
 
     // Move player
 
-    entity->rect.x += direction.x;
-    entity->rect.y += direction.y;
+    entity->rect.x += walk_direction.x;
+    entity->rect.y += walk_direction.y;
 
     // Animate player
 
@@ -219,8 +256,6 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport) {
         entity->current_frame = (entity->current_frame + 1) % 3;
         entity->last_animated = SDL_GetTicks();
     }
-
-    // Handle collision
 }
 
 // Entity enemy

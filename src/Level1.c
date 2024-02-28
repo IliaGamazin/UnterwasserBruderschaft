@@ -90,28 +90,15 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         int mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        mouseX += viewport.x;
-        mouseY += viewport.y;
-        
         Vector2 player_center = Vector2_new(
             player->rect.x + (player -> rect.w / 2.0),
             player->rect.y + (player -> rect.h / 2.0)
         );
         
-        player->direction = Vector2_from_points(
-                player_center,
-                Vector2_new(mouseX, mouseY)
-            );
-        
         SDL_Point PlayerCenter = (SDL_Point) {
             player_center.x,
             player_center.y,
         };
-
-        player->direction = Vector2_from_points(
-            player_center,
-            Vector2_new(mouseX, mouseY)
-        );
 
         // Events
 
@@ -165,7 +152,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
         BulletManager_update(bullet_manager, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-        Player_update(player, map, &viewport);
+        Player_update(player, map, &viewport, Vector2_new(mouseX, mouseY));
         ExitCar_update(exit, PlayerCenter);
 
         // Render
