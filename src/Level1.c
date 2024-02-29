@@ -60,6 +60,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     Mix_PlayMusic(PBState->bgMusic, 0);
     SDL_Texture *ammo_texture;
     SDL_Texture *ammo_fired_texture;
+    EnemyManager *enemy_manager = EnemyManager_new(PBState->renderer, 3, 3);
 
     switch (character_type) {
         case SHAYLUSHAY:
@@ -85,6 +86,8 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
     // Main loop
 
+    bool is_firing = false;
+
     while (PBState->run == LEVEL1) {
         int mouseX;
         int mouseY;
@@ -101,27 +104,23 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         };
 
         // Events
-
+    
         while (SDL_PollEvent(&PBState->event)) {
             switch (PBState->event.type) {
                 case SDL_QUIT:
                     PBState->run = QUIT;
                     break;
+                case SDL_MOUSEBUTTONUP:
+                    switch (PBState->event.button.button) {
+                        case SDL_BUTTON_LEFT:
+                            is_firing = false;
+                            break;
+                    }
+                    break;
                 case SDL_MOUSEBUTTONDOWN:
                     switch (PBState->event.button.button) {
                         case SDL_BUTTON_LEFT:
-                            Weapon_shoot(
-                                player->weapon,
-                                bullet_manager,
-                                Vector2_add(
-                                    player_center,
-                                    Vector2_with_magnitude(
-                                        player->direction,
-                                        player->rect.h / 2
-                                    )
-                                ),
-                                player->direction
-                            );
+                            is_firing = true;
                             break;
                     }
                     break;
@@ -148,12 +147,28 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
             }
         }
 
+        if (is_firing) {
+            Weapon_shoot(
+                player->weapon,
+                bullet_manager,
+                Vector2_add(
+                    player_center,
+                    Vector2_with_magnitude(
+                        player->direction,
+                        player->rect.h / 2
+                    )
+                ),
+                player->direction
+            );
+        }
+        
+
         // Update
 
         BulletManager_update(bullet_manager, LEVEL_WIDTH, LEVEL_HEIGHT);
-
         Player_update(player, map, &viewport, Vector2_new(mouseX, mouseY));
         ExitCar_update(exit, PlayerCenter);
+        EnemyManager_update(enemy_manager, player, bullet_manager);
 
         // Render
         
@@ -168,6 +183,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         BulletManager_render(PBState->renderer, bullet_manager, map);
         Entity_render(PBState->renderer, player, map);
         ExitCar_render(PBState->renderer, exit, map);
+        EnemyManager_render(enemy_manager, PBState->renderer, map);
         Map_render(map, PBState->renderer, &viewport);
         Hood_render(PBState->renderer, player, ammo_texture, ammo_fired_texture);
 

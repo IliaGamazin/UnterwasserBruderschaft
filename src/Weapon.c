@@ -43,12 +43,13 @@ void Weapon_destroy(Weapon *weapon) {
 }
 
 void Weapon_shoot(Weapon *weapon, BulletManager *bullet_manager, Vector2 origin, Vector2 direction) {
-    if (SDL_GetTicks() <= weapon->last_shoot + weapon->round_delay) {
+    if (!weapon->ammo && SDL_GetTicks() > weapon->last_shoot + weapon->round_delay) {
+        weapon->last_shoot = SDL_GetTicks();
+        Mix_PlayChannel(-1, weapon->no_ammo_sound, 0);
         return;
     }
 
-    if (!weapon->ammo) {
-        Mix_PlayChannel(-1, weapon->no_ammo_sound, 0);
+    if (SDL_GetTicks() <= weapon->last_shoot + weapon->round_delay) {
         return;
     }
 

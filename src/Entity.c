@@ -258,5 +258,147 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport, Vector2 mou
     }
 }
 
-// Entity enemy
+void chase_player_AI(Entity *enemy, Entity *player, BulletManager *bullet_manager) {
+    static uint32_t last_update_time = 0;
+    const uint32_t update_interval = 1000;
+    static bool is_chasing = false;
+    
+    
+    Vector2 player_pos = {player->rect.x + player->rect.w / 2.0f, player->rect.y + player->rect.h / 2.0f};
+    Vector2 enemy_pos = {enemy->rect.x + enemy->rect.w / 2.0f, enemy->rect.y + enemy->rect.h / 2.0f};
+    Vector2 diff = Vector2_sub(player_pos, enemy_pos);
+    float distance_to_player = Vector2_magnitude(diff);
+    
+   
+    if (!is_chasing) {
+        if (SDL_GetTicks() - last_update_time > update_interval) {
+            int dir = rand() % 4;
+            switch (dir) {
+                case 0: enemy->direction = (Vector2){1, 0}; break;
+                case 1: enemy->direction = (Vector2){-1, 0}; break;
+                case 2: enemy->direction = (Vector2){0, 1}; break;
+                case 3: enemy->direction = (Vector2){0, -1}; break;
+            }
+            last_update_time = SDL_GetTicks();
+        }
+    }
+    
+   
+    const float sight_range = 350.0f;
+    if (distance_to_player < sight_range) {
+        is_chasing = true;
+    } else {
+        is_chasing = false;
+    }
+    
+    if (is_chasing) {
+        Vector2 direction_to_player = Vector2_sub(player_pos, enemy_pos);
+        Vector2_normalize(&direction_to_player);
+        
+        enemy->direction = direction_to_player;
+        
+        
+        enemy->rect.x += enemy->direction.x * enemy->speed;
+        enemy->rect.y += enemy->direction.y * enemy->speed;
+        
+        
+        if (enemy->weapon && distance_to_player < sight_range) {
+            Weapon_shoot(enemy->weapon, bullet_manager, enemy_pos, enemy->direction);
+            enemy->weapon->ammo++;
+        }
+    }
+}
+
+
+
+
+
+Entity *Enemy_new(
+    SDL_Renderer *renderer,
+    ENEMY_TYPE type, //now incl en typ
+    SDL_Rect rect,
+    Vector2 direction,
+    double speed,
+    uint32_t animation_speed
+    )
+{
+    Entity *entity = (Entity *)malloc(sizeof(Entity));
+    if (!entity) return NULL;
+    
+    // init obl of ent
+
+    entity->rect = rect;
+    entity->direction = direction;
+    entity->speed = speed;
+    entity->pivot = (SDL_Point){entity->rect.w / 2, entity->rect.h / 2};
+    entity->animation_speed = animation_speed;
+    entity->last_animated = 0;
+    entity->current_frame = 0;
+
+    // Swstatement to handle different entypes
+    switch (type) {
+        case ENEMY_TYPE1:
+            entity->texture = IMG_LoadTexture(renderer, "./resource/img/entities/dawawue.png");
+            entity->weapon = Weapon_new(SHOTGUN);
+            break;
+        case ENEMY_TYPE2:
+            entity->texture = IMG_LoadTexture(renderer, "./resource/img/entities/shaylushay.png");
+            entity->weapon = Weapon_new(RIFLE);
+            break;
+        case ENEMY_TYPE3:
+            entity->texture = IMG_LoadTexture(renderer,  "./resource/img/entities/yaltpils.png");
+            entity->weapon = Weapon_new(PISTOL);
+            break;
+        default:
+            break;
+    }
+    
+    return entity;
+}
+
+EnemyManager *EnemyManager_new(SDL_Renderer *r, int capacity, int count) {
+    EnemyManager *manager = malloc(sizeof(EnemyManager));
+
+    manager->enemies = malloc(sizeof(Entity) * capacity);
+    manager->capacity = capacity;
+    manager->enemy_count = count;
+    
+    manager->enemies[0] = Enemy_new(r, ENEMY_TYPE1, (SDL_Rect){100, 100, 70, 49}, Vector2_new(0, 0), 3, 500);
+    manager->enemies[1] = Enemy_new(r, ENEMY_TYPE2, (SDL_Rect){200, 200, 70, 49}, Vector2_new(0, 0), 3, 500);
+    manager->enemies[2] = Enemy_new(r, ENEMY_TYPE3, (SDL_Rect){300, 300, 70, 49}, Vector2_new(0, 0), 3, 500);
+    
+    return manager; 
+}
+
+//speaks for itself
+
+void EnemyManager_update(EnemyManager *manager, Entity *player, BulletManager* bullet_manager) {
+    for (int i = 0; i < manager->enemy_count; i++) {
+        chase_player_AI(manager->enemies[i], player, bullet_manager);
+        if (SDL_GetTicks() > manager->enemies[i]->last_animated + manager->enemies[i]->animation_speed) {
+            manager->enemies[i]->current_frame = (manager->enemies[i]->current_frame + 1) % 3;
+            manager->enemies[i]->last_animated = SDL_GetTicks();
+        }
+    }
+}
+
+// ^
+
+void EnemyManager_render(EnemyManager *manager, SDL_Renderer *renderer, Tilemap *map) {
+    for (int i = 0; i < manager->enemy_count; i++) {
+        Entity_render(renderer, manager->enemies[i], map);
+    }
+}
+//^^
+
+void EnemyManager_destroy(EnemyManager *manager) {
+    for (int i = 0; i < manager->enemy_count; i++) {
+        Entity_destroy(manager->enemies[i]);
+        manager->enemies[i] = NULL;
+    }
+    manager->enemy_count = 0;
+    free(manager->enemies);
+    free(manager);
+}
+
 

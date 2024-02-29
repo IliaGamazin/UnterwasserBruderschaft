@@ -52,6 +52,6 @@ void destroy_CollidedCat(CatManager *catManager, int index);
 void CatManager_destroy(CatManager *catManager);
 void catManager_update(CatManager *catManager, PlayerSecretLvL *player, Counter *counter);
 void Cat_show(FallingCat *cat, SDL_Renderer *gRenderer, int bcat);
-void CatArr_show(CatManager *catManager, SDL_Renderer* gRenderer, int bcat);
+void CatArr_show(CatManager *cat_manager, SDL_Renderer* gRenderer, int bcat);
 
 #endif

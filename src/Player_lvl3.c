@@ -34,3 +34,4 @@ void Player_destroy(PlayerSecretLvL *player) {
 void Player_show(PlayerSecretLvL *player, SDL_Renderer *gRenderer) {
     SDL_RenderCopy(gRenderer, player->PlayerTextureIdle, &player->playerClip, &player->playerRect);
 }
+

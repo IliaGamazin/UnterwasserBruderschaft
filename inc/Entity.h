@@ -17,6 +17,12 @@ typedef enum {
     DAWAWUE,
 } CHARACTER_TYPE;
 
+typedef enum {
+    ENEMY_TYPE1,
+    ENEMY_TYPE2,
+    ENEMY_TYPE3,
+} ENEMY_TYPE;
+
 // Entity
 
 typedef struct {
@@ -47,6 +53,22 @@ Entity *Player_new(
     uint32_t animation_speed
 );
 void Player_update(Entity *entity, Tilemap *map, Viewport *viewport, Vector2 mouse_position);
+
+
+Entity* Enemy_new(SDL_Renderer* renderer, ENEMY_TYPE type, SDL_Rect rect, Vector2 direction, double speed, uint32_t animation_speed);
+void chase_player_AI(Entity* enemy, Entity* player, BulletManager* bullet_manager);
+
+typedef struct {
+    Entity **enemies;
+    int enemy_count;
+    int capacity;
+} EnemyManager;
+
+EnemyManager *EnemyManager_new(SDL_Renderer *r, int capacity, int count);
+
+void EnemyManager_update(EnemyManager *manager, Entity *player, BulletManager* bullet_manager);
+void EnemyManager_render(EnemyManager *manager, SDL_Renderer *renderer, Tilemap *map);
+void EnemyManager_destroy(EnemyManager *manager);
 
 #endif
 

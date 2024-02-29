@@ -17,6 +17,7 @@ Enemy *Plane_create(SDL_Renderer* gRenderer) {
 }
 void Plane_destroy(Enemy *plane) {
     SDL_DestroyTexture(plane->Plane);
+    Mix_FreeChunk(plane->PlaneSound);
     free(plane);
 }
 void Plane_move(Enemy *plane) {
@@ -39,3 +40,4 @@ void Plane_move(Enemy *plane) {
 void Plane_show(Enemy *plane, SDL_Renderer* gRenderer) {
     SDL_RenderCopy(gRenderer, plane->Plane, &plane->PlaneClip, &plane->PlaneRect);
 }
+

@@ -13,9 +13,9 @@ typedef struct
     int pVelX;
     SDL_Rect PlaneRect;
     SDL_Rect PlaneClip;
-    SDL_Texture* Plane;
+    SDL_Texture *Plane;
     int frame;
-    Mix_Chunk* PlaneSound;
+    Mix_Chunk *PlaneSound;
 }Enemy;
 
 Enemy* Plane_create(SDL_Renderer* gRenderer);
