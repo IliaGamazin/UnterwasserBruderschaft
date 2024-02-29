@@ -108,9 +108,18 @@ double Map_raycast(Tilemap *map, Ray ray, uint8_t flags) {
             return INFINITY;
         }
 
-        if (ray.direction.x && !ray.direction.y && ray.origin.y == (int) ray.origin.y && map->tiles[map_y][map_x] & flags) {
+        if (ray.direction.x &&
+            !ray.direction.y &&
+            ray.origin.y == (int) ray.origin.y &&
+            map->tiles[map_y][map_x] & flags &&
+            map_y - 1 >= 0) {
             map_y--;
-        } else if (ray.direction.y && !ray.direction.x && ray.origin.x == (int) ray.origin.x && map->tiles[map_y][map_x] & flags) {
+        } else if (
+            ray.direction.y &&
+            !ray.direction.x &&
+            ray.origin.x == (int) ray.origin.x &&
+            map->tiles[map_y][map_x] & flags &&
+            map_x - 1 >= 0) {
             map_x--;
         }
 
