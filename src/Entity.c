@@ -247,8 +247,8 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport, Vector2 mou
 
     // Move player
 
-    entity->rect.x += walk_direction.x;
-    entity->rect.y += walk_direction.y;
+    entity->rect.x += round(walk_direction.x);
+    entity->rect.y += round(walk_direction.y);
 
     // Animate player
 
