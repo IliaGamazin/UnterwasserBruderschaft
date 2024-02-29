@@ -25,7 +25,6 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
 
     while (PBState->run == LEVEL2) {
         while (SDL_PollEvent(&PBState->event)) {
-
             if (PBState->event.type == SDL_QUIT) {
                 PBState->run = QUIT;
             }
@@ -59,23 +58,21 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
                     break;
                 
                 }
-            }
-            else if (PBState->event.type == SDL_KEYUP) {
+            } else if (PBState->event.type == SDL_KEYUP) {
                 switch (PBState->event.key.keysym.sym) {
-                case SDLK_a:
-                    key_break = false;
-                    break;
-                case SDLK_d:
-                    key_gas = false;
-                    break;
-                case SDLK_w:
-                    key_up = false;
-                    break;
-                case SDLK_s:
-                    key_down = false;
-                    break;
+                    case SDLK_a:
+                        key_break = false;
+                        break;
+                    case SDLK_d:
+                        key_gas = false;
+                        break;
+                    case SDLK_w:
+                        key_up = false;
+                        break;
+                    case SDLK_s:
+                        key_down = false;
+                        break;
                 } 
-                Mix_LoadMUS("./resource/sound/nightcall.mp3");
             } 
         }
 

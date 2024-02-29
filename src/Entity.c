@@ -186,6 +186,8 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport, Vector2 mou
     // Calculate hit distance
 
     double hit_distance = INFINITY;
+    double hit_x_distance = INFINITY;
+    double hit_y_distance = INFINITY;
 
     if (walk_direction.x) {
         Ray ray = Ray_new(
@@ -197,14 +199,15 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport, Vector2 mou
         );
 
         while (ray.origin.y <= hitbox_literal.y + hitbox_literal.h) {
-            double cast = Map_raycast(map, ray, WALL | OBSTACLE);
+            double hit = Map_raycast(map, ray, WALL | OBSTACLE);
+            double hitx = Map_raycast(map, Ray_new(ray.origin, Vector2_new(ray.direction.x, 0)), WALL | OBSTACLE);
 
-            if (!cast) {
-                return;
+            if (hit < hit_distance) {
+                hit_distance = hit;
             }
 
-            if (cast < hit_distance) {
-                hit_distance = cast;
+            if (hitx < hit_x_distance) {
+                hit_x_distance = hitx;
             }
 
             ray.origin.y++;
@@ -221,17 +224,28 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport, Vector2 mou
         );
 
         while (ray.origin.x <= hitbox_literal.x + hitbox_literal.w) {
-            double cast = Map_raycast(map, ray, WALL | OBSTACLE);
+            double hit = Map_raycast(map, ray, WALL | OBSTACLE);
+            double hity = Map_raycast(map, Ray_new(ray.origin, Vector2_new(0, ray.direction.y)), WALL | OBSTACLE);
 
-            if (!cast) {
-                return;
+            if (hit < hit_distance) {
+                hit_distance = hit;
             }
 
-            if (cast < hit_distance) {
-                hit_distance = cast;
+            if (hity < hit_y_distance) {
+                hit_y_distance = hity;
             }
 
             ray.origin.x++;
+        }
+    }
+
+    if (!hit_distance && walk_direction.x && walk_direction.y) {
+        if (hit_x_distance) {
+            walk_direction.y = 0;
+            hit_distance = hit_x_distance;
+        } else if (hit_y_distance) {
+            walk_direction.x = 0;
+            hit_distance = hit_y_distance;
         }
     }
 
