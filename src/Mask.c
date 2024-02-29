@@ -9,8 +9,8 @@ Mask *Mask_new(SDL_Renderer *r, CHARACTER_TYPE type, int x, int y, int w, int h)
     hero_mask->mask_rect = Rect_new(x, y, w, h);
 
     hero_mask->init_y = y;
-    hero_mask->init_height = 170;
-    hero_mask->init_width = 170;
+    hero_mask->init_height = w;
+    hero_mask->init_width = h;
 
     hero_mask->angle_inc = 1.2;
     hero_mask->angle = 0;

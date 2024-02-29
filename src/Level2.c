@@ -13,12 +13,10 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
 
     Player *player_drive = player_drive_new(PBState->renderer, 200, 200, char_type);
     BackgroundManager *bg_manager = bg_manager_new(PBState->renderer, player_drive->velocity_x);
-    ObstaclesManager *ob_manager = obstacle_manager_new(10, 3, 100);
-    t_Timer *timer = timer_new(60, PBState->renderer); 
+    ObstaclesManager *ob_manager = obstacle_manager_new(10, 6, 300);
+    t_Timer *timer = timer_new(PBState->renderer); 
 
     Mix_PlayMusic(PBState->bgMusic, 0);
-
-    int finish_distance = 30000;
 
     bool key_up = false;
     bool key_gas = false;
@@ -31,6 +29,7 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
             if (PBState->event.type == SDL_QUIT) {
                 PBState->run = QUIT;
             }
+            
             if (PBState->event.type == SDL_KEYDOWN) {
                 switch (PBState->event.key.keysym.sym) {
                 case SDLK_a:
@@ -88,20 +87,16 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
             ++player_drive->velocity_x;
         }
 
-        if (player_drive->passed_distance >= finish_distance) {
-            PBState->run = LEVEL3_INTRO;
-        }
-
         SDL_RenderClear(PBState->renderer);
 
         // Level update
 
         timer_update(timer);
-        spawn_obstacles(ob_manager, PBState->renderer);
-        obstacle_manager_update(ob_manager, player_drive->velocity_x); 
         bg_manager_update(bg_manager, player_drive->velocity_x);
         player_drive_update(player_drive, key_up, key_down);
-
+        obstacle_manager_update(ob_manager, player_drive->velocity_x); 
+        spawn_obstacles(ob_manager, PBState->renderer, timer);
+    
         // Level render
 
         bg_manager_render(bg_manager, PBState->renderer);
@@ -111,9 +106,12 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
 
         // Collision
 
-        if (player_check_collision(ob_manager, player_drive)) {
+        if (player_check_collision(ob_manager, player_drive) && !ob_manager->finished_obstacle) {
             PBState->run = GAME_OVER;
             PBState->rerun = LEVEL2;
+        }
+        else if (player_check_collision(ob_manager, player_drive) && ob_manager->finished_obstacle) {
+            PBState->run++;
         }
         
         // Render

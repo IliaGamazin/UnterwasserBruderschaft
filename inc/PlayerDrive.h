@@ -4,7 +4,6 @@
 #include "Entity.h"
 #include "Obstacles.h"
 
-
 #ifndef PLAYER_DRIVE_H
 #define PLAYER_DRIVE_H
 
@@ -20,7 +19,6 @@ typedef struct {
     int velocity_x;
     int initial_velocity_x;
     int velocity_y;
-    int passed_distance;
     CHARACTER_TYPE type;
 } Player;
 

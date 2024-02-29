@@ -1,10 +1,9 @@
 #include "../inc/Header_main.h"
 
 void  level3 (GameState *PBState) {
-    Mix_Music* gBGMusic = Mix_LoadMUS("resource/sound/bgm.wav");
+    PBState->bgMusic = Mix_LoadMUS("resource/sound/backsound.mp3");
 
-    SDL_Texture* gMap[BACKGROUNDS];
-    SDL_Rect g_map;
+    SDL_Texture *gMap[BACKGROUNDS];
 
     gMap[0] = IMG_LoadTexture(PBState->renderer, "resource/img/level3/fon1.png");
     gMap[1] = IMG_LoadTexture(PBState->renderer, "resource/img/level3/fon2.png");
@@ -16,20 +15,16 @@ void  level3 (GameState *PBState) {
 
     int volume = MAX_VOLUME / 2;
 
-    Mix_PlayMusic(gBGMusic, -1);
+    Mix_PlayMusic(PBState->bgMusic, -1);
 
-    g_map.w = WINDOW_WIDTH;
-    g_map.h = WINDOW_HEIGHT;
-    g_map.x = 0;
-    g_map.y = 0;
 
     int backgr = 0;
     int bcat = 0;
 
-    PlayerSecretLvL* player = Player_create(PBState->renderer);
-    Enemy* plane = Plane_create(PBState->renderer);
-    Counter* counter = Counter_create(PBState->renderer);
-    CatManager* catManager = CatManager_create(10);
+    PlayerSecretLvL *player = Player_create(PBState->renderer);
+    Enemy *plane = Plane_create(PBState->renderer);
+    Counter *counter = Counter_create(PBState->renderer);
+    CatManager *catManager = CatManager_create(10);
 
     bool key_LEFT = false;
     bool key_RIGHT = false;
@@ -104,26 +99,31 @@ void  level3 (GameState *PBState) {
             player->playerRect.x = WINDOW_WIDTH - LVL3PLAYER_WIDTH;
         }
 
-        if(SDL_GetTicks()%5 == 0) {
+        if(SDL_GetTicks() % 5 == 0) {
             ++bcat;
         }
-        if(bcat/3 >= CATS_FRAMES) {
+
+        if(bcat / 3 >= CATS_FRAMES) {
             bcat = 0;
         }
+
         if (SDL_GetTicks() % 3 == 0) {
             ++backgr;
         }
+
         if (backgr >= BACKGROUNDS) {
             backgr = 0;
         }
+
         if(counter->countnumber == 35) {
             PBState->run = MENU;
         }
+
         SDL_RenderClear(PBState->renderer);
         catManager_update(catManager, player, counter);
         Plane_move(plane);
         Player_animate(player);
-        SDL_RenderCopy(PBState->renderer, gMap[backgr], NULL, &g_map);
+        SDL_RenderCopy(PBState->renderer, gMap[backgr], NULL, &PBState->bgRect);
 
         Player_show(player, PBState->renderer);
         CatArr_show(catManager, PBState->renderer, bcat);
@@ -148,7 +148,7 @@ void  level3 (GameState *PBState) {
         SDL_DestroyTexture(gMap[i]);
     }
 
-    Mix_FreeMusic(gBGMusic);
+    Mix_FreeMusic(PBState->bgMusic);
 }
 
 
