@@ -65,7 +65,14 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
     SDL_Rect crosshair_rect = Rect_new(630, 350, 20, 20);
     SDL_ShowCursor(false);
 
-    EnemyManager *enemy_manager = EnemyManager_new(PBState->renderer, 3, 3);
+    Entity **enemies = malloc(sizeof(Entity *) * 3);
+    enemies[0] = Enemy_new(PBState->renderer, SHOTGUNNER, Rect_new(100, 100, 60, 50), Vector2_new(0, 1), 3, 500);
+    enemies[1] = Enemy_new(PBState->renderer, PISTOLER, Rect_new(250, 250, 60, 44), Vector2_new(1, 1), 3, 500);
+    enemies[2] = Enemy_new(PBState->renderer, SHOTGUNNER, Rect_new(300, 500, 60, 50), Vector2_new(1, 0.7), 3, 500);
+
+    EnemyManager *enemy_manager = EnemyManager_new(enemies, 3, 3);
+    EnemyManager *player_manager = EnemyManager_new(&player, 1, 1);
+    (void) player_manager;
 
     switch (character_type) {
         case SHAYLUSHAY:

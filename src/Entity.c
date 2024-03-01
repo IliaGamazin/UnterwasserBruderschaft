@@ -301,19 +301,13 @@ Entity *Enemy_new(
     // Swstatement to handle different entypes
 
     switch (type) {
-        case ENEMY_TYPE1:
+        case SHOTGUNNER:
             enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/enemy2.png");
             enemy->weapon = Weapon_new(SHOTGUN);
             enemy->rect.w = 60;
             enemy->rect.h = 50;
             break;
-        case ENEMY_TYPE2:
-            enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/enemy1.png");
-            enemy->weapon = Weapon_new(RIFLE);
-            enemy->rect.w = 60;
-            enemy->rect.h = 44;
-            break;
-        case ENEMY_TYPE3:
+        case PISTOLER:
             enemy->texture = IMG_LoadTexture(renderer,  "./resource/img/entities/enemy1.png");
             enemy->weapon = Weapon_new(PISTOL);
             enemy->rect.w = 60;
@@ -469,16 +463,12 @@ void Enemy_update(Entity *enemy, Entity *player, Tilemap *map, BulletManager *bu
 
 // EnemyManager
 
-EnemyManager *EnemyManager_new(SDL_Renderer *r, int capacity, int count) {
+EnemyManager *EnemyManager_new(Entity **enemies, int capacity, int count) {
     EnemyManager *manager = malloc(sizeof(EnemyManager));
 
-    manager->enemies = malloc(sizeof(Entity) * capacity);
     manager->capacity = capacity;
     manager->enemy_count = count;
-    
-    manager->enemies[0] = Enemy_new(r, ENEMY_TYPE1, Rect_new(100, 100, 70, 49), Vector2_new(0, 0), 3, 500);
-    manager->enemies[1] = Enemy_new(r, ENEMY_TYPE2, Rect_new(250, 250, 70, 49), Vector2_new(0, 0), 3, 500);
-    manager->enemies[2] = Enemy_new(r, ENEMY_TYPE3, Rect_new(300, 300, 70, 49), Vector2_new(0, 0), 3, 500);
+    manager->enemies = enemies;
     
     return manager; 
 }

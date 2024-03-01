@@ -18,9 +18,8 @@ typedef enum {
 } CHARACTER_TYPE;
 
 typedef enum {
-    ENEMY_TYPE1,
-    ENEMY_TYPE2,
-    ENEMY_TYPE3,
+    SHOTGUNNER,
+    PISTOLER,
 } ENEMY_TYPE;
 
 // Entity
@@ -74,7 +73,7 @@ typedef struct {
     size_t capacity;
 } EnemyManager;
 
-EnemyManager *EnemyManager_new(SDL_Renderer *r, int capacity, int count);
+EnemyManager *EnemyManager_new(Entity **enemies, int capacity, int count);
 
 void EnemyManager_update(EnemyManager *manager, Entity *player, Tilemap *map, BulletManager* bullet_manager);
 void EnemyManager_render(EnemyManager *manager, SDL_Renderer *renderer, Tilemap *map);
