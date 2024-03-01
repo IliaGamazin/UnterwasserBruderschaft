@@ -9,7 +9,7 @@ void level2_destroy(ObstaclesManager *ob_manager, BackgroundManager *bg_manager,
 }
 
 void level2(GameState *PBState, CHARACTER_TYPE char_type) {
-    PBState->bgMusic = Mix_LoadMUS("./resource/sound/nightcall.mp3");
+    PBState->bgMusic = Mix_LoadMUS("./resource/sound/driveBack.mp3");
 
     Player *player_drive = player_drive_new(PBState->renderer, 200, 200, char_type);
     BackgroundManager *bg_manager = bg_manager_new(PBState->renderer, player_drive->velocity_x);
@@ -58,7 +58,8 @@ void level2(GameState *PBState, CHARACTER_TYPE char_type) {
                     break;
                 
                 }
-            } else if (PBState->event.type == SDL_KEYUP) {
+            } 
+            else if (PBState->event.type == SDL_KEYUP) {
                 switch (PBState->event.key.keysym.sym) {
                     case SDLK_a:
                         key_break = false;

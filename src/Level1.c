@@ -1,7 +1,7 @@
 #include "../inc/Header_main.h"
 #include "../inc/Viewport.h"
 
-void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap *map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox box) {
+void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap *map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox *box) {
     SDL_DestroyTexture(ammo_texture);
     SDL_DestroyTexture(ammo_fired_texture);
     Mix_FreeMusic(bgMusic);
@@ -53,13 +53,18 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         7,
         250
     );
-    AmmoBox box = AmmoBox_new(PBState->renderer, 800, 160);
+    AmmoBox *box = AmmoBox_new(PBState->renderer, 800, 160);
     BulletManager *bullet_manager = BulletManager_new(100);
     ExitCar *exit = ExitCar_new(PBState->renderer);
     PBState->bgMusic = Mix_LoadMUS("./resource/sound/MiamiDisco.mp3");
     Mix_PlayMusic(PBState->bgMusic, 0);
     SDL_Texture *ammo_texture;
     SDL_Texture *ammo_fired_texture;
+
+    SDL_Texture *crosshair_texture = IMG_LoadTexture(PBState->renderer, "./resource/img/hud/ch.png");
+    SDL_Rect crosshair_rect = Rect_new(630, 350, 20, 20);
+    SDL_ShowCursor(false);
+
     EnemyManager *enemy_manager = EnemyManager_new(PBState->renderer, 3, 3);
 
     switch (character_type) {
@@ -92,6 +97,9 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         int mouseX;
         int mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
+
+        crosshair_rect.x = mouseX - crosshair_rect.w / 2;
+        crosshair_rect.y = mouseY - crosshair_rect.h / 2;
 
         Vector2 player_center = Vector2_new(
             player->rect.x + (player -> rect.w / 2.0),
@@ -169,7 +177,8 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         Player_update(player, map, &viewport, Vector2_new(mouseX, mouseY));
         ExitCar_update(exit, PlayerCenter);
         EnemyManager_update(enemy_manager, player, bullet_manager);
-
+        AmmoBox_update(box, player);
+        
         // Render
         
         SDL_SetRenderDrawColor(PBState->renderer, 0, 0, 0, 255);
@@ -186,6 +195,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         EnemyManager_render(enemy_manager, PBState->renderer, map);
         Map_render(map, PBState->renderer, &viewport);
         Hood_render(PBState->renderer, player, ammo_texture, ammo_fired_texture);
+        SDL_RenderCopy(PBState->renderer, crosshair_texture, NULL, &crosshair_rect);
 
         SDL_RenderPresent(PBState->renderer);
 
@@ -193,6 +203,8 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
 
         SDL_Delay(1000 / 60);
     }
+
+    SDL_ShowCursor(true);
 
     level1_destroy(PBState->bgMusic, bullet_manager, player, map, ammo_texture, ammo_fired_texture, box);
 }

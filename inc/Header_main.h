@@ -60,7 +60,7 @@ void level1_destroy(
     Tilemap *Map,
     SDL_Texture *ammoTex,
     SDL_Texture *ammoTexFired,
-    AmmoBox box
+    AmmoBox *box
 );
 void level2_destroy(
     ObstaclesManager *ob_manager,

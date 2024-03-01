@@ -3,6 +3,7 @@
 
 #include "./Libs.h"
 #include "./Tilemap.h"
+#include "./Entity.h"
 
 typedef struct {
     SDL_Rect rect;
@@ -12,9 +13,10 @@ typedef struct {
     bool is_full;
 } AmmoBox;
 
-AmmoBox AmmoBox_new(SDL_Renderer *r, int x, int y);
-void AmmoBox_render(SDL_Renderer *renderer, AmmoBox box, Tilemap *map);
-void AmmoBox_destroy(AmmoBox box);
+AmmoBox *AmmoBox_new(SDL_Renderer *r, int x, int y);
+void AmmoBox_render(SDL_Renderer *renderer, AmmoBox *box, Tilemap *map);
+void AmmoBox_destroy(AmmoBox *box);
+void AmmoBox_update(AmmoBox *box, Entity *player);
 
 #endif
 

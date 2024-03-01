@@ -138,7 +138,7 @@ Obstacle obstacle_new(ObstaclesManager *manager, int lane, OBSTACLE_TYPE type, S
      case CHRK:
         new_obst.rect.w = 88;
         new_obst.rect.h = 88;
-        new_obst.tex = IMG_LoadTexture(r, "./resource/img/level2/mshn.png");
+        new_obst.tex = IMG_LoadTexture(r, "./resource/img/level2/CHRK.png");
         new_obst.velocity = 5;
         break;
     case RDBLK:
