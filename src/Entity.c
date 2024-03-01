@@ -272,17 +272,78 @@ void Player_update(Entity *entity, Tilemap *map, SDL_Rect *viewport, Vector2 mou
     }
 }
 
-void chase_player_AI(Entity *enemy, Entity *player, BulletManager *bullet_manager) {
+// Enemy
+
+Entity *Enemy_new(
+    SDL_Renderer *renderer,
+    ENEMY_TYPE type, //now incl en typ
+    SDL_Rect rect,
+    Vector2 direction,
+    double speed,
+    uint32_t animation_speed
+) {
+    Entity *enemy = malloc(sizeof(Entity));
+    if (enemy == NULL) return NULL;
+    
+    // init obl of ent
+
+    enemy->rect = rect;
+    enemy->hitbox = Rect_new(0, 0, rect.w, rect.h);
+    enemy->direction = direction;
+    enemy->speed = speed;
+    enemy->pivot = (SDL_Point) {
+        enemy->rect.w / 2,
+        enemy->rect.h / 2,
+    };
+    enemy->animation_speed = animation_speed;
+    enemy->last_animated = 0;
+    enemy->current_frame = 0;
+
+    // Swstatement to handle different entypes
+
+    switch (type) {
+        case ENEMY_TYPE1:
+            enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/dawawue.png");
+            enemy->weapon = Weapon_new(SHOTGUN);
+            break;
+        case ENEMY_TYPE2:
+            enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/shaylushay.png");
+            enemy->weapon = Weapon_new(RIFLE);
+            break;
+        case ENEMY_TYPE3:
+            enemy->texture = IMG_LoadTexture(renderer,  "./resource/img/entities/yaltpils.png");
+            enemy->weapon = Weapon_new(PISTOL);
+            break;
+        default:
+            break;
+    }
+    
+    return enemy;
+}
+
+void Enemy_update(Entity *enemy, Entity *player, Tilemap *map, BulletManager *bullet_manager) {
     static uint32_t last_update_time = 0;
     const uint32_t update_interval = 1000;
     static bool is_chasing = false;
+
+    SDL_Rect enemy_hitbox_literal = Rect_new(
+        enemy->rect.x + enemy->hitbox.x,
+        enemy->rect.y + enemy->hitbox.y,
+        enemy->hitbox.w,
+        enemy->hitbox.h
+    );
     
-    
-    Vector2 player_pos = {player->rect.x + player->rect.w / 2.0f, player->rect.y + player->rect.h / 2.0f};
-    Vector2 enemy_pos = {enemy->rect.x + enemy->rect.w / 2.0f, enemy->rect.y + enemy->rect.h / 2.0f};
-    Vector2 diff = Vector2_sub(player_pos, enemy_pos);
-    float distance_to_player = Vector2_magnitude(diff);
-    
+    Vector2 player_pos = Vector2_new(
+        player->rect.x + player->rect.w / 2.0,
+        player->rect.y + player->rect.h / 2.0
+    );
+    Vector2 enemy_pos = Vector2_new(
+        enemy->rect.x + enemy->rect.w / 2.0,
+        enemy->rect.y + enemy->rect.h / 2.0
+    );
+    Vector2 enemy_to_player = Vector2_from_points(enemy_pos, player_pos);
+
+    double distance_to_player = Vector2_magnitude(enemy_to_player);
    
     if (!is_chasing) {
         if (SDL_GetTicks() - last_update_time > update_interval) {
@@ -296,25 +357,101 @@ void chase_player_AI(Entity *enemy, Entity *player, BulletManager *bullet_manage
             last_update_time = SDL_GetTicks();
         }
     }
-    
    
     const float sight_range = 350.0f;
-    if (distance_to_player < sight_range) {
-        is_chasing = true;
-    } else {
-        is_chasing = false;
-    }
+
+    is_chasing = (distance_to_player <= sight_range) && Map_raycast(map, Ray_new(enemy_pos, enemy_to_player), WALL) > distance_to_player;
     
     if (is_chasing) {
-        Vector2 direction_to_player = Vector2_sub(player_pos, enemy_pos);
-        Vector2_normalize(&direction_to_player);
+        Vector2 walk_direction = enemy_to_player;
+
+        enemy->direction = enemy_to_player;
+
+        double hit_distance = INFINITY;
+        double hit_x_distance = INFINITY;
+        double hit_y_distance = INFINITY;
+
+        if (walk_direction.x) {
+            Ray ray = Ray_new(
+                Vector2_new(
+                    enemy_hitbox_literal.x + enemy_hitbox_literal.w * (walk_direction.x > 0),
+                    enemy_hitbox_literal.y
+                ),
+                walk_direction
+            );
+
+            while (ray.origin.y <= enemy_hitbox_literal.y + enemy_hitbox_literal.h) {
+                double hit = Map_raycast(map, ray, WALL | OBSTACLE);
+                double hitx = Map_raycast(map, Ray_new(ray.origin, Vector2_new(ray.direction.x, 0)), WALL | OBSTACLE);
+
+                if (hit < hit_distance) {
+                    hit_distance = hit;
+                }
+
+                if (hitx < hit_x_distance) {
+                    hit_x_distance = hitx;
+                }
+
+                ray.origin.y++;
+            }
+        }
+
+        if (walk_direction.y) {
+            Ray ray = Ray_new(
+                Vector2_new(
+                    enemy_hitbox_literal.x,
+                    enemy_hitbox_literal.y + enemy_hitbox_literal.h * (walk_direction.y > 0)
+                ),
+                walk_direction
+            );
+
+            while (ray.origin.x <= enemy_hitbox_literal.x + enemy_hitbox_literal.w) {
+                double hit = Map_raycast(map, ray, WALL | OBSTACLE);
+                double hity = Map_raycast(map, Ray_new(ray.origin, Vector2_new(0, ray.direction.y)), WALL | OBSTACLE);
+
+                if (hit < hit_distance) {
+                    hit_distance = hit;
+                }
+
+                if (hity < hit_y_distance) {
+                    hit_y_distance = hity;
+                }
+
+                ray.origin.x++;
+            }
+        }
+
+        if (!hit_distance && walk_direction.x && walk_direction.y) {
+            if (hit_x_distance) {
+                walk_direction.y = 0;
+                hit_distance = hit_x_distance;
+            } else if (hit_y_distance) {
+                walk_direction.x = 0;
+                hit_distance = hit_y_distance;
+            }
+        }
+
+        // Tweak walk distance
+
+        Vector2_set_magnitude(&walk_direction, (hit_distance < enemy->speed ? hit_distance : enemy->speed));
+
+        // Walking Sound 
         
-        enemy->direction = direction_to_player;
+        if (!Mix_Playing(3)) {
+            Mix_PlayChannel(3, enemy->walking_sound, 1);
+        }
+
+        // Animate enemy
+
+        if (SDL_GetTicks() > enemy->last_animated + enemy->animation_speed) {
+            enemy->current_frame = (enemy->current_frame + 1) % 3;
+            enemy->last_animated = SDL_GetTicks();
+        }
+
+        // Move enemy
         
-        
-        enemy->rect.x += enemy->direction.x * enemy->speed;
-        enemy->rect.y += enemy->direction.y * enemy->speed;
-        
+        enemy->rect.x += round(walk_direction.x);
+        enemy->rect.y += round(walk_direction.y);
         
         if (enemy->weapon && distance_to_player < sight_range) {
             Weapon_shoot(enemy->weapon, bullet_manager, enemy_pos, enemy->direction);
@@ -323,52 +460,7 @@ void chase_player_AI(Entity *enemy, Entity *player, BulletManager *bullet_manage
     }
 }
 
-
-
-
-
-Entity *Enemy_new(
-    SDL_Renderer *renderer,
-    ENEMY_TYPE type, //now incl en typ
-    SDL_Rect rect,
-    Vector2 direction,
-    double speed,
-    uint32_t animation_speed
-    )
-{
-    Entity *entity = (Entity *)malloc(sizeof(Entity));
-    if (!entity) return NULL;
-    
-    // init obl of ent
-
-    entity->rect = rect;
-    entity->direction = direction;
-    entity->speed = speed;
-    entity->pivot = (SDL_Point){entity->rect.w / 2, entity->rect.h / 2};
-    entity->animation_speed = animation_speed;
-    entity->last_animated = 0;
-    entity->current_frame = 0;
-
-    // Swstatement to handle different entypes
-    switch (type) {
-        case ENEMY_TYPE1:
-            entity->texture = IMG_LoadTexture(renderer, "./resource/img/entities/dawawue.png");
-            entity->weapon = Weapon_new(SHOTGUN);
-            break;
-        case ENEMY_TYPE2:
-            entity->texture = IMG_LoadTexture(renderer, "./resource/img/entities/shaylushay.png");
-            entity->weapon = Weapon_new(RIFLE);
-            break;
-        case ENEMY_TYPE3:
-            entity->texture = IMG_LoadTexture(renderer,  "./resource/img/entities/yaltpils.png");
-            entity->weapon = Weapon_new(PISTOL);
-            break;
-        default:
-            break;
-    }
-    
-    return entity;
-}
+// EnemyManager
 
 EnemyManager *EnemyManager_new(SDL_Renderer *r, int capacity, int count) {
     EnemyManager *manager = malloc(sizeof(EnemyManager));
@@ -377,36 +469,27 @@ EnemyManager *EnemyManager_new(SDL_Renderer *r, int capacity, int count) {
     manager->capacity = capacity;
     manager->enemy_count = count;
     
-    manager->enemies[0] = Enemy_new(r, ENEMY_TYPE1, (SDL_Rect){100, 100, 70, 49}, Vector2_new(0, 0), 3, 500);
-    manager->enemies[1] = Enemy_new(r, ENEMY_TYPE2, (SDL_Rect){200, 200, 70, 49}, Vector2_new(0, 0), 3, 500);
-    manager->enemies[2] = Enemy_new(r, ENEMY_TYPE3, (SDL_Rect){300, 300, 70, 49}, Vector2_new(0, 0), 3, 500);
+    manager->enemies[0] = Enemy_new(r, ENEMY_TYPE1, Rect_new(100, 100, 70, 49), Vector2_new(0, 0), 3, 500);
+    manager->enemies[1] = Enemy_new(r, ENEMY_TYPE2, Rect_new(250, 250, 70, 49), Vector2_new(0, 0), 3, 500);
+    manager->enemies[2] = Enemy_new(r, ENEMY_TYPE3, Rect_new(300, 300, 70, 49), Vector2_new(0, 0), 3, 500);
     
     return manager; 
 }
 
-//speaks for itself
-
-void EnemyManager_update(EnemyManager *manager, Entity *player, BulletManager* bullet_manager) {
-    for (int i = 0; i < manager->enemy_count; i++) {
-        chase_player_AI(manager->enemies[i], player, bullet_manager);
-        if (SDL_GetTicks() > manager->enemies[i]->last_animated + manager->enemies[i]->animation_speed) {
-            manager->enemies[i]->current_frame = (manager->enemies[i]->current_frame + 1) % 3;
-            manager->enemies[i]->last_animated = SDL_GetTicks();
-        }
+void EnemyManager_update(EnemyManager *manager, Entity *player, Tilemap *map, BulletManager* bullet_manager) {
+    for (size_t i = 0; i < manager->enemy_count; i++) {
+        Enemy_update(manager->enemies[i], player, map, bullet_manager);
     }
 }
 
-// ^
-
 void EnemyManager_render(EnemyManager *manager, SDL_Renderer *renderer, Tilemap *map) {
-    for (int i = 0; i < manager->enemy_count; i++) {
+    for (size_t i = 0; i < manager->enemy_count; i++) {
         Entity_render(renderer, manager->enemies[i], map);
     }
 }
-//^^
 
 void EnemyManager_destroy(EnemyManager *manager) {
-    for (int i = 0; i < manager->enemy_count; i++) {
+    for (size_t i = 0; i < manager->enemy_count; i++) {
         Entity_destroy(manager->enemies[i]);
         manager->enemies[i] = NULL;
     }
@@ -414,5 +497,4 @@ void EnemyManager_destroy(EnemyManager *manager) {
     free(manager->enemies);
     free(manager);
 }
-
 

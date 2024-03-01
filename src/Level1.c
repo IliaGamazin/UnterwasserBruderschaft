@@ -176,7 +176,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         BulletManager_update(bullet_manager, LEVEL_WIDTH, LEVEL_HEIGHT);
         Player_update(player, map, &viewport, Vector2_new(mouseX, mouseY));
         ExitCar_update(exit, PlayerCenter);
-        EnemyManager_update(enemy_manager, player, bullet_manager);
+        EnemyManager_update(enemy_manager, player, map, bullet_manager);
         AmmoBox_update(box, player);
         
         // Render

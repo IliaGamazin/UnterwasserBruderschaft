@@ -54,19 +54,29 @@ Entity *Player_new(
 );
 void Player_update(Entity *entity, Tilemap *map, Viewport *viewport, Vector2 mouse_position);
 
+// Entity enemy
 
-Entity* Enemy_new(SDL_Renderer* renderer, ENEMY_TYPE type, SDL_Rect rect, Vector2 direction, double speed, uint32_t animation_speed);
-void chase_player_AI(Entity* enemy, Entity* player, BulletManager* bullet_manager);
+Entity *Enemy_new(
+    SDL_Renderer *renderer,
+    ENEMY_TYPE type,
+    SDL_Rect rect,
+    Vector2 direction,
+    double speed,
+    uint32_t animation_speed
+);
+void Enemy_update(Entity *enemy, Entity *player, Tilemap *map, BulletManager *bullet_manager);
+
+// EnemyManager
 
 typedef struct {
     Entity **enemies;
-    int enemy_count;
-    int capacity;
+    size_t enemy_count;
+    size_t capacity;
 } EnemyManager;
 
 EnemyManager *EnemyManager_new(SDL_Renderer *r, int capacity, int count);
 
-void EnemyManager_update(EnemyManager *manager, Entity *player, BulletManager* bullet_manager);
+void EnemyManager_update(EnemyManager *manager, Entity *player, Tilemap *map, BulletManager* bullet_manager);
 void EnemyManager_render(EnemyManager *manager, SDL_Renderer *renderer, Tilemap *map);
 void EnemyManager_destroy(EnemyManager *manager);
 
