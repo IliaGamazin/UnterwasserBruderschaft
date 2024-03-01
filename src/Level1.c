@@ -1,15 +1,26 @@
 #include "../inc/Header_main.h"
 #include "../inc/Viewport.h"
 
-void bullet_collider_enemy(BulletManager *bullet_manager, EnemyManager *enemy_manager) {
+void bullet_collider_enemy(BulletManager *bullet_manager, EnemyManager *enemy_manager, Tilemap *map) {
     for (size_t i = 0; i < bullet_manager->count; i++) {
-        for (size_t j = 0; j < enemy_manager->capacity; j++) {
-            Vector2 start = Vector2_sub(bullet_manager->bullets[i].position, bullet_manager->bullets[i].direction);
+        Vector2 start = Vector2_sub(bullet_manager->bullets[i].position, bullet_manager->bullets[i].direction);
     
-            int start_x = (int)start.x;
-            int start_y = (int)start.y;
-            int end_x = (int)bullet_manager->bullets[i].position.x;
-            int end_y = (int)bullet_manager->bullets[i].position.y;
+        double wall_distance = Map_raycast(
+            map,
+            Ray_new(start, bullet_manager->bullets[i].direction),
+            WALL
+        );
+
+        if (wall_distance <= Vector2_magnitude(bullet_manager->bullets[i].direction)) {
+            BulletManager_remove(bullet_manager, i);
+            continue;
+        }
+
+        for (size_t j = 0; j < enemy_manager->capacity; j++) {
+            int start_x = start.x;
+            int start_y = start.y;
+            int end_x = bullet_manager->bullets[i].position.x;
+            int end_y = bullet_manager->bullets[i].position.y;
 
             if (SDL_IntersectRectAndLine(
                 &enemy_manager->enemies[j]->rect, 
@@ -212,7 +223,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         ExitCar_update(exit, PlayerCenter);
         EnemyManager_update(enemy_manager, player, map, bullet_manager);
         AmmoBox_update(box, player);
-        bullet_collider_enemy(bullet_manager, enemy_manager);
+        bullet_collider_enemy(bullet_manager, enemy_manager, map);
         // Render
         
         SDL_SetRenderDrawColor(PBState->renderer, 0, 0, 0, 255);
