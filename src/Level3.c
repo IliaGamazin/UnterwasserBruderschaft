@@ -116,7 +116,7 @@ void  level3 (GameState *PBState) {
         }
 
         if(counter->countnumber == 35) {
-            PBState->run = MENU;
+            PBState->run = OUTRO;
         }
 
         SDL_RenderClear(PBState->renderer);

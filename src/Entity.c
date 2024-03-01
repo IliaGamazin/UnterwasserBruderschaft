@@ -22,12 +22,19 @@ void Entity_destroy(Entity *entity) {
 }
 
 void Entity_render(SDL_Renderer *renderer, Entity *entity, Tilemap *map) {
+
     SDL_Rect src_rect = {
         entity->current_frame * entity->rect.w,
         0,
         entity->rect.w,
         entity->rect.h,
     };
+
+    if (entity->is_dead) {
+        src_rect.x = 180;
+    }
+    
+    
 
     double angle = radians_to_degrees(atan2(entity->direction.y, entity->direction.x));
   
@@ -55,7 +62,7 @@ Entity *Player_new(
     uint32_t animation_speed
 ) {
     Entity *entity = malloc(sizeof(Entity));
-
+    entity->is_dead = false;
     entity->rect = rect;
     entity->hitbox = (SDL_Rect) {
         3, // Offset on x
@@ -284,7 +291,7 @@ Entity *Enemy_new(
 ) {
     Entity *enemy = malloc(sizeof(Entity));
     if (enemy == NULL) return NULL;
-    
+    enemy->is_dead = false;
     // init obl of ent
 
     enemy->rect = rect;
@@ -326,7 +333,10 @@ void Enemy_update(Entity *enemy, Entity *player, Tilemap *map, BulletManager *bu
     static uint32_t last_update_time = 0;
     const uint32_t update_interval = 1000;
     static bool is_chasing = false;
-
+    if (enemy->is_dead){
+        return;
+    }
+    
     SDL_Rect enemy_hitbox_literal = Rect_new(
         enemy->rect.x + enemy->hitbox.x,
         enemy->rect.y + enemy->hitbox.y,

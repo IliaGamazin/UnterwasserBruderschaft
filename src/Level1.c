@@ -1,6 +1,33 @@
 #include "../inc/Header_main.h"
 #include "../inc/Viewport.h"
 
+void bullet_collider_enemy(BulletManager *bullet_manager, EnemyManager *enemy_manager) {
+    for (size_t i = 0; i < bullet_manager->count; i++) {
+        for (size_t j = 0; j < enemy_manager->capacity; j++) {
+            Vector2 start = Vector2_sub(bullet_manager->bullets[i].position, bullet_manager->bullets[i].direction);
+    
+            int start_x = (int)start.x;
+            int start_y = (int)start.y;
+            int end_x = (int)bullet_manager->bullets[i].position.x;
+            int end_y = (int)bullet_manager->bullets[i].position.y;
+
+            if (SDL_IntersectRectAndLine(
+                &enemy_manager->enemies[j]->rect, 
+                &start_x, 
+                &start_y, 
+                &end_x,
+                &end_y)) 
+                {
+                enemy_manager->enemies[j]->is_dead = true;  
+                BulletManager_remove(bullet_manager, i);
+            }
+        } 
+    }
+}
+
+
+
+
 void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap *map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox *box) {
     SDL_DestroyTexture(ammo_texture);
     SDL_DestroyTexture(ammo_fired_texture);
@@ -185,7 +212,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         ExitCar_update(exit, PlayerCenter);
         EnemyManager_update(enemy_manager, player, map, bullet_manager);
         AmmoBox_update(box, player);
-        
+        bullet_collider_enemy(bullet_manager, enemy_manager);
         // Render
         
         SDL_SetRenderDrawColor(PBState->renderer, 0, 0, 0, 255);

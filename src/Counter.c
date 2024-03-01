@@ -37,18 +37,18 @@ Counter *Counter_create(SDL_Renderer* gRenderer) {
     counter->countHP = 0;
 
     counter->HPCounterTexture = IMG_LoadTexture(gRenderer, "resource/img/level3/catbread2.png");
-    counter->TensTexture = IMG_LoadTexture(gRenderer, "resource/img/level3/n1.png");
-    counter->UnitsTexture = IMG_LoadTexture(gRenderer, "resource/img/level3/n1.png");
+    counter->TensTexture = IMG_LoadTexture(gRenderer, "resource/img/hud/num_sheet.png");
+    counter->UnitsTexture = IMG_LoadTexture(gRenderer, "resource/img/hud/num_sheet.png");
 
     return counter;
 }
 
 void CounterSprites(Counter *counter) {
-    counter->UnitsClip.x = 26 * (counter->countnumber % 10);
-    counter->TensClip.x = 26 * (counter->countnumber / 10);
+    counter->UnitsClip.x = 32 * (counter->countnumber % 10);
+    counter->TensClip.x = 32 * (counter->countnumber / 10);
 
-    counter->HPcounterClip.w = HPCOUNTER_WIDTH - 40*counter->countHP;
-    counter->HPcounterRect.w = HPCOUNTER_WIDTH - 40*counter->countHP;
+    counter->HPcounterClip.w = HPCOUNTER_WIDTH - 40 * counter->countHP;
+    counter->HPcounterRect.w = HPCOUNTER_WIDTH - 40 * counter->countHP;
 }
 
 void Counter_destroy(Counter *counter) {

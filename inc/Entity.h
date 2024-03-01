@@ -30,6 +30,7 @@ typedef struct {
     SDL_Point pivot;
     Vector2 direction;
     double speed;
+    bool is_dead;
     Weapon *weapon;
     SDL_Texture *texture;
     uint32_t last_animated;

@@ -13,7 +13,7 @@ int main(void) {
     GameState *PBState = malloc(sizeof(GameState));
     PBState->run = MENU;
     PBState->window = SDL_CreateWindow(
-        "PB_MENU_TEST",
+        "PB",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
@@ -62,6 +62,9 @@ int main(void) {
                 break;
             case LEVEL3:
                 level3(PBState);
+                break;
+            case OUTRO:
+                level_intro(PBState, OUTRO);
                 break;
             case GAME_OVER:
                 gameover(PBState);

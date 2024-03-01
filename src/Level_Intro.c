@@ -44,6 +44,11 @@ void level_intro(GameState *PBState, SCENE intro_type) {
             PBState->bgMusic = Mix_LoadMUS("./resource/sound/nightcall.mp3");
             mask_sprite = Mask_new(PBState->renderer, SHAYLUSHAY, 195, 295, 105, 105);
             break;
+        case OUTRO:
+            PBState->bgTexture = IMG_LoadTexture(PBState->renderer, "./resource/img/outro.png");
+            PBState->bgMusic = Mix_LoadMUS("./resource/sound/nightcall.mp3");
+            mask_sprite = Mask_new(PBState->renderer, SHAYLUSHAY, 195, 295, 105, 105);
+            break;
         default:
             break;
     }
@@ -69,8 +74,11 @@ void level_intro(GameState *PBState, SCENE intro_type) {
                         PBState->run = MENU;
                         break;
                     case SDLK_RETURN:
-                        PBState->run++;
-                        break;              
+                        if (intro_type != OUTRO) {
+                            PBState->run++;
+                            break;         
+                        }
+                    
                     case SDLK_EQUALS:
                     case SDLK_KP_PLUS:
                         Mix_MasterVolume(Mix_MasterVolume(-1) + (MIX_MAX_VOLUME / 8));
