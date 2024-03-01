@@ -22,21 +22,58 @@ void bullet_collider_enemy(BulletManager *bullet_manager, EnemyManager *enemy_ma
             int end_x = bullet_manager->bullets[i].position.x;
             int end_y = bullet_manager->bullets[i].position.y;
 
-            if (SDL_IntersectRectAndLine(
+            if (bullet_manager->bullets[i].is_player && SDL_IntersectRectAndLine(
                 &enemy_manager->enemies[j]->rect, 
                 &start_x, 
                 &start_y, 
                 &end_x,
                 &end_y)) 
                 {
+                if (!enemy_manager->enemies[j]->is_dead) {
+                    enemy_manager->enemy_count--;
+                }
                 enemy_manager->enemies[j]->is_dead = true;  
+                
                 BulletManager_remove(bullet_manager, --i);
             }
         } 
     }
 }
 
+void bullet_collider_player(BulletManager *bullet_manager, Entity* player, Tilemap *map) {
+    for (size_t i = 0; i < bullet_manager->count; i++) {
+        Vector2 start = Vector2_sub(bullet_manager->bullets[i].position, bullet_manager->bullets[i].direction);
+    
+        double wall_distance = Map_raycast(
+            map,
+            Ray_new(start, bullet_manager->bullets[i].direction),
+            WALL
+        );
 
+        if (wall_distance <= Vector2_magnitude(bullet_manager->bullets[i].direction)) {
+            BulletManager_remove(bullet_manager, --i);
+            continue;
+        }
+
+        
+        int start_x = start.x;
+        int start_y = start.y;
+        int end_x = bullet_manager->bullets[i].position.x;
+        int end_y = bullet_manager->bullets[i].position.y;
+
+        if (!bullet_manager->bullets[i].is_player && SDL_IntersectRectAndLine(
+            &player->rect, 
+            &start_x, 
+            &start_y, 
+            &end_x,
+            &end_y)) 
+            {
+            player->is_dead = true;  
+            BulletManager_remove(bullet_manager, --i);
+            
+        }
+    }
+}
 
 
 void level1_destroy(Mix_Music* bgMusic, BulletManager* bullet_manager, Entity* player, Tilemap *map, SDL_Texture* ammo_texture, SDL_Texture* ammo_fired_texture, AmmoBox *box) {
@@ -82,7 +119,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         PBState->renderer,
         character_type,
         (SDL_Rect) {
-            637,
+            1000,
             460,
             70,
             49,
@@ -211,10 +248,15 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
                         player->rect.h / 2
                     )
                 ),
-                player->direction
+                player->direction,
+                true
             );
         }
         
+        if(player->is_dead) {
+            PBState->run = GAME_OVER;
+            PBState->rerun = LEVEL1;
+        }
 
         // Update
 
@@ -224,6 +266,7 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         EnemyManager_update(enemy_manager, player, map, bullet_manager);
         AmmoBox_update(box, player);
         bullet_collider_enemy(bullet_manager, enemy_manager, map);
+        bullet_collider_player(bullet_manager, player, map);
         // Render
         
         SDL_SetRenderDrawColor(PBState->renderer, 0, 0, 0, 255);
@@ -231,6 +274,9 @@ void level1(GameState* PBState, CHARACTER_TYPE character_type) {
         
         if (exit->is_opened && SDL_PointInRect(&PlayerCenter, &exit->seat_collider)) {
             PBState->run++;
+        }
+        if(enemy_manager->enemy_count == 0) {
+            exit->is_opened = true;
         }
         
         AmmoBox_render(PBState->renderer, box, map);

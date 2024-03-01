@@ -42,7 +42,7 @@ void Weapon_destroy(Weapon *weapon) {
     free(weapon);
 }
 
-void Weapon_shoot(Weapon *weapon, BulletManager *bullet_manager, Vector2 origin, Vector2 direction) {
+void Weapon_shoot(Weapon *weapon, BulletManager *bullet_manager, Vector2 origin, Vector2 direction, bool is_player) {
     if (!weapon->ammo && SDL_GetTicks() > weapon->last_shoot + weapon->round_delay) {
         weapon->last_shoot = SDL_GetTicks();
         Mix_PlayChannel(-1, weapon->no_ammo_sound, 0);
@@ -62,7 +62,8 @@ void Weapon_shoot(Weapon *weapon, BulletManager *bullet_manager, Vector2 origin,
                 origin,
                 Vector2_rotated(direction, degrees_to_radians(((double) rand() / RAND_MAX * 6) - 3)), // Random direction rotation by [-3; 3] degrees
                 45,
-                Rgba_new(255, 255, 255, 255)
+                Rgba_new(255, 255, 255, 255),
+                is_player
             )
         );
     }

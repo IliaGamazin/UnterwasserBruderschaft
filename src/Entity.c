@@ -466,7 +466,7 @@ void Enemy_update(Entity *enemy, Entity *player, Tilemap *map, BulletManager *bu
         enemy->rect.y += round(walk_direction.y);
         
         if (enemy->weapon && distance_to_player < sight_range) {
-            Weapon_shoot(enemy->weapon, bullet_manager, enemy_pos, enemy->direction);
+            Weapon_shoot(enemy->weapon, bullet_manager, enemy_pos, enemy->direction, false);
             enemy->weapon->ammo++;
         }
     }
@@ -485,19 +485,19 @@ EnemyManager *EnemyManager_new(Entity **enemies, int capacity, int count) {
 }
 
 void EnemyManager_update(EnemyManager *manager, Entity *player, Tilemap *map, BulletManager* bullet_manager) {
-    for (size_t i = 0; i < manager->enemy_count; i++) {
+    for (size_t i = 0; i < manager->capacity; i++) {
         Enemy_update(manager->enemies[i], player, map, bullet_manager);
     }
 }
 
 void EnemyManager_render(EnemyManager *manager, SDL_Renderer *renderer, Tilemap *map) {
-    for (size_t i = 0; i < manager->enemy_count; i++) {
+    for (size_t i = 0; i < manager->capacity; i++) {
         Entity_render(renderer, manager->enemies[i], map);
     }
 }
 
 void EnemyManager_destroy(EnemyManager *manager) {
-    for (size_t i = 0; i < manager->enemy_count; i++) {
+    for (size_t i = 0; i < manager->capacity; i++) {
         Entity_destroy(manager->enemies[i]);
         manager->enemies[i] = NULL;
     }

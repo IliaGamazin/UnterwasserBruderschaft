@@ -2,13 +2,14 @@
 
 // Bullet
 
-Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba color) {
+Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba color, bool is_player) {
     Vector2_set_magnitude(&direction, velocity);
 
     return (Bullet) {
         position,
         direction,
         color,
+        is_player
     };
 }
 

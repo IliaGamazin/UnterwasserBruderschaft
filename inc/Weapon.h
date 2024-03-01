@@ -29,7 +29,7 @@ typedef struct {
 
 Weapon *Weapon_new(WEAPON_TYPE type);
 void Weapon_destroy(Weapon *weapon);
-void Weapon_shoot(Weapon *weapon, BulletManager *bullet_manager, Vector2 oririn, Vector2 direction);
+void Weapon_shoot(Weapon *weapon, BulletManager *bullet_manager, Vector2 oririn, Vector2 direction, bool is_player);
 
 #endif
 

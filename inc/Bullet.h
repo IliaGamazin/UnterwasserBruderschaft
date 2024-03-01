@@ -10,9 +10,10 @@ typedef struct {
     Vector2 position;
     Vector2 direction;
     Rgba color;
+    bool is_player;
 } Bullet;
 
-Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba color);
+Bullet Bullet_new(Vector2 position, Vector2 direction, uint32_t velocity, Rgba color, bool is_player);
 void Bullet_update(Bullet *bullet);
 void Bullet_render(SDL_Renderer *renderer, Bullet bullet, Tilemap *map);
 
