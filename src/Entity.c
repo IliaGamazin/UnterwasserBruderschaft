@@ -288,7 +288,6 @@ Entity *Enemy_new(
     // init obl of ent
 
     enemy->rect = rect;
-    enemy->hitbox = Rect_new(0, 0, rect.w, rect.h);
     enemy->direction = direction;
     enemy->speed = speed;
     enemy->pivot = (SDL_Point) {
@@ -303,21 +302,29 @@ Entity *Enemy_new(
 
     switch (type) {
         case ENEMY_TYPE1:
-            enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/dawawue.png");
+            enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/enemy2.png");
             enemy->weapon = Weapon_new(SHOTGUN);
+            enemy->rect.w = 60;
+            enemy->rect.h = 50;
             break;
         case ENEMY_TYPE2:
-            enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/shaylushay.png");
+            enemy->texture = IMG_LoadTexture(renderer, "./resource/img/entities/enemy1.png");
             enemy->weapon = Weapon_new(RIFLE);
+            enemy->rect.w = 60;
+            enemy->rect.h = 44;
             break;
         case ENEMY_TYPE3:
-            enemy->texture = IMG_LoadTexture(renderer,  "./resource/img/entities/yaltpils.png");
+            enemy->texture = IMG_LoadTexture(renderer,  "./resource/img/entities/enemy1.png");
             enemy->weapon = Weapon_new(PISTOL);
+            enemy->rect.w = 60;
+            enemy->rect.h = 44;
             break;
         default:
             break;
     }
-    
+
+    enemy->hitbox = enemy->rect;
+
     return enemy;
 }
 
