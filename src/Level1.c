@@ -12,7 +12,7 @@ void bullet_collider_enemy(BulletManager *bullet_manager, EnemyManager *enemy_ma
         );
 
         if (wall_distance <= Vector2_magnitude(bullet_manager->bullets[i].direction)) {
-            BulletManager_remove(bullet_manager, i);
+            BulletManager_remove(bullet_manager, --i);
             continue;
         }
 
@@ -30,7 +30,7 @@ void bullet_collider_enemy(BulletManager *bullet_manager, EnemyManager *enemy_ma
                 &end_y)) 
                 {
                 enemy_manager->enemies[j]->is_dead = true;  
-                BulletManager_remove(bullet_manager, i);
+                BulletManager_remove(bullet_manager, --i);
             }
         } 
     }

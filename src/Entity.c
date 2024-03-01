@@ -302,6 +302,7 @@ Entity *Enemy_new(
         enemy->rect.h / 2,
     };
     enemy->animation_speed = animation_speed;
+    enemy->walking_sound = Mix_LoadWAV("./resource/sound/walking_sound.wav");
     enemy->last_animated = 0;
     enemy->current_frame = 0;
 
